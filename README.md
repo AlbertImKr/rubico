@@ -12,6 +12,12 @@ Nest를 활용한 랠릿 Copy 토이프로젝트
 $ yarn install
 ```
 
+## Run docker compose
+
+```bash
+$ docker compose up -d
+```
+
 ## Running the app
 
 ```bash
