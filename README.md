@@ -1,6 +1,6 @@
 ## Description
 
-Nest를 활요한 랠릿 Copy 토이프로젝트
+Nest를 활용한 랠릿 Copy 토이프로젝트
 
 ## ERD
 
