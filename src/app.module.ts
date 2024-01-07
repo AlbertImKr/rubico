@@ -3,12 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserAccountModule } from './user-account/user-account.module';
-import ConfigModule from './config/index';
+import ConfigModule from './common/config/index';
 
 @Module({
   imports: [
     ConfigModule(),
-    UserAccountModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -19,6 +18,7 @@ import ConfigModule from './config/index';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
+    UserAccountModule,
   ],
   controllers: [AppController],
   providers: [AppService],

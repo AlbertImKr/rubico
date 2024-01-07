@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from './entities/user-account.entity';
 import { Repository } from 'typeorm';
-import { CreateUserAccountDto } from './dto/create-user-account.dto';
+import { CreateUserAccountDto } from './dto/user-account.request.dto';
 import { ObjectId } from 'mongodb';
+import { UserAccountIdDto } from './dto/user-account.response.dto';
 
 @Injectable()
 export class UserAccountService {
@@ -12,7 +13,9 @@ export class UserAccountService {
     private userAccountRepository: Repository<UserAccount>,
   ) {}
 
-  async signup(createUserAccountDto: CreateUserAccountDto) {
+  async signup(
+    createUserAccountDto: CreateUserAccountDto,
+  ): Promise<UserAccountIdDto> {
     const now = new Date();
     const id = new ObjectId();
     const userAccount = this.userAccountRepository.create({
@@ -23,6 +26,6 @@ export class UserAccountService {
     });
 
     await this.userAccountRepository.save(userAccount);
-    return { ...userAccount, password: undefined };
+    return { id: id.toHexString() };
   }
 }

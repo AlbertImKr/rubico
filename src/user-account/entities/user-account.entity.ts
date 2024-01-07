@@ -20,7 +20,7 @@ export class UserAccount {
   @Column({ name: 'nickname' })
   nickname: string;
   @Column()
-  phone: string;
+  phoneNumber: string;
   @Column()
   address: string;
   @Column({ name: 'is_active', default: false })
