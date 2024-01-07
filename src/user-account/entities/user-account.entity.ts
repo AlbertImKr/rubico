@@ -3,7 +3,15 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'user_account' })
 export class UserAccount {
-  @PrimaryColumn('char', { length: 24, name: 'id' })
+  @PrimaryColumn({
+    type: 'char',
+    length: 24,
+    name: 'id',
+    transformer: {
+      to: (value: ObjectId) => value.toHexString(),
+      from: (value: string) => new ObjectId(value),
+    },
+  })
   id: ObjectId;
   @Column({ name: 'email' })
   email: string;
@@ -15,7 +23,7 @@ export class UserAccount {
   phone: string;
   @Column()
   address: string;
-  @Column({ name: 'is_active' })
+  @Column({ name: 'is_active', default: false })
   isActive: boolean;
   @Column({ name: 'created_at' })
   createdAt: Date;
