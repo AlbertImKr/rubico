@@ -1,33 +1,37 @@
 import { ObjectId } from 'mongodb';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  COLUMN_NAME,
+  COLUMN_TYPE,
+  ID_LENGTH,
+} from '../../shared/constants/database.constants';
 
 @Entity({ name: 'user_account' })
 export class UserAccount {
   @PrimaryColumn({
-    type: 'char',
-    length: 24,
-    name: 'id',
+    type: COLUMN_TYPE.CHAR,
+    length: ID_LENGTH,
     transformer: {
       to: (value: ObjectId) => value.toHexString(),
       from: (value: string) => new ObjectId(value),
     },
   })
   id: ObjectId;
-  @Column({ name: 'email' })
+  @Column()
   email: string;
-  @Column({ name: 'password' })
+  @Column()
   password: string;
-  @Column({ name: 'nickname' })
+  @Column()
   nickname: string;
   @Column()
   phoneNumber: string;
   @Column()
   address: string;
-  @Column({ name: 'is_active', default: false })
+  @Column({ name: COLUMN_NAME.IS_ACTIVE, default: false })
   isActive: boolean;
-  @Column({ name: 'created_at' })
+  @Column({ name: COLUMN_NAME.CREATED_AT })
   createdAt: Date;
-  @Column({ name: 'updated_at' })
+  @Column({ name: COLUMN_NAME.UPDATED_AT })
   updatedAt: Date;
 
   isSamePassword(password: string) {

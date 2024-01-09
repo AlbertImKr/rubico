@@ -12,6 +12,7 @@ async function bootstrap() {
     .setDescription('Copy of Rallit')
     .setVersion('1.0')
     .addTag('User Account', 'User Account API')
+    .addTag('Auth', 'Auth API')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from './entities/user-account.entity';
 import { Repository } from 'typeorm';
-import { CreateUserAccountDto } from './dto/user-account.request.dto';
 import { ObjectId } from 'mongodb';
-import { UserAccountIdDto } from './dto/user-account.response.dto';
 
 @Injectable()
 export class UserAccountService {
@@ -13,20 +11,26 @@ export class UserAccountService {
     private userAccountRepository: Repository<UserAccount>,
   ) {}
 
-  async signup(
-    createUserAccountDto: CreateUserAccountDto,
-  ): Promise<UserAccountIdDto> {
+  async generate(
+    nickname: string,
+    email: string,
+    address: string,
+    phoneNumber: string,
+    password: string,
+  ): Promise<UserAccount> {
     const now = new Date();
     const id = new ObjectId();
     const userAccount = this.userAccountRepository.create({
-      ...createUserAccountDto,
+      nickname: nickname,
+      email: email,
+      address: address,
+      phoneNumber: phoneNumber,
+      password: password,
       id: id,
       createdAt: now,
       updatedAt: now,
     });
-
-    await this.userAccountRepository.save(userAccount);
-    return { id: id.toHexString() };
+    return this.userAccountRepository.save(userAccount);
   }
 
   async findByEmail(email: string) {

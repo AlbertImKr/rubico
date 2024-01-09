@@ -5,6 +5,8 @@ import { Tokens } from './dto/auth.response.dto';
 import { ConfigService } from '@nestjs/config';
 import { JWT_CONSTANTS } from '../shared/constants/jwt.constants';
 import { EXCEPTION_MESSAGES } from '../shared/exception/exception-messages.constants';
+import { SignUpDto } from './dto/auth.request.dto';
+import { UserAccount } from '../user-account/entities/user-account.entity';
 
 @Injectable()
 export class AuthService {
@@ -15,10 +17,25 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string): Promise<Tokens> {
-    const user = await this.userAccountService.findByEmail(email);
-    if (!user?.isSamePassword(password)) {
+    const userAccount = await this.userAccountService.findByEmail(email);
+    if (!userAccount?.isSamePassword(password)) {
       throw new UnauthorizedException(EXCEPTION_MESSAGES);
     }
+    return this.generateTokens(userAccount);
+  }
+
+  async signup(signUpDto: SignUpDto): Promise<Tokens> {
+    const userAccount = await this.userAccountService.generate(
+      signUpDto.nickname,
+      signUpDto.email,
+      signUpDto.address,
+      signUpDto.phoneNumber,
+      signUpDto.password,
+    );
+    return this.generateTokens(userAccount);
+  }
+
+  private generateTokens(user: UserAccount) {
     const accessToken = this.generateAccessToken(
       user.id.toHexString(),
       user.nickname,
