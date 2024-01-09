@@ -29,4 +29,8 @@ export class UserAccount {
   createdAt: Date;
   @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  isSamePassword(password: string) {
+    return this.password === password;
+  }
 }

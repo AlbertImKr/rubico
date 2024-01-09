@@ -28,4 +28,8 @@ export class UserAccountService {
     await this.userAccountRepository.save(userAccount);
     return { id: id.toHexString() };
   }
+
+  async findByEmail(email: string) {
+    return this.userAccountRepository.findOneBy({ email: email });
+  }
 }
