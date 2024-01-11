@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto/auth.request.dto';
 import { Public } from '../shared/decorators/auth.decorator';
@@ -11,9 +11,10 @@ export class AuthController {
 
   @Public()
   @ApiSignIn()
+  @HttpCode(200)
   @Post('login')
   signIn(@Body() signInDto: SignInDto): Promise<Tokens> {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+    return this.authService.signIn(signInDto);
   }
 
   @Public()

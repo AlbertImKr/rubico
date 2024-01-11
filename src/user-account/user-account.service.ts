@@ -11,21 +11,17 @@ export class UserAccountService {
     private userAccountRepository: Repository<UserAccount>,
   ) {}
 
-  async generate(
-    nickname: string,
-    email: string,
-    address: string,
-    phoneNumber: string,
-    password: string,
-  ): Promise<UserAccount> {
+  async generate(userData: {
+    nickname: string;
+    email: string;
+    address: string;
+    phoneNumber: string;
+    password: string;
+  }): Promise<UserAccount> {
     const now = new Date();
     const id = new ObjectId();
     const userAccount = this.userAccountRepository.create({
-      nickname: nickname,
-      email: email,
-      address: address,
-      phoneNumber: phoneNumber,
-      password: password,
+      ...userData,
       id: id,
       createdAt: now,
       updatedAt: now,

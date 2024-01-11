@@ -26,7 +26,6 @@ import { DATABASE } from './shared/constants/config.constants';
       }),
       inject: [ConfigService],
     }),
-
     UserAccountModule,
     AuthModule,
   ],
