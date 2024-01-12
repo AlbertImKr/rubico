@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserAccountService } from './user-account.service';
 import { Repository } from 'typeorm';
-import { UserAccount } from './entities/user-account.entity';
+import { UserAccount } from '../entities/user-account.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 

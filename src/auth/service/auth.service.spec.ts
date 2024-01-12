@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { UserAccountService } from '../user-account/user-account.service';
-import { TokenService } from './token.service';
-import { UserAccount } from '../user-account/entities/user-account.entity';
-import { Tokens } from './dto/auth.response.dto';
-import { SignInDto, SignUpDto } from './dto/auth.request.dto';
+import { AuthService } from '../service/auth.service';
+import { UserAccountService } from '../../user-account/service/user-account.service';
+import { TokenService } from '../service/token.service';
+import { UserAccount } from '../../user-account/entities/user-account.entity';
+import { Tokens } from '../dto/auth.response.dto';
+import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
 
 describe('auth 서비스', () => {
   let authService: AuthService;

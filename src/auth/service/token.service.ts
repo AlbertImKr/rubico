@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JWT_CONSTANTS } from '../shared/constants/jwt.constants';
-import { UserAccount } from '../user-account/entities/user-account.entity';
+import { JWT_CONSTANTS } from '../../shared/constants/jwt.constants';
+import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { JwtService } from '@nestjs/jwt';
-import { Tokens } from './dto/auth.response.dto';
+import { Tokens } from '../dto/auth.response.dto';
 
 @Injectable()
 export class TokenService {

@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserAccount } from '../user-account/entities/user-account.entity';
+import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { TokenService } from './token.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ObjectId } from 'mongodb';
-import { JWT_CONSTANTS } from '../shared/constants/jwt.constants';
+import { JWT_CONSTANTS } from '../../shared/constants/jwt.constants';
 
 describe('토큰 서비스', () => {
   let tokenService: TokenService;

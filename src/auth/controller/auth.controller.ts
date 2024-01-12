@@ -1,9 +1,9 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { SignInDto, SignUpDto } from './dto/auth.request.dto';
-import { Public } from '../shared/decorators/auth.decorator';
-import { Tokens } from './dto/auth.response.dto';
-import { ApiSignIn, ApiSignUp } from './decorators/auth.api.decorator';
+import { AuthService } from '../service/auth.service';
+import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
+import { Public } from '../../shared/decorators/auth.decorator';
+import { Tokens } from '../dto/auth.response.dto';
+import { ApiSignIn, ApiSignUp } from '../decorators/auth.api.decorator';
 
 @Controller('auth')
 export class AuthController {

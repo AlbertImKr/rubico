@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserAccountService } from '../user-account/user-account.service';
-import { Tokens } from './dto/auth.response.dto';
-import { EXCEPTION_MESSAGES } from '../shared/exception/exception-messages.constants';
-import { SignInDto, SignUpDto } from './dto/auth.request.dto';
+import { UserAccountService } from '../../user-account/service/user-account.service';
+import { Tokens } from '../dto/auth.response.dto';
+import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
+import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
 import { TokenService } from './token.service';
 
 @Injectable()
