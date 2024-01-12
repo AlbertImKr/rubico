@@ -20,11 +20,11 @@ describe('AuthController', () => {
     app = module.createNestApplication();
     testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);
     await app.init();
-    testDatabaseService.clearAll();
+    await testDatabaseService.clearAll();
   });
 
   describe('회원가입', () => {
-    it('/auth/signup (POST)', () => {
+    it('/auth/signup (POST)', async () => {
       return request(app.getHttpServer()).post('/auth/signup').send({
         nickname: 'test',
         email: 'john@example.co',
@@ -38,7 +38,7 @@ describe('AuthController', () => {
   describe('로그인', () => {
     beforeEach(async () => {
       return request(app.getHttpServer()).post('/auth/signup').send({
-        nickname: 'test',
+        nickname: 'test11',
         email: 'john@example.com',
         address: 'test address',
         phoneNumber: '010-1234-5678',
@@ -55,5 +55,9 @@ describe('AuthController', () => {
         })
         .expect(200);
     });
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 });

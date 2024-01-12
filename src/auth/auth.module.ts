@@ -8,6 +8,7 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { JWT_CONSTANTS } from '../shared/constants/jwt.constants';
 import { AUTH_GUARD } from '../shared/constants/app.constants';
 import { TokenService } from './service/token.service';
+import { SignUpDataDtoTransformer } from './transformers/auth.dto.transformer';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TokenService } from './service/token.service';
     AuthService,
     { provide: AUTH_GUARD, useClass: AuthGuard },
     TokenService,
+    SignUpDataDtoTransformer,
   ],
 })
 export class AuthModule {}

@@ -93,4 +93,28 @@ describe('Password', () => {
       '비밀번호는 영문 대문자, 영문 소문자, 숫자, 특수문자를 모두 포함해야 합니다.',
     );
   });
+
+  it('isSame 메서드에 같은 비밀번호를 전달하면 true를 반환한다', async () => {
+    // given
+    const password = new Password('Password123!');
+    const samePassword = new Password('Password123!');
+
+    // when
+    const actual = password.isSame(samePassword);
+
+    // then
+    expect(actual).toBe(true);
+  });
+
+  it('isSame 메서드에 다른 비밀번호를 전달하면 false를 반환한다', async () => {
+    // given
+    const password = new Password('Password123!');
+    const notSamePassword = new Password('Password1234!');
+
+    // when
+    const actual = password.isSame(notSamePassword);
+
+    // then
+    expect(actual).toBe(false);
+  });
 });

@@ -15,11 +15,11 @@ export class TokenService {
   async generateTokens(user: UserAccount): Promise<Tokens> {
     const accessToken = await this.generateAccessToken(
       user.id.toHexString(),
-      user.nickname,
+      user.nickname.value,
     );
     const refreshToken = await this.generateRefreshToken(
       user.id.toHexString(),
-      user.nickname,
+      user.nickname.value,
     );
     return {
       accessToken: accessToken,

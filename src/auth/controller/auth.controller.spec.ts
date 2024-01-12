@@ -3,6 +3,12 @@ import { AuthService } from '../service/auth.service';
 import { AuthController } from '../controller/auth.controller';
 import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
 import { Tokens } from '../dto/auth.response.dto';
+import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
+import { Email } from '../../shared/models/email.model';
+import { Password } from '../../shared/models/password.model';
+import { Nickname } from '../../shared/models/nickname.model';
+import { Address } from '../../shared/models/address.model';
+import { PhoneNumber } from '../../shared/models/phone-number.model';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -37,7 +43,9 @@ describe('AuthController', () => {
       const result = await authController.signIn(signInDto);
 
       // then
-      expect(authService.signIn).toHaveBeenCalledWith(signInDto);
+      expect(authService.signIn).toHaveBeenCalledWith(
+        createTestSignInDataDto(),
+      );
       expect(result).toEqual(tokens);
     });
   });
@@ -53,7 +61,9 @@ describe('AuthController', () => {
       const result = await authController.signup(signUpDto);
 
       // then
-      expect(authService.signup).toHaveBeenCalledWith(signUpDto);
+      expect(authService.signup).toHaveBeenCalledWith(
+        createTestSignUpDataDto(),
+      );
       expect(result).toEqual(tokens);
     });
   });
@@ -67,18 +77,35 @@ describe('AuthController', () => {
 
   function createTestSignInDto(): SignInDto {
     return {
-      email: 'test email',
-      password: 'test password',
+      email: 'test@email.coml',
+      password: 'Password1!',
+    };
+  }
+
+  function createTestSignInDataDto(): SignInDataDto {
+    return {
+      email: new Email('test@email.coml'),
+      password: new Password('Password1!'),
     };
   }
 
   function createTestSignUpDto(): SignUpDto {
     return {
       nickname: 'test',
-      email: 'test email',
+      email: 'test@email.com',
       address: 'test address',
       phoneNumber: '010-1234-5678',
-      password: 'test password',
+      password: 'Password1!',
+    };
+  }
+
+  function createTestSignUpDataDto(): SignUpDataDto {
+    return {
+      nickname: new Nickname('test'),
+      email: new Email('test@email.com'),
+      address: new Address('test address'),
+      phoneNumber: new PhoneNumber('010-1234-5678'),
+      password: new Password('Password1!'),
     };
   }
 });

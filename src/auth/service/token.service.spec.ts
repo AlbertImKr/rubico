@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ObjectId } from 'mongodb';
 import { JWT_CONSTANTS } from '../../shared/constants/jwt.constants';
+import { Nickname } from '../../shared/models/nickname.model';
 
 describe('토큰 서비스', () => {
   let tokenService: TokenService;
@@ -68,7 +69,7 @@ describe('토큰 서비스', () => {
       // when
       await tokenService.generateAccessToken(
         userAccount.id.toHexString(),
-        userAccount.nickname,
+        userAccount.nickname.value,
       );
 
       // then
@@ -76,7 +77,7 @@ describe('토큰 서비스', () => {
       expect(jwtService.sign).toHaveBeenCalledWith(
         {
           sub: userAccount.id.toHexString(),
-          nickname: userAccount.nickname,
+          nickname: userAccount.nickname.value,
           token_type: JWT_CONSTANTS.ACCESS_TOKEN_IDENTIFY,
         },
         {
@@ -96,7 +97,7 @@ describe('토큰 서비스', () => {
       // when
       await tokenService.generateRefreshToken(
         userAccount.id.toHexString(),
-        userAccount.nickname,
+        userAccount.nickname.value,
       );
 
       // then
@@ -104,7 +105,7 @@ describe('토큰 서비스', () => {
       expect(jwtService.sign).toHaveBeenCalledWith(
         {
           sub: userAccount.id.toHexString(),
-          nickname: userAccount.nickname,
+          nickname: userAccount.nickname.value,
           token_type: JWT_CONSTANTS.REFRESH_TOKEN_IDENTIFY,
         },
         {
@@ -117,7 +118,7 @@ describe('토큰 서비스', () => {
   function generateTestUserAccount() {
     const userAccount = new UserAccount();
     userAccount.id = new ObjectId();
-    userAccount.nickname = 'test';
+    userAccount.nickname = new Nickname('test');
     return userAccount;
   }
 });

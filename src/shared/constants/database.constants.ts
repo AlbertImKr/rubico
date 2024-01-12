@@ -4,6 +4,7 @@ export const ID_LENGTH = 24;
 
 export const COLUMN_TYPE = {
   CHAR: 'char' as ColumnType,
+  VARCHAR: 'varchar' as ColumnType,
 };
 
 export const COLUMN_NAME = {

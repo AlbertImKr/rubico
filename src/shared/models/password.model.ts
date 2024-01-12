@@ -31,4 +31,8 @@ export class Password {
       throw new PasswordIsNotMatchedError();
     }
   }
+
+  isSame(password: Password): boolean {
+    return this.value === password.value;
+  }
 }

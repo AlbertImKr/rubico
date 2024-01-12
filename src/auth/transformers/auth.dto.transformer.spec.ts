@@ -1,5 +1,5 @@
 import { SignUpDto } from '../dto/auth.request.dto';
-import { SignUpDtoTransformer } from './auth.dto.transformer';
+import { SignUpDataDtoTransformer } from './auth.dto.transformer';
 
 describe('AuthDtoTransformer', () => {
   it('signupDto를 signupDataDto로 변환한다', () => {
@@ -13,7 +13,7 @@ describe('AuthDtoTransformer', () => {
     };
 
     // when
-    const signupDataDto = SignUpDtoTransformer.toDto(signupDto);
+    const signupDataDto = SignUpDataDtoTransformer.toDto(signupDto);
 
     // then
     expect(signupDataDto.email.value).toBe(signupDto.email);

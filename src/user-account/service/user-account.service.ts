@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from '../entities/user-account.entity';
 import { Repository } from 'typeorm';
 import { ObjectId } from 'mongodb';
+import { SignUpDataDto } from '../../auth/dto/signup.data.dto';
+import { Email } from '../../shared/models/email.model';
 
 @Injectable()
 export class UserAccountService {
@@ -11,13 +13,7 @@ export class UserAccountService {
     private userAccountRepository: Repository<UserAccount>,
   ) {}
 
-  async generate(userData: {
-    nickname: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-    password: string;
-  }): Promise<UserAccount> {
+  async generate(userData: SignUpDataDto): Promise<UserAccount> {
     const now = new Date();
     const id = new ObjectId();
     const userAccount = this.userAccountRepository.create({
@@ -29,7 +25,7 @@ export class UserAccountService {
     return this.userAccountRepository.save(userAccount);
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: Email) {
     return this.userAccountRepository.findOneBy({ email: email });
   }
 }

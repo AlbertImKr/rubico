@@ -4,23 +4,29 @@ import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
 import { Public } from '../../shared/decorators/auth.decorator';
 import { Tokens } from '../dto/auth.response.dto';
 import { ApiSignIn, ApiSignUp } from '../decorators/auth.api.decorator';
+import {
+  SignInDataDtoTransformer,
+  SignUpDataDtoTransformer,
+} from '../transformers/auth.dto.transformer';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Public()
   @ApiSignIn()
   @HttpCode(200)
   @Post('login')
   signIn(@Body() signInDto: SignInDto): Promise<Tokens> {
-    return this.authService.signIn(signInDto);
+    const data = SignInDataDtoTransformer.toDto(signInDto);
+    return this.authService.signIn(data);
   }
 
   @Public()
   @ApiSignUp()
   @Post('signup')
   async signup(@Body() signUpDto: SignUpDto): Promise<Tokens> {
-    return this.authService.signup(signUpDto);
+    const data = SignUpDataDtoTransformer.toDto(signUpDto);
+    return this.authService.signup(data);
   }
 }

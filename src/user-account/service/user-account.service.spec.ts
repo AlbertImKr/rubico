@@ -25,7 +25,6 @@ describe('유저 계정 서비스', () => {
         },
       ],
     }).compile();
-    console.log('userAccountRepositoryToken :>> ', userAccountRepositoryToken);
     userAccountService = module.get<UserAccountService>(UserAccountService);
     userAccountRepository = module.get<Repository<UserAccount>>(
       userAccountRepositoryToken,

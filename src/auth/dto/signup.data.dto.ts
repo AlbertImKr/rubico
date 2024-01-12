@@ -11,3 +11,8 @@ export class SignUpDataDto {
   address: Address;
   phoneNumber: PhoneNumber;
 }
+
+export class SignInDataDto {
+  email: Email;
+  password: Password;
+}
