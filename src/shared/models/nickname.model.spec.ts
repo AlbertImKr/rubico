@@ -5,7 +5,7 @@ import {
 import { Nickname } from './nickname.model';
 
 describe('Nickname', () => {
-  it('생성자에 정확한 닉네임을 전달하면 value 프로퍼티에 할당된다', async () => {
+  it('생성자에 정확한 닉네임을 전달하면 value 프로퍼티에 할당된다', () => {
     // given
     const nickname = 'test';
     // when
@@ -14,7 +14,7 @@ describe('Nickname', () => {
     expect(actual.value).toBe(nickname);
   });
 
-  it('생성자에 최소 길이보다 작은 닉네임을 전달하면 에러가 발생한다', async () => {
+  it('생성자에 최소 길이보다 작은 닉네임을 전달하면 에러가 발생한다', () => {
     // given
     const nickname = 'te';
     // when
@@ -25,7 +25,7 @@ describe('Nickname', () => {
     );
   });
 
-  it('생성자에 최대 길이보다 큰 닉네임을 전달하면 에러가 발생한다', async () => {
+  it('생성자에 최대 길이보다 큰 닉네임을 전달하면 에러가 발생한다', () => {
     // given
     const nickname = 'test'.repeat(6);
     // when

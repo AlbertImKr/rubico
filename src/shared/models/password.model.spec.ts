@@ -5,7 +5,7 @@ import {
 import { Password } from './password.model';
 
 describe('Password', () => {
-  it('생성자에 정확한 비밀번호를 전달하면 value 프로퍼티에 할당된다', async () => {
+  it('생성자에 정확한 비밀번호를 전달하면 value 프로퍼티에 할당된다', () => {
     // given
     const password = 'Password123!';
 
@@ -16,7 +16,7 @@ describe('Password', () => {
     expect(actual.value).toBe(password);
   });
 
-  it('생성자에 최소 길이보다 작은 비밀번호를 전달하면 에러가 발생한다', async () => {
+  it('생성자에 최소 길이보다 작은 비밀번호를 전달하면 에러가 발생한다', () => {
     // given
     const password = 'Pass1!';
 
@@ -55,7 +55,7 @@ describe('Password', () => {
     );
   });
 
-  it('생성자에 영문 소문자가 없는 비밀번호를 전달하면 에러가 발생한다', async () => {
+  it('생성자에 영문 소문자가 없는 비밀번호를 전달하면 에러가 발생한다', () => {
     // given
     const password = 'PASSWORD123!';
 
@@ -68,7 +68,7 @@ describe('Password', () => {
     );
   });
 
-  it('생성자에 숫자가 없는 비밀번호를 전달하면 에러가 발생한다', async () => {
+  it('생성자에 숫자가 없는 비밀번호를 전달하면 에러가 발생한다', () => {
     // given
     const password = 'Password!';
 
@@ -81,7 +81,7 @@ describe('Password', () => {
     );
   });
 
-  it('생성자에 특수문자가 없는 비밀번호를 전달하면 에러가 발생한다', async () => {
+  it('생성자에 특수문자가 없는 비밀번호를 전달하면 에러가 발생한다', () => {
     // given
     const password = 'Password123';
 
@@ -94,7 +94,7 @@ describe('Password', () => {
     );
   });
 
-  it('isSame 메서드에 같은 비밀번호를 전달하면 true를 반환한다', async () => {
+  it('isSame 메서드에 같은 비밀번호를 전달하면 true를 반환한다', () => {
     // given
     const password = new Password('Password123!');
     const samePassword = new Password('Password123!');
@@ -106,7 +106,7 @@ describe('Password', () => {
     expect(actual).toBe(true);
   });
 
-  it('isSame 메서드에 다른 비밀번호를 전달하면 false를 반환한다', async () => {
+  it('isSame 메서드에 다른 비밀번호를 전달하면 false를 반환한다', () => {
     // given
     const password = new Password('Password123!');
     const notSamePassword = new Password('Password1234!');
