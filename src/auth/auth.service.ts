@@ -13,6 +13,7 @@ export class AuthService {
   ) {}
 
   async signIn(signInDto: SignInDto): Promise<Tokens> {
+    console.log('__dirname :>> ', __dirname);
     const userAccount = await this.userAccountService.findByEmail(
       signInDto.email,
     );

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserAccountModule } from './user-account/user-account.module';
-import { AuthModule } from './auth/auth.module';
-import ConfigModule from './shared/config/config.module';
+import { UserAccountModule } from '../user-account/user-account.module';
+import { AuthModule } from '../auth/auth.module';
+import ConfigModule from '../shared/config/config.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { DATABASE } from './shared/constants/config.constants';
+import { DATABASE } from '../shared/constants/config.constants';
 
 @Module({
   imports: [

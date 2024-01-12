@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { config } from 'dotenv';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../src/app/app.module';
 import { TestDatabaseService } from './database.e2e.service';
 
 config({ path: '.env.test' });
