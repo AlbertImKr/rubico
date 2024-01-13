@@ -10,6 +10,9 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/auth.decorator';
 import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { TOKEN, USER_DATA_KEY } from '../constants/app.constants';
+import { LoginUserDataDto } from '../../auth/dto/auth.data.dto';
+import { Nickname } from '../models/nickname.model';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -31,9 +34,13 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException(EXCEPTION_MESSAGES.NEED_LOGIN);
     }
     try {
-      const payload = await this.jwtService.verifyAsync(token);
-
-      request[USER_DATA_KEY] = payload;
+      const { sub, nickname }: { sub: string; nickname: string } =
+        await this.jwtService.verifyAsync(token);
+      const userData: LoginUserDataDto = {
+        id: new ObjectId(sub),
+        nickname: new Nickname(nickname),
+      };
+      request[USER_DATA_KEY] = userData;
     } catch {
       throw new UnauthorizedException(EXCEPTION_MESSAGES.NEED_LOGIN);
     }

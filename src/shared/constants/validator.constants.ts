@@ -14,6 +14,8 @@ export const USER_EMAIL_REGEX = new RegExp(USER_EMAIL_PATTERN);
 export const USER_PHONE_NUMBER_PATTERN = /^(\d{2,3})-(\d{4})-(\d{4})$/;
 export const USER_PASSWORD_PATTERN =
   /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+export const INTRODUCTION_MAX_LENGTH = 200;
+export const INTRODUCTION_MIN_LENGTH = 1;
 
 export const IS_NICKNAME = {
   MAX_LENGTH: USER_NICKNAME_MAX_LENGTH,

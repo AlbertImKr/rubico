@@ -7,6 +7,8 @@ import ConfigModule from '../shared/config/config.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { DATABASE } from '../shared/constants/config.constants';
+import { DataSource } from 'typeorm';
+import { MyDataBaseService } from '../shared/database/database.service';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { DATABASE } from '../shared/constants/config.constants';
         database: configService.get<string>(DATABASE.NAME),
         entities: [__dirname + configService.get<string>(DATABASE.ENTITY_PATH)],
         synchronize: configService.get<boolean>(DATABASE.SYNC),
+        logging: true,
       }),
       inject: [ConfigService],
     }),
@@ -32,4 +35,8 @@ import { DATABASE } from '../shared/constants/config.constants';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly dataSource: DataSource) {
+    MyDataBaseService.setDataSource(dataSource);
+  }
+}

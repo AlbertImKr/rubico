@@ -3,7 +3,7 @@ import { UserAccountService } from '../../user-account/service/user-account.serv
 import { Tokens } from '../dto/auth.response.dto';
 import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
 import { TokenService } from './token.service';
-import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
+import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,7 @@ export class AuthService {
 
   async signIn(data: SignInDataDto): Promise<Tokens> {
     const userAccount = await this.userAccountService.findByEmail(data.email);
-    if (!userAccount?.isSamePassword(data.password)) {
+    if (!userAccount?.password.isSame(data.password)) {
       throw new UnauthorizedException(EXCEPTION_MESSAGES.PASSWORD_MISMATCH);
     }
     return this.tokenService.generateTokens(userAccount);

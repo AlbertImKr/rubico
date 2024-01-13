@@ -3,7 +3,7 @@ import { AuthService } from '../service/auth.service';
 import { AuthController } from '../controller/auth.controller';
 import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
 import { Tokens } from '../dto/auth.response.dto';
-import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
+import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
 import { Email } from '../../shared/models/email.model';
 import { Password } from '../../shared/models/password.model';
 import { TestConstants } from '../../shared/test-utils/test.constants';

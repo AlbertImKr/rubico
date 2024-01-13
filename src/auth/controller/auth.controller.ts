@@ -18,7 +18,7 @@ export class AuthController {
   @HttpCode(200)
   @Post('login')
   signIn(@Body() signInDto: SignInDto): Promise<Tokens> {
-    const data = SignInDataDtoTransformer.toDto(signInDto);
+    const data = SignInDataDtoTransformer.toData(signInDto);
     return this.authService.signIn(data);
   }
 
@@ -26,7 +26,7 @@ export class AuthController {
   @ApiSignUp()
   @Post('signup')
   async signup(@Body() signUpDto: SignUpDto): Promise<Tokens> {
-    const data = SignUpDataDtoTransformer.toDto(signUpDto);
+    const data = SignUpDataDtoTransformer.toData(signUpDto);
     return this.authService.signup(data);
   }
 }

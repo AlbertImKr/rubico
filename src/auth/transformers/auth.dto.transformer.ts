@@ -4,10 +4,10 @@ import { Nickname } from '../../shared/models/nickname.model';
 import { Password } from '../../shared/models/password.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
-import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
+import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
 
 export class SignUpDataDtoTransformer {
-  static toDto(signupDto: SignUpDto): SignUpDataDto {
+  static toData(signupDto: SignUpDto): SignUpDataDto {
     const { email, nickname, password, address, phoneNumber } = signupDto;
     return {
       email: new Email(email),
@@ -20,7 +20,7 @@ export class SignUpDataDtoTransformer {
 }
 
 export class SignInDataDtoTransformer {
-  static toDto(data: SignInDto): SignInDataDto {
+  static toData(data: SignInDto): SignInDataDto {
     const { email, password } = data;
     return {
       email: new Email(email),

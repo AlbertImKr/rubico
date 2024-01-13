@@ -10,6 +10,7 @@ import { Password } from '../../shared/models/password.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import { Address } from '../../shared/models/address.model';
+import { Introduction } from '../../shared/models/introduction.model.spec';
 
 @Entity({ name: 'user_account' })
 export class UserAccount {
@@ -62,14 +63,18 @@ export class UserAccount {
     },
   })
   address: Address;
+  @Column({
+    type: COLUMN_TYPE.VARCHAR,
+    transformer: {
+      to: (value: Introduction) => value?.value ?? '',
+      from: (value: string) => (value ? new Introduction(value) : null),
+    },
+  })
+  introduction: Introduction;
   @Column({ name: COLUMN_NAME.IS_ACTIVE, default: false })
   isActive: boolean;
   @Column({ name: COLUMN_NAME.CREATED_AT })
   createdAt: Date;
   @Column({ name: COLUMN_NAME.UPDATED_AT })
   updatedAt: Date;
-
-  isSamePassword(password: Password) {
-    return this.password.isSame(password);
-  }
 }

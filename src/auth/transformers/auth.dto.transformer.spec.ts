@@ -14,7 +14,7 @@ describe('AuthDtoTransformer', () => {
     };
 
     // when
-    const signupDataDto = SignUpDataDtoTransformer.toDto(signupDto);
+    const signupDataDto = SignUpDataDtoTransformer.toData(signupDto);
 
     // then
     expect(signupDataDto.email.value).toBe(signupDto.email);

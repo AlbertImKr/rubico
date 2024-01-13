@@ -1,3 +1,4 @@
+import { ObjectId } from 'typeorm';
 import { Address } from '../../shared/models/address.model';
 import { Email } from '../../shared/models/email.model';
 import { Nickname } from '../../shared/models/nickname.model';
@@ -15,4 +16,9 @@ export class SignUpDataDto {
 export class SignInDataDto {
   email: Email;
   password: Password;
+}
+
+export class LoginUserDataDto {
+  id: ObjectId;
+  nickname: Nickname;
 }

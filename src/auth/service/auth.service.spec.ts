@@ -4,7 +4,7 @@ import { UserAccountService } from '../../user-account/service/user-account.serv
 import { TokenService } from '../service/token.service';
 import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { Tokens } from '../dto/auth.response.dto';
-import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
+import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { TestUtils } from '../../shared/test-utils/test.utils';
 
