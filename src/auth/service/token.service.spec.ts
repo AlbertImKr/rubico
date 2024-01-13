@@ -3,9 +3,8 @@ import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { TokenService } from './token.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { ObjectId } from 'mongodb';
 import { JWT_CONSTANTS } from '../../shared/constants/jwt.constants';
-import { Nickname } from '../../shared/models/nickname.model';
+import { TestUtils } from '../../shared/test-utils/test.utils';
 
 describe('토큰 서비스', () => {
   let tokenService: TokenService;
@@ -35,7 +34,7 @@ describe('토큰 서비스', () => {
     tokenService = module.get<TokenService>(TokenService);
     jwtService = module.get<JwtService>(JwtService);
     configService = module.get<ConfigService>(ConfigService);
-    userAccount = generateTestUserAccount();
+    userAccount = TestUtils.userAccount;
   });
 
   it('should be defined', () => {
@@ -114,11 +113,4 @@ describe('토큰 서비스', () => {
       );
     });
   });
-
-  function generateTestUserAccount() {
-    const userAccount = new UserAccount();
-    userAccount.id = new ObjectId();
-    userAccount.nickname = new Nickname('test');
-    return userAccount;
-  }
 });

@@ -4,13 +4,9 @@ import { UserAccountService } from '../../user-account/service/user-account.serv
 import { TokenService } from '../service/token.service';
 import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { Tokens } from '../dto/auth.response.dto';
-import { Nickname } from '../../shared/models/nickname.model';
 import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
-import { Email } from '../../shared/models/email.model';
-import { Address } from '../../shared/models/address.model';
-import { PhoneNumber } from '../../shared/models/phone-number.model';
-import { Password } from '../../shared/models/password.model';
-import { ObjectId } from 'mongodb';
+import { TestConstants } from '../../shared/test-utils/test.constants';
+import { TestUtils } from '../../shared/test-utils/test.utils';
 
 describe('auth 서비스', () => {
   let authService: AuthService;
@@ -41,7 +37,7 @@ describe('auth 서비스', () => {
     authService = module.get<AuthService>(AuthService);
     userAccountService = module.get<UserAccountService>(UserAccountService);
     tokenService = module.get<TokenService>(TokenService);
-    userAccount = createTestUserAccount();
+    userAccount = TestUtils.userAccount;
   });
 
   it('should be defined', () => {
@@ -88,38 +84,25 @@ describe('auth 서비스', () => {
 
   function createTestTokens(): Tokens {
     return {
-      accessToken: 'test access token',
-      refreshToken: 'test refresh token',
+      accessToken: TestConstants.ACCESS_TOKEN,
+      refreshToken: TestConstants.REFRESH_TOKEN,
     };
   }
 
   function createTestSignInDto(): SignInDataDto {
     return {
-      email: new Email('test@email.com'),
-      password: new Password('Password1!'),
+      email: TestUtils.email,
+      password: TestUtils.password,
     };
   }
 
   function createTestSignUpDto(): SignUpDataDto {
     return {
-      nickname: new Nickname('test'),
-      email: new Email('test@email.com'),
-      address: new Address('test address'),
-      phoneNumber: new PhoneNumber('010-1234-5678'),
-      password: new Password('Password1!'),
+      nickname: TestUtils.nickname,
+      email: TestUtils.email,
+      address: TestUtils.address,
+      phoneNumber: TestUtils.phoneNumber,
+      password: TestUtils.password,
     };
-  }
-
-  function createTestUserAccount(): UserAccount {
-    const userAccount = new UserAccount();
-    return Object.assign(userAccount, {
-      id: new ObjectId(),
-      createdAt: new Date(),
-      nickname: new Nickname('test'),
-      email: new Email('test@email.com'),
-      address: new Address('test address'),
-      phoneNumber: new PhoneNumber('010-1234-5678'),
-      password: new Password('Password1!'),
-    });
   }
 });

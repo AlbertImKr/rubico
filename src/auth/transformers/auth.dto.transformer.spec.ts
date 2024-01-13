@@ -1,3 +1,4 @@
+import { TestConstants } from '../../shared/test-utils/test.constants';
 import { SignUpDto } from '../dto/auth.request.dto';
 import { SignUpDataDtoTransformer } from './auth.dto.transformer';
 
@@ -5,11 +6,11 @@ describe('AuthDtoTransformer', () => {
   it('signupDto를 signupDataDto로 변환한다', () => {
     // given
     const signupDto: SignUpDto = {
-      email: 'test@email.com',
-      nickname: 'test',
-      password: 'Password123!',
-      address: '인천광역시 연수구',
-      phoneNumber: '123-4567-8901',
+      email: TestConstants.USER_EMAIL,
+      nickname: TestConstants.USER_NICKNAME,
+      password: TestConstants.USER_PASSWORD,
+      address: TestConstants.USER_ADDRESS,
+      phoneNumber: TestConstants.USER_PHONE_NUMBER,
     };
 
     // when

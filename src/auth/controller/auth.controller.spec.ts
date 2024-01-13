@@ -6,9 +6,8 @@ import { Tokens } from '../dto/auth.response.dto';
 import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
 import { Email } from '../../shared/models/email.model';
 import { Password } from '../../shared/models/password.model';
-import { Nickname } from '../../shared/models/nickname.model';
-import { Address } from '../../shared/models/address.model';
-import { PhoneNumber } from '../../shared/models/phone-number.model';
+import { TestConstants } from '../../shared/test-utils/test.constants';
+import { TestUtils } from '../../shared/test-utils/test.utils';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -70,42 +69,42 @@ describe('AuthController', () => {
 
   function createTestTokens(): Tokens {
     return {
-      accessToken: 'test access token',
-      refreshToken: 'test refresh token',
+      accessToken: TestConstants.ACCESS_TOKEN,
+      refreshToken: TestConstants.REFRESH_TOKEN,
     };
   }
 
   function createTestSignInDto(): SignInDto {
     return {
-      email: 'test@email.coml',
-      password: 'Password1!',
+      email: TestConstants.USER_EMAIL,
+      password: TestConstants.USER_PASSWORD,
     };
   }
 
   function createTestSignInDataDto(): SignInDataDto {
     return {
-      email: new Email('test@email.coml'),
-      password: new Password('Password1!'),
+      email: new Email(TestConstants.USER_EMAIL),
+      password: new Password(TestConstants.USER_PASSWORD),
     };
   }
 
   function createTestSignUpDto(): SignUpDto {
     return {
-      nickname: 'test',
-      email: 'test@email.com',
-      address: 'test address',
-      phoneNumber: '010-1234-5678',
-      password: 'Password1!',
+      nickname: TestConstants.USER_NICKNAME,
+      email: TestConstants.USER_EMAIL,
+      address: TestConstants.USER_ADDRESS,
+      phoneNumber: TestConstants.USER_PHONE_NUMBER,
+      password: TestConstants.USER_PASSWORD,
     };
   }
 
   function createTestSignUpDataDto(): SignUpDataDto {
     return {
-      nickname: new Nickname('test'),
-      email: new Email('test@email.com'),
-      address: new Address('test address'),
-      phoneNumber: new PhoneNumber('010-1234-5678'),
-      password: new Password('Password1!'),
+      nickname: TestUtils.nickname,
+      email: TestUtils.email,
+      address: TestUtils.address,
+      phoneNumber: TestUtils.phoneNumber,
+      password: TestUtils.password,
     };
   }
 });

@@ -1,3 +1,4 @@
+import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { PhoneNumber } from './phone-number.model';
 
 describe('PhoneNumber', () => {
@@ -12,10 +13,10 @@ describe('PhoneNumber', () => {
 
   it('생성자에 전화번호 형식이 아닌 문자열을 전달하면 에러가 발생한다', () => {
     // given
-    const phoneNumber = '01012345678';
+    const wrongPhoneNumber = '01012345678';
     // when
-    const actual = () => new PhoneNumber(phoneNumber);
+    const actual = () => new PhoneNumber(wrongPhoneNumber);
     // then
-    expect(actual).toThrow('전화번호 형식이 올바르지 않습니다');
+    expect(actual).toThrow(EXCEPTION_MESSAGES.PHONE_NUMBER_NOT_MATCHES);
   });
 });

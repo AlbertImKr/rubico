@@ -1,13 +1,14 @@
-import {
-  USER_ADDRESS_MAX_LENGTH,
-  USER_ADDRESS_MIN_LENGTH,
-} from '../constants/validator.constants';
+import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { Address } from './address.model';
 
 describe('Address', () => {
+  const RIGHT_ADDRESS = '인천광역시 연수구';
+  const TOO_SHORT_ADDRESS = '인천시청';
+  const TOO_LONG_ADDRESS = '인'.repeat(101);
+
   it('생성자에 정확한 주소를 전달하면 value 프로퍼티에 할당된다', () => {
     // given
-    const address = '인천광역시 연수구';
+    const address = RIGHT_ADDRESS;
 
     // when
     const addressObject = new Address(address);
@@ -18,27 +19,23 @@ describe('Address', () => {
 
   it('생성자에 최소 길이보다 작은 주소를 전달하면 에러가 발생한다', () => {
     // given
-    const address = '인천광역';
+    const address = TOO_SHORT_ADDRESS;
 
     // when
     const addressObject = () => new Address(address);
 
     // then
-    expect(addressObject).toThrow(
-      `주소는 ${USER_ADDRESS_MIN_LENGTH}글자 이상이어야 합니다.`,
-    );
+    expect(addressObject).toThrow(EXCEPTION_MESSAGES.ADDRESS_TOO_SHORT);
   });
 
   it('생성자에 최대 길이보다 큰 주소를 전달하면 에러가 발생한다', () => {
     // given
-    const address = '인천광역시 연수구 미추홀구 남동구'.repeat(10);
+    const address = TOO_LONG_ADDRESS;
 
     // when
     const addressObject = () => new Address(address);
 
     // then
-    expect(addressObject).toThrow(
-      `주소는 ${USER_ADDRESS_MAX_LENGTH}글자 이하이어야 합니다.`,
-    );
+    expect(addressObject).toThrow(EXCEPTION_MESSAGES.ADDRESS_TOO_LONG);
   });
 });

@@ -3,7 +3,7 @@ import { UserAccountService } from './user-account.service';
 import { Repository } from 'typeorm';
 import { UserAccount } from '../entities/user-account.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ObjectId } from 'mongodb';
+import { TestUtils } from '../../shared/test-utils/test.utils';
 
 describe('유저 계정 서비스', () => {
   let userAccountService: UserAccountService;
@@ -29,7 +29,7 @@ describe('유저 계정 서비스', () => {
     userAccountRepository = module.get<Repository<UserAccount>>(
       userAccountRepositoryToken,
     );
-    userAccount = createTestUserAccount();
+    userAccount = TestUtils.userAccount;
   });
 
   it('should be defined', () => {
@@ -78,17 +78,4 @@ describe('유저 계정 서비스', () => {
       expect(result).toEqual(userAccount);
     });
   });
-
-  function createTestUserAccount() {
-    const userAccount = new UserAccount();
-    return Object.assign(userAccount, {
-      id: new ObjectId(),
-      createdAt: new Date(),
-      nickname: 'test',
-      email: 'test@email.com',
-      address: '서울시 강남구',
-      phoneNumber: '123-4567-8901',
-      password: 'Password123!',
-    });
-  }
 });
