@@ -51,6 +51,7 @@ export class UserAccountService {
     const userAccount = await this.findById(data.userId);
     userAccount.nickname = data.nickname;
     userAccount.address = data.address;
+    userAccount.introduction = data.introduction ?? userAccount.introduction;
     const now = new Date();
     userAccount.updatedAt = now;
     return this.userAccountRepository.save(userAccount, { transaction: false });

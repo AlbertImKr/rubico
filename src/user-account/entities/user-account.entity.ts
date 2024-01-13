@@ -10,7 +10,7 @@ import { Password } from '../../shared/models/password.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import { Address } from '../../shared/models/address.model';
-import { Introduction } from '../../shared/models/introduction.model.spec';
+import { Introduction } from '../../shared/models/introduction.model';
 
 @Entity({ name: 'user_account' })
 export class UserAccount {

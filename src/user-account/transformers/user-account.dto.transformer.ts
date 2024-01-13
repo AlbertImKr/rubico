@@ -1,6 +1,6 @@
 import { ObjectId } from 'typeorm';
 import { Address } from '../../shared/models/address.model';
-import { Introduction } from '../../shared/models/introduction.model.spec';
+import { Introduction } from '../../shared/models/introduction.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { EditUserInfoData } from '../dto/user-account.data.dto';
 import { EditUserInfoRequest } from '../dto/user-account.request.dto';
