@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from '../entities/user-account.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { ObjectId } from 'mongodb';
 import { SignUpDataDto } from '../../auth/dto/auth.data.dto';
 import { Email } from '../../shared/models/email.model';
@@ -13,7 +13,8 @@ import { Transactional } from '../../shared/decorators/transactional.decorator';
 export class UserAccountService {
   constructor(
     @InjectRepository(UserAccount)
-    private userAccountRepository: Repository<UserAccount>,
+    private readonly userAccountRepository: Repository<UserAccount>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async generate(userData: SignUpDataDto): Promise<UserAccount> {
@@ -51,9 +52,24 @@ export class UserAccountService {
     const userAccount = await this.findById(data.userId);
     userAccount.nickname = data.nickname;
     userAccount.address = data.address;
-    userAccount.introduction = data.introduction ?? userAccount.introduction;
+    userAccount.introduction = data.introduction
+      ? data.introduction
+      : userAccount.introduction;
     const now = new Date();
     userAccount.updatedAt = now;
-    return this.userAccountRepository.save(userAccount, { transaction: false });
+    const savedUserAccount = await this.userAccountRepository.save(
+      userAccount,
+      {
+        transaction: false,
+      },
+    );
+    const introduction = savedUserAccount.introduction
+      ? savedUserAccount.introduction.value
+      : null;
+    return {
+      nickname: savedUserAccount.nickname.value,
+      address: savedUserAccount.address.value,
+      introduction: introduction,
+    };
   }
 }

@@ -1,6 +1,6 @@
 import { IsolationLevel } from 'typeorm/driver/types/IsolationLevel';
-import { MyDataBaseService } from '../database/database.service';
 import { DEFAULT_ISOLATION_LEVEL } from '../constants/config.constants';
+import { DataSource, QueryRunner } from 'typeorm';
 
 export function Transactional(
   isolationLevel?: IsolationLevel,
@@ -13,8 +13,11 @@ export function Transactional(
     const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: any[]) {
-      const dataSource = MyDataBaseService.getDataSource();
-      const queryRunner = dataSource.createQueryRunner();
+      const dataSource: DataSource = this.dataSource;
+      if (!dataSource) {
+        throw new Error('DataSource is not injected');
+      }
+      const queryRunner: QueryRunner = dataSource.createQueryRunner();
       await queryRunner.connect();
       await queryRunner.startTransaction(
         isolationLevel ? isolationLevel : DEFAULT_ISOLATION_LEVEL,

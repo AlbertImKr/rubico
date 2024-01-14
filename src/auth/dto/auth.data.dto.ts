@@ -14,11 +14,11 @@ export class SignUpDataDto {
 }
 
 export class SignInDataDto {
-  email: Email;
-  password: Password;
+  readonly email: Email;
+  readonly password: Password;
 }
 
 export class LoginUserDataDto {
-  id: ObjectId;
-  nickname: Nickname;
+  readonly id: ObjectId;
+  readonly nickname: Nickname;
 }

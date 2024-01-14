@@ -7,8 +7,6 @@ import ConfigModule from '../shared/config/config.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { DATABASE } from '../shared/constants/config.constants';
-import { DataSource } from 'typeorm';
-import { MyDataBaseService } from '../shared/database/database.service';
 
 @Module({
   imports: [
@@ -35,8 +33,4 @@ import { MyDataBaseService } from '../shared/database/database.service';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor(private readonly dataSource: DataSource) {
-    MyDataBaseService.setDataSource(dataSource);
-  }
-}
+export class AppModule {}

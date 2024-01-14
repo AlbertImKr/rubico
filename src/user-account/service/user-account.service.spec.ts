@@ -3,7 +3,12 @@ import { UserAccountService } from './user-account.service';
 import { Repository } from 'typeorm';
 import { UserAccount } from '../entities/user-account.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { TestUtils } from '../../shared/test-utils/test.utils';
+import {
+  TestUtils,
+  mockDataSourceProvider,
+} from '../../shared/test-utils/test.utils';
+import { EditUserInfoData } from '../dto/user-account.data.dto';
+import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
 
 describe('유저 계정 서비스', () => {
   let userAccountService: UserAccountService;
@@ -23,6 +28,7 @@ describe('유저 계정 서비스', () => {
             create: jest.fn(),
           },
         },
+        mockDataSourceProvider,
       ],
     }).compile();
     userAccountService = module.get<UserAccountService>(UserAccountService);
@@ -76,6 +82,108 @@ describe('유저 계정 서비스', () => {
         email: userAccount.email,
       });
       expect(result).toEqual(userAccount);
+    });
+
+    it('유저 계정을 찾지 못하면 에러가 발생해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountRepository, 'findOneBy').mockResolvedValue(null);
+
+      // when
+      const result = userAccountService.findByEmail(userAccount.email);
+
+      // then
+      await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
+    });
+  });
+
+  describe('아이디로 유저 계정 찾기', () => {
+    it('아이디로 유저 계정을 찾아야 한다', async () => {
+      // given
+      jest
+        .spyOn(userAccountRepository, 'findOneBy')
+        .mockResolvedValue(userAccount);
+
+      // when
+      const result = await userAccountService.findById(userAccount.id);
+
+      // then
+      expect(userAccountRepository.findOneBy).toHaveBeenCalledWith({
+        id: userAccount.id,
+      });
+      expect(result).toEqual(userAccount);
+    });
+
+    it('유저 계정을 찾지 못하면 에러가 발생해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountRepository, 'findOneBy').mockResolvedValue(null);
+
+      // when
+      const result = userAccountService.findById(userAccount.id);
+
+      // then
+      await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
+    });
+  });
+
+  describe('유저 계정 정보 수정', () => {
+    it('자기 소개가 있을 때 자기 소개 포함하여 유저 계정 정보를 수정해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountService, 'findById').mockResolvedValue(userAccount);
+      jest.spyOn(userAccountRepository, 'save').mockResolvedValue(userAccount);
+      const data: EditUserInfoData = {
+        userId: TestUtils.id,
+        nickname: TestUtils.editUserNickname,
+        address: TestUtils.editUserAddress,
+        introduction: TestUtils.editUserIntroduction,
+      };
+
+      // when
+      const result = await userAccountService.updateInfo(data);
+
+      // then
+      expect(userAccountService.findById).toHaveBeenCalledWith(userAccount.id);
+      expect(userAccountRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          nickname: data.nickname,
+          address: data.address,
+          introduction: data.introduction,
+        }),
+        { transaction: false },
+      );
+      expect(result).toEqual({
+        nickname: data.nickname.value,
+        address: data.address.value,
+        introduction: data.introduction.value,
+      });
+    });
+
+    it('자기 소개가 없을 때 자기 소개를 제외하고 유저 계정 정보를 수정해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountService, 'findById').mockResolvedValue(userAccount);
+      jest.spyOn(userAccountRepository, 'save').mockResolvedValue(userAccount);
+      const data: EditUserInfoData = {
+        userId: TestUtils.id,
+        nickname: TestUtils.editUserNickname,
+        address: TestUtils.editUserAddress,
+      };
+
+      // when
+      const result = await userAccountService.updateInfo(data);
+
+      // then
+      expect(userAccountService.findById).toHaveBeenCalledWith(userAccount.id);
+      expect(userAccountRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          nickname: data.nickname,
+          address: data.address,
+        }),
+        { transaction: false },
+      );
+      expect(result).toEqual({
+        nickname: data.nickname.value,
+        address: data.address.value,
+        introduction: userAccount.introduction.value,
+      });
     });
   });
 });
