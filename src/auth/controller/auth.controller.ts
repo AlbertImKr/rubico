@@ -26,7 +26,7 @@ export class AuthController {
   @ApiSignUp()
   @Post('signup')
   async signup(@Body() signUpDto: SignUpDto): Promise<Tokens> {
-    const data = SignUpDataDtoTransformer.toData(signUpDto);
+    const data = await SignUpDataDtoTransformer.toData(signUpDto);
     return this.authService.signup(data);
   }
 }

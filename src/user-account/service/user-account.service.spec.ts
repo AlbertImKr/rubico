@@ -50,22 +50,27 @@ describe('유저 계정 서비스', () => {
       jest.spyOn(userAccountRepository, 'existsBy').mockResolvedValue(false);
       jest.spyOn(userAccountRepository, 'save').mockResolvedValue(userAccount);
       jest.spyOn(userAccountRepository, 'create').mockReturnValue(userAccount);
+      const data = TestUtils.generateUserAccountData();
 
       // when
-      const result = await userAccountService.generate({ ...userAccount });
+      const result = await userAccountService.generate(data);
 
       // then
       expect(userAccountRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          nickname: userAccount.nickname,
-          email: userAccount.email,
-          address: userAccount.address,
-          phoneNumber: userAccount.phoneNumber,
-          password: userAccount.password,
+          nickname: TestUtils.nickname,
+          email: TestUtils.email,
+          address: TestUtils.address,
+          phoneNumber: TestUtils.phoneNumber,
+          hashedPassword: TestUtils.hashedPassword,
         }),
       );
       expect(userAccountRepository.save).toHaveBeenCalled();
       expect(result).toEqual(userAccount);
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
     });
 
     it('이미 존재하는 이메일로 유저 계정을 생성하면 에러가 발생해야 한다', async () => {

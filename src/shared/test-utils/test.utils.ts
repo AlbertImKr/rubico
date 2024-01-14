@@ -8,6 +8,8 @@ import { TestConstants } from './test.constants';
 import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { DataSource } from 'typeorm';
 import { Introduction } from '../models/introduction.model';
+import { HashedPassword } from '../models/hash-password.model';
+import { GenerateUserAccountData } from '../../user-account/dto/user-account.data.dto';
 
 export class TestUtils {
   static readonly nickname: Nickname = new Nickname(
@@ -21,9 +23,12 @@ export class TestUtils {
   static readonly phoneNumber: PhoneNumber = new PhoneNumber(
     TestConstants.USER_PHONE_NUMBER,
   );
+  static readonly hashedPassword: HashedPassword = new HashedPassword(
+    TestConstants.HASHED_PASSWORD,
+  );
   static readonly id: ObjectId = new ObjectId();
   static readonly createdAt: Date = new Date(2021, 1, 1);
-  static readonly userAccount: UserAccount = this.createTestUserAccount();
+
   static readonly editUserNickname: Nickname = new Nickname(
     TestConstants.EDIT_USER_NICKNAME,
   );
@@ -43,8 +48,19 @@ export class TestUtils {
       email: TestUtils.email,
       address: TestUtils.address,
       phoneNumber: TestUtils.phoneNumber,
-      password: TestUtils.password,
+      hashedPassword: TestUtils.hashedPassword,
     });
+  }
+  static readonly userAccount: UserAccount = this.createTestUserAccount();
+
+  static generateUserAccountData(): GenerateUserAccountData {
+    return {
+      email: TestUtils.email,
+      nickname: TestUtils.nickname,
+      hashedPassword: TestUtils.hashedPassword,
+      address: TestUtils.address,
+      phoneNumber: TestUtils.phoneNumber,
+    };
   }
 }
 

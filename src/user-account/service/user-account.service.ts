@@ -3,9 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from '../entities/user-account.entity';
 import { DataSource, Repository } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { SignUpDataDto } from '../../auth/dto/auth.data.dto';
 import { Email } from '../../shared/models/email.model';
-import { EditUserInfoData } from '../dto/user-account.data.dto';
+import {
+  EditUserInfoData,
+  GenerateUserAccountData,
+} from '../dto/user-account.data.dto';
 import {
   EmailAlreadyExistsError,
   UserAccountNotFoundError,
@@ -20,7 +22,7 @@ export class UserAccountService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async generate(userData: SignUpDataDto): Promise<UserAccount> {
+  async generate(userData: GenerateUserAccountData): Promise<UserAccount> {
     const now = new Date();
     const id = new ObjectId();
     if (await this.isExistsEmail(userData.email)) {

@@ -6,11 +6,11 @@ import {
   ID_LENGTH,
 } from '../../shared/constants/database.constants';
 import { Email } from '../../shared/models/email.model';
-import { Password } from '../../shared/models/password.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import { Address } from '../../shared/models/address.model';
 import { Introduction } from '../../shared/models/introduction.model';
+import { HashedPassword } from '../../shared/models/hash-password.model';
 
 @Entity({ name: 'user_account' })
 export class UserAccount {
@@ -36,11 +36,11 @@ export class UserAccount {
   @Column({
     type: COLUMN_TYPE.VARCHAR,
     transformer: {
-      to: (value: Password) => value.value,
-      from: (value: string) => new Password(value),
+      to: (value: HashedPassword) => value.value,
+      from: (value: string) => new HashedPassword(value),
     },
   })
-  password: Password;
+  hashedPassword: HashedPassword;
   @Column({
     type: COLUMN_TYPE.VARCHAR,
     transformer: {

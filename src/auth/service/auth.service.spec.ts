@@ -7,6 +7,7 @@ import { Tokens } from '../dto/auth.response.dto';
 import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { TestUtils } from '../../shared/test-utils/test.utils';
+import { PasswordHasher } from '../utils/password-hasher';
 
 describe('auth 서비스', () => {
   let authService: AuthService;
@@ -40,6 +41,10 @@ describe('auth 서비스', () => {
     userAccount = TestUtils.userAccount;
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(authService).toBeDefined();
     expect(tokenService).toBeDefined();
@@ -53,12 +58,17 @@ describe('auth 서비스', () => {
       const tokens = createTestTokens();
       jest.spyOn(userAccountService, 'generate').mockResolvedValue(userAccount);
       jest.spyOn(tokenService, 'generateTokens').mockResolvedValue(tokens);
+      const hashedPassword = await PasswordHasher.hash(data.password);
+      jest.spyOn(PasswordHasher, 'hash').mockResolvedValue(hashedPassword);
 
       // when
       await authService.signup(data);
 
       // then
-      expect(userAccountService.generate).toHaveBeenCalledWith(data);
+      expect(userAccountService.generate).toHaveBeenCalledWith({
+        ...data,
+        hashedPassword: hashedPassword,
+      });
       expect(tokenService.generateTokens).toHaveBeenCalledWith(userAccount);
     });
   });

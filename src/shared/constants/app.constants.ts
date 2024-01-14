@@ -6,3 +6,4 @@ export const TOKEN = {
 };
 
 export const USER_DATA_KEY = 'user';
+export const SALT_ROUNDS = 10;
