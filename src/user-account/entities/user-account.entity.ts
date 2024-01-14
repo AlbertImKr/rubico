@@ -29,6 +29,7 @@ export class UserAccount {
       to: (value: Email) => value.value,
       from: (value: string) => new Email(value),
     },
+    unique: true,
   })
   email: Email;
   @Column({

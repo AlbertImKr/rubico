@@ -26,6 +26,7 @@ describe('유저 계정 서비스', () => {
             findOneBy: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
+            existsBy: jest.fn(),
           },
         },
         mockDataSourceProvider,
@@ -46,6 +47,7 @@ describe('유저 계정 서비스', () => {
   describe('유저 계정 생성', () => {
     it('새 유저 계정이 성공적으로 생성해야 한다', async () => {
       // given
+      jest.spyOn(userAccountRepository, 'existsBy').mockResolvedValue(false);
       jest.spyOn(userAccountRepository, 'save').mockResolvedValue(userAccount);
       jest.spyOn(userAccountRepository, 'create').mockReturnValue(userAccount);
 
@@ -64,6 +66,19 @@ describe('유저 계정 서비스', () => {
       );
       expect(userAccountRepository.save).toHaveBeenCalled();
       expect(result).toEqual(userAccount);
+    });
+
+    it('이미 존재하는 이메일로 유저 계정을 생성하면 에러가 발생해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountRepository, 'existsBy').mockResolvedValue(true);
+
+      // when
+      const result = userAccountService.generate({ ...userAccount });
+
+      // then
+      await expect(result).rejects.toThrow(
+        EXCEPTION_MESSAGES.EMAIL_ALREADY_EXISTS,
+      );
     });
   });
 
@@ -184,6 +199,36 @@ describe('유저 계정 서비스', () => {
         address: data.address.value,
         introduction: userAccount.introduction.value,
       });
+    });
+  });
+
+  describe('이메일이 존재하는지 확인', () => {
+    it('이메일이 존재하면 true를 반환해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountRepository, 'existsBy').mockResolvedValue(true);
+
+      // when
+      const result = await userAccountService.isExistsEmail(userAccount.email);
+
+      // then
+      expect(userAccountRepository.existsBy).toHaveBeenCalledWith({
+        email: userAccount.email,
+      });
+      expect(result).toBe(true);
+    });
+
+    it('이메일이 존재하지 않으면 false를 반환해야 한다', async () => {
+      // given
+      jest.spyOn(userAccountRepository, 'existsBy').mockResolvedValue(false);
+
+      // when
+      const result = await userAccountService.isExistsEmail(userAccount.email);
+
+      // then
+      expect(userAccountRepository.existsBy).toHaveBeenCalledWith({
+        email: userAccount.email,
+      });
+      expect(result).toBe(false);
     });
   });
 });

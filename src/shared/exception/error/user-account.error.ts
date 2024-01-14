@@ -5,3 +5,9 @@ export class UserAccountNotFoundError extends Error {
     super(EXCEPTION_MESSAGES.USER_NOT_FOUND);
   }
 }
+
+export class EmailAlreadyExistsError extends Error {
+  constructor() {
+    super(EXCEPTION_MESSAGES.EMAIL_ALREADY_EXISTS);
+  }
+}

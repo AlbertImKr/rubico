@@ -6,7 +6,10 @@ import { ObjectId } from 'mongodb';
 import { SignUpDataDto } from '../../auth/dto/auth.data.dto';
 import { Email } from '../../shared/models/email.model';
 import { EditUserInfoData } from '../dto/user-account.data.dto';
-import { UserAccountNotFoundError } from '../../shared/exception/error/user-account.error';
+import {
+  EmailAlreadyExistsError,
+  UserAccountNotFoundError,
+} from '../../shared/exception/error/user-account.error';
 import { Transactional } from '../../shared/decorators/transactional.decorator';
 
 @Injectable()
@@ -20,6 +23,9 @@ export class UserAccountService {
   async generate(userData: SignUpDataDto): Promise<UserAccount> {
     const now = new Date();
     const id = new ObjectId();
+    if (await this.isExistsEmail(userData.email)) {
+      throw new EmailAlreadyExistsError();
+    }
     const userAccount = this.userAccountRepository.create({
       ...userData,
       id: id,
@@ -27,6 +33,12 @@ export class UserAccountService {
       updatedAt: now,
     });
     return this.userAccountRepository.save(userAccount);
+  }
+
+  async isExistsEmail(email: Email): Promise<boolean> {
+    return this.userAccountRepository.existsBy({
+      email: email,
+    });
   }
 
   async findByEmail(email: Email): Promise<UserAccount> {
