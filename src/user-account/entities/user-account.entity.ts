@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 import {
   COLUMN_NAME,
   COLUMN_TYPE,
@@ -23,6 +23,7 @@ export class UserAccount {
     },
   })
   id: ObjectId;
+  @Index('user_account_email_unique', { unique: true })
   @Column({
     type: COLUMN_TYPE.VARCHAR,
     transformer: {
