@@ -5,6 +5,7 @@ import { Introduction } from '../../shared/models/introduction.model';
 import { HashedPassword } from '../../shared/models/hash-password.model';
 import { Email } from '../../shared/models/email.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
+import { Password } from '../../shared/models/password.model';
 
 export class EditUserInfoData {
   readonly userId: ObjectId;
@@ -19,4 +20,10 @@ export class GenerateUserAccountData {
   readonly hashedPassword: HashedPassword;
   readonly address: Address;
   readonly phoneNumber: PhoneNumber;
+}
+
+export class EditUserPasswordData {
+  readonly userId: ObjectId;
+  readonly password: Password;
+  readonly newPassword: Password;
 }

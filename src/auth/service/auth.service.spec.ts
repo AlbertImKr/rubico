@@ -4,10 +4,10 @@ import { UserAccountService } from '../../user-account/service/user-account.serv
 import { TokenService } from '../service/token.service';
 import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { Tokens } from '../dto/auth.response.dto';
-import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
+import { SignInData, SignUpData } from '../dto/auth.data.dto';
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { TestUtils } from '../../shared/test-utils/test.utils';
-import { PasswordHasher } from '../utils/password-hasher';
+import { PasswordHasher } from '../../shared/utils/password-hasher';
 
 describe('auth 서비스', () => {
   let authService: AuthService;
@@ -99,14 +99,14 @@ describe('auth 서비스', () => {
     };
   }
 
-  function createTestSignInDto(): SignInDataDto {
+  function createTestSignInDto(): SignInData {
     return {
       email: TestUtils.email,
       password: TestUtils.password,
     };
   }
 
-  function createTestSignUpDto(): SignUpDataDto {
+  function createTestSignUpDto(): SignUpData {
     return {
       nickname: TestUtils.nickname,
       email: TestUtils.email,

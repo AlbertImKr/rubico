@@ -1,7 +1,7 @@
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { TestUtils } from '../../shared/test-utils/test.utils';
 import { EditUserInfoRequest } from '../dto/user-account.request.dto';
-import { EditUserInfoDataDtoTransformer } from './user-account.dto.transformer';
+import { EditUserInfoDataTransformer } from './user-account.dto.transformer';
 
 describe('UserAccountDtoTransformer', () => {
   it('EditUserInfoRequest를 EditUserInfoData로 변환한다', () => {
@@ -13,7 +13,7 @@ describe('UserAccountDtoTransformer', () => {
     };
 
     // when
-    const editUserInfoData = EditUserInfoDataDtoTransformer.toData(
+    const editUserInfoData = EditUserInfoDataTransformer.toData(
       editUserInfoRequest,
       TestUtils.id,
     );

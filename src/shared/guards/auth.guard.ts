@@ -10,7 +10,7 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/auth.decorator';
 import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { TOKEN, USER_DATA_KEY } from '../constants/app.constants';
-import { LoginUserDataDto } from '../../auth/dto/auth.data.dto';
+import { LoginUserData } from '../../auth/dto/auth.data.dto';
 import { Nickname } from '../models/nickname.model';
 import { ObjectId } from 'mongodb';
 
@@ -36,7 +36,7 @@ export class AuthGuard implements CanActivate {
     try {
       const { sub, nickname }: { sub: string; nickname: string } =
         await this.jwtService.verifyAsync(token);
-      const userData: LoginUserDataDto = {
+      const userData: LoginUserData = {
         id: new ObjectId(sub),
         nickname: new Nickname(nickname),
       };

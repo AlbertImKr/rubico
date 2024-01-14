@@ -3,7 +3,7 @@ import { AuthService } from '../service/auth.service';
 import { AuthController } from '../controller/auth.controller';
 import { SignInDto, SignUpDto } from '../dto/auth.request.dto';
 import { Tokens } from '../dto/auth.response.dto';
-import { SignInDataDto, SignUpDataDto } from '../dto/auth.data.dto';
+import { SignInData, SignUpData } from '../dto/auth.data.dto';
 import { Email } from '../../shared/models/email.model';
 import { Password } from '../../shared/models/password.model';
 import { TestConstants } from '../../shared/test-utils/test.constants';
@@ -81,7 +81,7 @@ describe('AuthController', () => {
     };
   }
 
-  function createTestSignInDataDto(): SignInDataDto {
+  function createTestSignInDataDto(): SignInData {
     return {
       email: new Email(TestConstants.USER_EMAIL),
       password: new Password(TestConstants.USER_PASSWORD),
@@ -98,7 +98,7 @@ describe('AuthController', () => {
     };
   }
 
-  function createTestSignUpDataDto(): SignUpDataDto {
+  function createTestSignUpDataDto(): SignUpData {
     return {
       nickname: TestUtils.nickname,
       email: TestUtils.email,

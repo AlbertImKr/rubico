@@ -5,7 +5,7 @@ import { Nickname } from '../../shared/models/nickname.model';
 import { Password } from '../../shared/models/password.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 
-export class SignUpDataDto {
+export class SignUpData {
   email: Email;
   nickname: Nickname;
   password: Password;
@@ -13,12 +13,12 @@ export class SignUpDataDto {
   phoneNumber: PhoneNumber;
 }
 
-export class SignInDataDto {
+export class SignInData {
   readonly email: Email;
   readonly password: Password;
 }
 
-export class LoginUserDataDto {
+export class LoginUserData {
   readonly id: ObjectId;
   readonly nickname: Nickname;
 }

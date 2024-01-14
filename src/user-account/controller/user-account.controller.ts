@@ -1,9 +1,15 @@
 import { Body, Controller, Put } from '@nestjs/common';
 import { UserAccountService } from '../service/user-account.service';
-import { EditUserInfoRequest } from '../dto/user-account.request.dto';
-import { EditUserInfoDataDtoTransformer } from '../transformers/user-account.dto.transformer';
+import {
+  EditPasswordRequest,
+  EditUserInfoRequest,
+} from '../dto/user-account.request.dto';
+import {
+  EditUserInfoDataTransformer,
+  EditUserPasswordDataTransformer,
+} from '../transformers/user-account.dto.transformer';
 import { UserData } from '../../shared/decorators/auth.decorator';
-import { LoginUserDataDto } from '../../auth/dto/auth.data.dto';
+import { LoginUserData } from '../../auth/dto/auth.data.dto';
 
 @Controller('user')
 export class UserAccountController {
@@ -12,9 +18,18 @@ export class UserAccountController {
   @Put('info')
   async updateInfo(
     @Body() request: EditUserInfoRequest,
-    @UserData() userData: LoginUserDataDto,
+    @UserData() userData: LoginUserData,
   ) {
-    const data = EditUserInfoDataDtoTransformer.toData(request, userData.id);
+    const data = EditUserInfoDataTransformer.toData(request, userData.id);
     return this.userAccountService.updateInfo(data);
+  }
+
+  @Put('password')
+  async updatePassword(
+    @Body() request: EditPasswordRequest,
+    @UserData() userData: LoginUserData,
+  ) {
+    const data = EditUserPasswordDataTransformer.toData(request, userData.id);
+    return this.userAccountService.updatePassword(data);
   }
 }

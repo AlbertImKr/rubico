@@ -1,11 +1,18 @@
-import { ObjectId } from 'typeorm';
 import { Address } from '../../shared/models/address.model';
 import { Introduction } from '../../shared/models/introduction.model';
 import { Nickname } from '../../shared/models/nickname.model';
-import { EditUserInfoData } from '../dto/user-account.data.dto';
-import { EditUserInfoRequest } from '../dto/user-account.request.dto';
+import {
+  EditUserInfoData,
+  EditUserPasswordData,
+} from '../dto/user-account.data.dto';
+import {
+  EditPasswordRequest,
+  EditUserInfoRequest,
+} from '../dto/user-account.request.dto';
+import { Password } from '../../shared/models/password.model';
+import { ObjectId } from 'mongodb';
 
-export class EditUserInfoDataDtoTransformer {
+export class EditUserInfoDataTransformer {
   static toData(
     request: EditUserInfoRequest,
     userId: ObjectId,
@@ -16,6 +23,19 @@ export class EditUserInfoDataDtoTransformer {
       nickname: new Nickname(nickname),
       introduction: new Introduction(introduction),
       address: new Address(address),
+    };
+  }
+}
+
+export class EditUserPasswordDataTransformer {
+  static toData(
+    request: EditPasswordRequest,
+    userId: ObjectId,
+  ): EditUserPasswordData {
+    return {
+      userId: userId,
+      password: new Password(request.password),
+      newPassword: new Password(request.newPassword),
     };
   }
 }
