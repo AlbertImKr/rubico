@@ -6,7 +6,7 @@ import { Password } from '../models/password.model';
 import { PhoneNumber } from '../models/phone-number.model';
 import { TestConstants } from './test.constants';
 import { UserAccount } from '../../user-account/entities/user-account.entity';
-import { DataSource } from 'typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 import { Introduction } from '../models/introduction.model';
 import { HashedPassword } from '../models/hash-password.model';
 import { GenerateUserAccountData } from '../../user-account/dto/user-account.data.dto';
@@ -17,6 +17,9 @@ export class TestUtils {
   );
   static readonly password: Password = new Password(
     TestConstants.USER_PASSWORD,
+  );
+  static readonly differentPassword: Password = new Password(
+    TestConstants.DIFFERENT_PASSWORD,
   );
   static readonly email: Email = new Email(TestConstants.USER_EMAIL);
   static readonly address: Address = new Address(TestConstants.USER_ADDRESS);
@@ -64,20 +67,24 @@ export class TestUtils {
   }
 }
 
+export const mockEntityManager: EntityManager = jest
+  .fn()
+  .mockImplementation(() => ({ save: jest.fn(), findOneBy: jest.fn() }))();
+
+export const mockQueryRunner = jest.fn().mockImplementation(() => ({
+  connect: jest.fn(),
+  startTransaction: jest.fn(),
+  release: jest.fn(),
+  commitTransaction: jest.fn(),
+  rollbackTransaction: jest.fn(),
+  manager: mockEntityManager,
+}))();
+
 export const mockDataSource = {
-  createQueryRunner: jest.fn().mockImplementation(() => ({
-    connect: jest.fn(),
-    startTransaction: jest.fn(),
-    release: jest.fn(),
-    commitTransaction: jest.fn(),
-    rollbackTransaction: jest.fn(),
-    manager: {
-      save: jest.fn(),
-    },
-  })),
+  createQueryRunner: jest.fn().mockReturnValue(mockQueryRunner),
 };
 
-export const mockDataSourceProvider = {
+export const MockDataSourceProvider = {
   provide: DataSource,
   useValue: mockDataSource,
 };

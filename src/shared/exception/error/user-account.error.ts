@@ -11,3 +11,9 @@ export class EmailAlreadyExistsError extends Error {
     super(EXCEPTION_MESSAGES.EMAIL_ALREADY_EXISTS);
   }
 }
+
+export class PasswordNotMatchError extends Error {
+  constructor() {
+    super(EXCEPTION_MESSAGES.PASSWORD_NOT_MATCH);
+  }
+}

@@ -17,6 +17,16 @@ export function Transactional(
       if (!dataSource) {
         throw new Error('DataSource is not injected');
       }
+
+      // 트랜잭션을 이미 사용하는 경우 추가로 트랜잭션을 생성하지 않는다.
+      const existsTransaction = args.find(
+        (arg) => arg.connection !== undefined,
+      );
+      if (existsTransaction) {
+        return originalMethod.apply(this, args);
+      }
+
+      // 트랜잭션을 사용하지 않는 경우 트랜잭션을 생성한다.
       const queryRunner: QueryRunner = dataSource.createQueryRunner();
       await queryRunner.connect();
       await queryRunner.startTransaction(
@@ -24,6 +34,7 @@ export function Transactional(
       );
 
       try {
+        args = args.concat(queryRunner);
         const result = await originalMethod.apply(this, args);
         await queryRunner.commitTransaction();
         return result;

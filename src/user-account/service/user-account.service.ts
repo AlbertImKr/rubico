@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccount } from '../entities/user-account.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { ObjectId } from 'mongodb';
 import { Email } from '../../shared/models/email.model';
 import {
@@ -11,11 +11,13 @@ import {
 } from '../dto/user-account.data.dto';
 import {
   EmailAlreadyExistsError,
+  PasswordNotMatchError,
   UserAccountNotFoundError,
 } from '../../shared/exception/error/user-account.error';
-import { Transactional } from '../../shared/decorators/transactional.decorator';
 import { PasswordHasher } from '../../shared/utils/password-hasher';
-import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
+import { Transactional } from '../../shared/decorators/transactional.decorator';
+import { HashedPassword } from '../../shared/models/hash-password.model';
+import { Password } from '../../shared/models/password.model';
 
 @Injectable()
 export class UserAccountService {
@@ -65,20 +67,27 @@ export class UserAccountService {
   }
 
   @Transactional()
-  async updatePassword(data: EditUserPasswordData): Promise<void> {
-    const userAccount = await this.findById(data.userId);
-    if (!PasswordHasher.compare(userAccount.hashedPassword, data.password)) {
-      throw new UnauthorizedException(EXCEPTION_MESSAGES.PASSWORD_MISMATCH);
-    }
+  async updatePassword(
+    data: EditUserPasswordData,
+    queryRunner?: QueryRunner,
+  ): Promise<void> {
+    const userAccount = await this.findByIdWithQueryRunner(
+      data.userId,
+      queryRunner,
+    );
+    await this.validatePassword(userAccount.hashedPassword, data.password);
     const newHashedPassword = await PasswordHasher.hash(data.newPassword);
     userAccount.hashedPassword = newHashedPassword;
     userAccount.updatedAt = new Date();
-    await this.userAccountRepository.save(userAccount, { transaction: false });
+    await this.saveWithQueryRunner(userAccount, queryRunner);
   }
 
   @Transactional()
-  async updateInfo(data: EditUserInfoData) {
-    const userAccount = await this.findById(data.userId);
+  async updateInfo(data: EditUserInfoData, queryRunner?: QueryRunner) {
+    const userAccount = await this.findByIdWithQueryRunner(
+      data.userId,
+      queryRunner,
+    );
     userAccount.nickname = data.nickname;
     userAccount.address = data.address;
     userAccount.introduction = data.introduction
@@ -86,16 +95,40 @@ export class UserAccountService {
       : userAccount.introduction;
     const now = new Date();
     userAccount.updatedAt = now;
-    const savedUserAccount = await this.userAccountRepository.save(
-      userAccount,
-      {
-        transaction: false,
-      },
-    );
+    await this.saveWithQueryRunner(userAccount, queryRunner);
     return {
-      nickname: savedUserAccount.nickname.value,
-      address: savedUserAccount.address.value,
-      introduction: savedUserAccount.introduction?.value,
+      nickname: userAccount.nickname.value,
+      address: userAccount.address.value,
+      introduction: userAccount.introduction?.value,
     };
+  }
+
+  async findByIdWithQueryRunner(
+    id: ObjectId,
+    queryRunner: QueryRunner,
+  ): Promise<UserAccount> {
+    const userAccount = await queryRunner.manager.findOneBy(UserAccount, {
+      id: id,
+    });
+    if (!userAccount) {
+      throw new UserAccountNotFoundError();
+    }
+    return userAccount;
+  }
+
+  async saveWithQueryRunner(
+    userAccount: UserAccount,
+    queryRunner: QueryRunner,
+  ) {
+    return queryRunner.manager.save(UserAccount, userAccount);
+  }
+
+  async validatePassword(
+    hashedPassword: HashedPassword,
+    password: Password,
+  ): Promise<void> {
+    if (!(await PasswordHasher.compare(hashedPassword, password))) {
+      throw new PasswordNotMatchError();
+    }
   }
 }
