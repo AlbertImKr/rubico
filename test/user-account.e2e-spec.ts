@@ -69,4 +69,30 @@ describe('UserAccountController', () => {
         .expect(204);
     });
   });
+
+  describe('회원 탈퇴', () => {
+    let userToken: string;
+
+    beforeEach(async () => {
+      const response = await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send({
+          nickname: TestConstants.USER_NICKNAME,
+          email: TestConstants.USER_EMAIL,
+          address: TestConstants.USER_ADDRESS,
+          phoneNumber: TestConstants.USER_PHONE_NUMBER,
+          password: TestConstants.USER_PASSWORD,
+        });
+
+      userToken = response.body.accessToken;
+      expect(userToken).toBeDefined();
+    });
+
+    it('/user (DELETE)', async () => {
+      return request(app.getHttpServer())
+        .delete('/user')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(204);
+    });
+  });
 });

@@ -1,6 +1,13 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  API_SOFT_DELETE_USER,
   API_TAG,
   API_UPDATE_USER_INFO,
   API_UPDATE_USER_PASSWORD,
@@ -25,6 +32,7 @@ export function ApiUpdateUserInfo() {
     }),
     ApiOperation({ summary: API_UPDATE_USER_INFO.SUMMARY }),
     ApiBody({ type: EditUserInfoRequest }),
+    ApiBearerAuth(),
   );
 }
 
@@ -41,5 +49,22 @@ export function ApiUpdateUserPassword() {
     }),
     ApiOperation({ summary: API_UPDATE_USER_PASSWORD.SUMMARY }),
     ApiBody({ type: EditPasswordRequest }),
+    ApiBearerAuth(),
+  );
+}
+
+export function ApiSoftDeleteUser() {
+  return applyDecorators(
+    ApiTags(API_TAG.userAccount),
+    ApiResponse({
+      status: HttpStatus.NO_CONTENT,
+      description: API_SOFT_DELETE_USER.OK_DESCRIPTION,
+    }),
+    ApiResponse({
+      status: HttpStatus.BAD_REQUEST,
+      description: API_SOFT_DELETE_USER.BAD_REQUEST_DESCRIPTION,
+    }),
+    ApiOperation({ summary: API_SOFT_DELETE_USER.SUMMARY }),
+    ApiBearerAuth(),
   );
 }

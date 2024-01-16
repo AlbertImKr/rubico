@@ -88,6 +88,12 @@ export const API_UPDATE_USER_PASSWORD = {
   SUMMARY: '사용자 비밀번호를 수정한다',
 };
 
+export const API_SOFT_DELETE_USER = {
+  OK_DESCRIPTION: '사용자 계정 삭제 성공',
+  BAD_REQUEST_DESCRIPTION: '사용자 계정 삭제 실패, 요청 바디가 올바르지 않음',
+  SUMMARY: '사용자 계정을 삭제한다',
+};
+
 export const API_INTRODUCTION = {
   DESCRIPTION: '사용자의 자기소개',
   MAX_LENGTH: 200,

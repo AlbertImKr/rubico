@@ -102,6 +102,7 @@ describe('유저 계정 서비스', () => {
       // then
       expect(userAccountRepository.findOneBy).toHaveBeenCalledWith({
         email: userAccount.email,
+        deleted: false,
       });
       expect(result).toEqual(userAccount);
     });
@@ -112,35 +113,6 @@ describe('유저 계정 서비스', () => {
 
       // when
       const result = userAccountService.findByEmail(userAccount.email);
-
-      // then
-      await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
-    });
-  });
-
-  describe('아이디로 유저 계정 찾기', () => {
-    it('아이디로 유저 계정을 찾아야 한다', async () => {
-      // given
-      jest
-        .spyOn(userAccountRepository, 'findOneBy')
-        .mockResolvedValue(userAccount);
-
-      // when
-      const result = await userAccountService.findById(userAccount.id);
-
-      // then
-      expect(userAccountRepository.findOneBy).toHaveBeenCalledWith({
-        id: userAccount.id,
-      });
-      expect(result).toEqual(userAccount);
-    });
-
-    it('유저 계정을 찾지 못하면 에러가 발생해야 한다', async () => {
-      // given
-      jest.spyOn(userAccountRepository, 'findOneBy').mockResolvedValue(null);
-
-      // when
-      const result = userAccountService.findById(userAccount.id);
 
       // then
       await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
@@ -334,6 +306,7 @@ describe('유저 계정 서비스', () => {
 
       // then
       expect(mockEntityManager.findOneBy).toHaveBeenCalledWith(UserAccount, {
+        deleted: false,
         id: userAccount.id,
       });
       expect(result).toEqual(userAccount);
@@ -351,6 +324,28 @@ describe('유저 계정 서비스', () => {
 
       // then
       await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
+    });
+  });
+
+  describe('유저 계정 삭제', () => {
+    it('유저 계정을 삭제해야 한다', async () => {
+      // given
+      jest
+        .spyOn(userAccountService, 'findByIdWithQueryRunner')
+        .mockResolvedValue(userAccount);
+      jest
+        .spyOn(userAccountService, 'saveWithQueryRunner')
+        .mockResolvedValue(userAccount);
+
+      // when
+      await userAccountService.softDelete(userAccount.id, mockQueryRunner);
+
+      // then
+      expect(userAccountService.findByIdWithQueryRunner).toHaveBeenCalledWith(
+        userAccount.id,
+        mockQueryRunner,
+      );
+      expect(userAccountService.saveWithQueryRunner).toHaveBeenCalled();
     });
   });
 });

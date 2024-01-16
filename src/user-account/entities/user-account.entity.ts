@@ -73,6 +73,8 @@ export class UserAccount {
     },
   })
   introduction: Introduction;
+  @Column({ default: false })
+  deleted: boolean;
   @Column({ name: COLUMN_NAME.IS_ACTIVE, default: false })
   isActive: boolean;
   @Column({ name: COLUMN_NAME.CREATED_AT })

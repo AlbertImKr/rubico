@@ -52,15 +52,8 @@ export class UserAccountService {
   async findByEmail(email: Email): Promise<UserAccount> {
     const userAccount = await this.userAccountRepository.findOneBy({
       email: email,
+      deleted: false,
     });
-    if (!userAccount) {
-      throw new UserAccountNotFoundError();
-    }
-    return userAccount;
-  }
-
-  async findById(id: ObjectId): Promise<UserAccount> {
-    const userAccount = await this.userAccountRepository.findOneBy({ id: id });
     if (!userAccount) {
       throw new UserAccountNotFoundError();
     }
@@ -97,8 +90,7 @@ export class UserAccountService {
     userAccount.introduction = data.introduction
       ? data.introduction
       : userAccount.introduction;
-    const now = new Date();
-    userAccount.updatedAt = now;
+    userAccount.updatedAt = new Date();
     await this.saveWithQueryRunner(userAccount, queryRunner);
     return {
       nickname: userAccount.nickname.value,
@@ -107,12 +99,21 @@ export class UserAccountService {
     };
   }
 
+  @Transactional()
+  async softDelete(id: ObjectId, queryRunner?: QueryRunner): Promise<void> {
+    const userAccount = await this.findByIdWithQueryRunner(id, queryRunner);
+    userAccount.deleted = true;
+    userAccount.updatedAt = new Date();
+    await this.saveWithQueryRunner(userAccount, queryRunner);
+  }
+
   async findByIdWithQueryRunner(
     id: ObjectId,
     queryRunner: QueryRunner,
   ): Promise<UserAccount> {
     const userAccount = await queryRunner.manager.findOneBy(UserAccount, {
       id: id,
+      deleted: false,
     });
     if (!userAccount) {
       throw new UserAccountNotFoundError();
