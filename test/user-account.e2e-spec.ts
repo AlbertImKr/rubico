@@ -57,5 +57,16 @@ describe('UserAccountController', () => {
           );
         });
     });
+
+    it('/user-account/password (PUT)', async () => {
+      return request(app.getHttpServer())
+        .put('/user/password')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          password: TestConstants.USER_PASSWORD,
+          newPassword: TestConstants.DIFFERENT_PASSWORD,
+        })
+        .expect(200);
+    });
   });
 });

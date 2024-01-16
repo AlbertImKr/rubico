@@ -18,6 +18,7 @@ import { PasswordHasher } from '../../shared/utils/password-hasher';
 import { Transactional } from '../../shared/decorators/transactional.decorator';
 import { HashedPassword } from '../../shared/models/hash-password.model';
 import { Password } from '../../shared/models/password.model';
+import { UserInfoResponse } from '../dto/user-account.response.dto';
 
 @Injectable()
 export class UserAccountService {
@@ -83,7 +84,10 @@ export class UserAccountService {
   }
 
   @Transactional()
-  async updateInfo(data: EditUserInfoData, queryRunner?: QueryRunner) {
+  async updateInfo(
+    data: EditUserInfoData,
+    queryRunner?: QueryRunner,
+  ): Promise<UserInfoResponse> {
     const userAccount = await this.findByIdWithQueryRunner(
       data.userId,
       queryRunner,

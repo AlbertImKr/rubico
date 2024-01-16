@@ -10,6 +10,7 @@ import {
 } from '../transformers/user-account.dto.transformer';
 import { UserData } from '../../shared/decorators/auth.decorator';
 import { LoginUserData } from '../../auth/dto/auth.data.dto';
+import { UserInfoResponse } from '../dto/user-account.response.dto';
 
 @Controller('user')
 export class UserAccountController {
@@ -19,7 +20,7 @@ export class UserAccountController {
   async updateInfo(
     @Body() request: EditUserInfoRequest,
     @UserData() userData: LoginUserData,
-  ) {
+  ): Promise<UserInfoResponse> {
     const data = EditUserInfoDataTransformer.toData(request, userData.id);
     return this.userAccountService.updateInfo(data);
   }
@@ -28,7 +29,7 @@ export class UserAccountController {
   async updatePassword(
     @Body() request: EditPasswordRequest,
     @UserData() userData: LoginUserData,
-  ) {
+  ): Promise<void> {
     const data = EditUserPasswordDataTransformer.toData(request, userData.id);
     return this.userAccountService.updatePassword(data);
   }
