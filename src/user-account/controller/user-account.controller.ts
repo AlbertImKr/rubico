@@ -1,4 +1,4 @@
-import { Body, Controller, Put } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common';
 import { UserAccountService } from '../service/user-account.service';
 import {
   EditPasswordRequest,
@@ -11,11 +11,16 @@ import {
 import { UserData } from '../../shared/decorators/auth.decorator';
 import { LoginUserData } from '../../auth/dto/auth.data.dto';
 import { UserInfoResponse } from '../dto/user-account.response.dto';
+import {
+  ApiUpdateUserInfo,
+  ApiUpdateUserPassword,
+} from '../decorators/user-account.api.decorator';
 
 @Controller('user')
 export class UserAccountController {
   constructor(private userAccountService: UserAccountService) {}
 
+  @ApiUpdateUserInfo()
   @Put('info')
   async updateInfo(
     @Body() request: EditUserInfoRequest,
@@ -25,7 +30,9 @@ export class UserAccountController {
     return this.userAccountService.updateInfo(data);
   }
 
+  @ApiUpdateUserPassword()
   @Put('password')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async updatePassword(
     @Body() request: EditPasswordRequest,
     @UserData() userData: LoginUserData,

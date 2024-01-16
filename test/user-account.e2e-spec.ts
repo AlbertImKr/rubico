@@ -66,7 +66,7 @@ describe('UserAccountController', () => {
           password: TestConstants.USER_PASSWORD,
           newPassword: TestConstants.DIFFERENT_PASSWORD,
         })
-        .expect(200);
+        .expect(204);
     });
   });
 });
