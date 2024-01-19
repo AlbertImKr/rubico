@@ -1,19 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
-  API_ACCESS_TOKEN,
-  API_REFRESH_TOKEN,
-} from '../../shared/constants/api.constants';
+  ApiPropertyAccessToken,
+  ApiPropertyRefreshToken,
+} from '../decorators/auth.property.api.decorator';
 
 export class Tokens {
-  @ApiProperty({
-    description: API_ACCESS_TOKEN.DESCRIPTION,
-    example: API_ACCESS_TOKEN.EXAMPLE,
-  })
-  accessToken: string;
+  @ApiPropertyAccessToken()
+  readonly accessToken: string;
 
-  @ApiProperty({
-    description: API_REFRESH_TOKEN.DESCRIPTION,
-    example: API_REFRESH_TOKEN.EXAMPLE,
-  })
-  refreshToken: string;
+  @ApiPropertyRefreshToken()
+  readonly refreshToken: string;
 }

@@ -1,4 +1,4 @@
-import { HttpStatus, applyDecorators } from '@nestjs/common';
+import { applyDecorators, HttpStatus } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Tokens } from '../dto/auth.response.dto';
 import { SignInDto, SignUpDto } from '../dto/auth.request.dto';

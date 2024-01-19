@@ -1,7 +1,18 @@
 export const API_TAG = {
   auth: 'Auth',
-  userAccount: 'UserAccount',
+  userAccount: 'User Account',
 };
+
+export const AUTH_API_TAG = {
+  name: API_TAG.auth,
+  description: '인증 관련 API',
+};
+export const USER_ACCOUNT_API_TAG = {
+  name: API_TAG.userAccount,
+  description: '유저 계정 관련 API',
+};
+
+export const API_TAGS = [AUTH_API_TAG, USER_ACCOUNT_API_TAG];
 
 export const API_SIGN_UP = {
   CREATED_DESCRIPTION: '유저 계정 생성 성공',
@@ -20,6 +31,7 @@ export const API_NICKNAME = {
   MAX_LENGTH: 20,
   MIN_LENGTH: 4,
   EXAMPLE: 'john Doe',
+  EDIT_EXAMPLE: 'David Kim',
 };
 
 export const API_USER_EMAIL = {
@@ -34,6 +46,7 @@ export const API_ADDRESS = {
   MAX_LENGTH: 100,
   MIN_LENGTH: 10,
   EXAMPLE: 'Seoul, Korea',
+  EDIT_EXAMPLE: 'Busan, Korea',
 };
 
 export const API_USER_PHONE_NUMBER = {
@@ -49,6 +62,7 @@ export const API_PASSWORD = {
   MAX_LENGTH: 20,
   MIN_LENGTH: 8,
   EXAMPLE: 'Password1!',
+  EDIT_EXAMPLE: 'Password2!',
 };
 
 export const API_ACCESS_TOKEN = {
@@ -59,4 +73,31 @@ export const API_ACCESS_TOKEN = {
 export const API_REFRESH_TOKEN = {
   DESCRIPTION: '사용자의 리프레시 토큰',
   EXAMPLE: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+};
+
+export const API_UPDATE_USER_INFO = {
+  OK_DESCRIPTION: '사용자 정보 수정 성공',
+  BAD_REQUEST_DESCRIPTION: '사용자 정보 수정 실패, 요청 바디가 올바르지 않음',
+  SUMMARY: '사용자 정보를 수정한다',
+};
+
+export const API_UPDATE_USER_PASSWORD = {
+  OK_DESCRIPTION: '사용자 비밀번호 수정 성공',
+  BAD_REQUEST_DESCRIPTION:
+    '사용자 비밀번호 수정 실패, 요청 바디가 올바르지 않음',
+  SUMMARY: '사용자 비밀번호를 수정한다',
+};
+
+export const API_SOFT_DELETE_USER = {
+  OK_DESCRIPTION: '사용자 계정 삭제 성공',
+  BAD_REQUEST_DESCRIPTION: '사용자 계정 삭제 실패, 요청 바디가 올바르지 않음',
+  SUMMARY: '사용자 계정을 삭제한다',
+};
+
+export const API_INTRODUCTION = {
+  DESCRIPTION: '사용자의 자기소개',
+  MAX_LENGTH: 200,
+  MIN_LENGTH: 1,
+  EXAMPLE: 'Hello, World!',
+  EDIT_EXAMPLE: 'Hi, World!',
 };

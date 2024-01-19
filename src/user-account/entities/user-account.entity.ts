@@ -1,15 +1,16 @@
 import { ObjectId } from 'mongodb';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 import {
   COLUMN_NAME,
   COLUMN_TYPE,
   ID_LENGTH,
 } from '../../shared/constants/database.constants';
 import { Email } from '../../shared/models/email.model';
-import { Password } from '../../shared/models/password.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import { Address } from '../../shared/models/address.model';
+import { Introduction } from '../../shared/models/introduction.model';
+import { HashedPassword } from '../../shared/models/hash-password.model';
 
 @Entity({ name: 'user_account' })
 export class UserAccount {
@@ -22,22 +23,24 @@ export class UserAccount {
     },
   })
   id: ObjectId;
+  @Index('user_account_email_unique', { unique: true })
   @Column({
     type: COLUMN_TYPE.VARCHAR,
     transformer: {
       to: (value: Email) => value.value,
       from: (value: string) => new Email(value),
     },
+    unique: true,
   })
   email: Email;
   @Column({
     type: COLUMN_TYPE.VARCHAR,
     transformer: {
-      to: (value: Password) => value.value,
-      from: (value: string) => new Password(value),
+      to: (value: HashedPassword) => value.value,
+      from: (value: string) => new HashedPassword(value),
     },
   })
-  password: Password;
+  hashedPassword: HashedPassword;
   @Column({
     type: COLUMN_TYPE.VARCHAR,
     transformer: {
@@ -62,14 +65,20 @@ export class UserAccount {
     },
   })
   address: Address;
+  @Column({
+    type: COLUMN_TYPE.VARCHAR,
+    transformer: {
+      to: (value: Introduction) => value?.value ?? '',
+      from: (value: string) => (value ? new Introduction(value) : null),
+    },
+  })
+  introduction: Introduction;
+  @Column({ default: false })
+  deleted: boolean;
   @Column({ name: COLUMN_NAME.IS_ACTIVE, default: false })
   isActive: boolean;
   @Column({ name: COLUMN_NAME.CREATED_AT })
   createdAt: Date;
   @Column({ name: COLUMN_NAME.UPDATED_AT })
   updatedAt: Date;
-
-  isSamePassword(password: Password) {
-    return this.password.isSame(password);
-  }
 }

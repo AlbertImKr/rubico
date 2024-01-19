@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../service/auth.service';
-import { UserAccountService } from '../../user-account/service/user-account.service';
+import { UserAccountWriteService } from '../../user-account/service/user-account.write.service';
 import { TokenService } from '../service/token.service';
 import { UserAccount } from '../../user-account/entities/user-account.entity';
 import { Tokens } from '../dto/auth.response.dto';
-import { SignInDataDto, SignUpDataDto } from '../dto/signup.data.dto';
+import { SignInData, SignUpData } from '../dto/auth.data.dto';
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { TestUtils } from '../../shared/test-utils/test.utils';
+import { PasswordHasher } from '../../shared/utils/password-hasher';
 
 describe('auth 서비스', () => {
   let authService: AuthService;
-  let userAccountService: UserAccountService;
+  let userAccountService: UserAccountWriteService;
   let tokenService: TokenService;
   let userAccount: UserAccount;
 
@@ -19,7 +20,7 @@ describe('auth 서비스', () => {
       providers: [
         AuthService,
         {
-          provide: UserAccountService,
+          provide: UserAccountWriteService,
           useValue: {
             findByEmail: jest.fn(),
             generate: jest.fn(),
@@ -35,9 +36,15 @@ describe('auth 서비스', () => {
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
-    userAccountService = module.get<UserAccountService>(UserAccountService);
+    userAccountService = module.get<UserAccountWriteService>(
+      UserAccountWriteService,
+    );
     tokenService = module.get<TokenService>(TokenService);
     userAccount = TestUtils.userAccount;
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -53,12 +60,17 @@ describe('auth 서비스', () => {
       const tokens = createTestTokens();
       jest.spyOn(userAccountService, 'generate').mockResolvedValue(userAccount);
       jest.spyOn(tokenService, 'generateTokens').mockResolvedValue(tokens);
+      const hashedPassword = await PasswordHasher.hash(data.password);
+      jest.spyOn(PasswordHasher, 'hash').mockResolvedValue(hashedPassword);
 
       // when
       await authService.signup(data);
 
       // then
-      expect(userAccountService.generate).toHaveBeenCalledWith(data);
+      expect(userAccountService.generate).toHaveBeenCalledWith({
+        ...data,
+        hashedPassword: hashedPassword,
+      });
       expect(tokenService.generateTokens).toHaveBeenCalledWith(userAccount);
     });
   });
@@ -89,14 +101,14 @@ describe('auth 서비스', () => {
     };
   }
 
-  function createTestSignInDto(): SignInDataDto {
+  function createTestSignInDto(): SignInData {
     return {
       email: TestUtils.email,
       password: TestUtils.password,
     };
   }
 
-  function createTestSignUpDto(): SignUpDataDto {
+  function createTestSignUpDto(): SignUpData {
     return {
       nickname: TestUtils.nickname,
       email: TestUtils.email,

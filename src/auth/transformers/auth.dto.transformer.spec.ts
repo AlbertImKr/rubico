@@ -1,6 +1,6 @@
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { SignUpDto } from '../dto/auth.request.dto';
-import { SignUpDataDtoTransformer } from './auth.dto.transformer';
+import { SignUpDataTransformer } from './auth.dto.transformer';
 
 describe('AuthDtoTransformer', () => {
   it('signupDto를 signupDataDto로 변환한다', () => {
@@ -14,7 +14,7 @@ describe('AuthDtoTransformer', () => {
     };
 
     // when
-    const signupDataDto = SignUpDataDtoTransformer.toDto(signupDto);
+    const signupDataDto = SignUpDataTransformer.toData(signupDto);
 
     // then
     expect(signupDataDto.email.value).toBe(signupDto.email);

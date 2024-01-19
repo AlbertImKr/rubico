@@ -1,10 +1,11 @@
+import { ObjectId } from 'typeorm';
 import { Address } from '../../shared/models/address.model';
 import { Email } from '../../shared/models/email.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { Password } from '../../shared/models/password.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 
-export class SignUpDataDto {
+export class SignUpData {
   email: Email;
   nickname: Nickname;
   password: Password;
@@ -12,7 +13,12 @@ export class SignUpDataDto {
   phoneNumber: PhoneNumber;
 }
 
-export class SignInDataDto {
-  email: Email;
-  password: Password;
+export class SignInData {
+  readonly email: Email;
+  readonly password: Password;
+}
+
+export class LoginUserData {
+  readonly id: ObjectId;
+  readonly nickname: Nickname;
 }

@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserAccountModule } from '../user-account/user-account.module';
 import { AuthModule } from '../auth/auth.module';
 import ConfigModule from '../shared/config/config.module';
@@ -23,13 +21,12 @@ import { DATABASE } from '../shared/constants/config.constants';
         database: configService.get<string>(DATABASE.NAME),
         entities: [__dirname + configService.get<string>(DATABASE.ENTITY_PATH)],
         synchronize: configService.get<boolean>(DATABASE.SYNC),
+        logging: true,
       }),
       inject: [ConfigService],
     }),
     UserAccountModule,
     AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

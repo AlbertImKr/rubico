@@ -14,6 +14,8 @@ export const USER_EMAIL_REGEX = new RegExp(USER_EMAIL_PATTERN);
 export const USER_PHONE_NUMBER_PATTERN = /^(\d{2,3})-(\d{4})-(\d{4})$/;
 export const USER_PASSWORD_PATTERN =
   /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+export const INTRODUCTION_MAX_LENGTH = 200;
+export const INTRODUCTION_MIN_LENGTH = 1;
 
 export const IS_NICKNAME = {
   MAX_LENGTH: USER_NICKNAME_MAX_LENGTH,
@@ -63,4 +65,13 @@ export const IS_PASSWORD = {
   MATCHES: USER_PASSWORD_PATTERN,
   MATCHES_MESSAGE:
     '비밀번호는 영문, 숫자, 특수문자를 포함하여 8~20자로 입력해주세요.',
+};
+
+export const IS_INTRODUCTION = {
+  MAX_LENGTH: INTRODUCTION_MAX_LENGTH,
+  MAX_LENGTH_MESSAGE:
+    '자기소개는 ${INTRODUCTION_MAX_LENGTH}자 이내로 입력해주세요.',
+  MIN_LENGTH: INTRODUCTION_MIN_LENGTH,
+  MIN_LENGTH_MESSAGE:
+    '자기소개는 ${INTRODUCTION_MIN_LENGTH}자 이상으로 입력해주세요.',
 };
