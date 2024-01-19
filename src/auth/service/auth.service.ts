@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserAccountService } from '../../user-account/service/user-account.service';
+import { UserAccountWriteService } from '../../user-account/service/user-account.write.service';
 import { Tokens } from '../dto/auth.response.dto';
 import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
 import { TokenService } from './token.service';
@@ -9,7 +9,7 @@ import { PasswordHasher } from '../../shared/utils/password-hasher';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userAccountService: UserAccountService,
+    private readonly userAccountService: UserAccountWriteService,
     private readonly tokenService: TokenService,
   ) {}
 

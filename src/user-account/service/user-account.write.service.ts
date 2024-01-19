@@ -21,7 +21,7 @@ import { Password } from '../../shared/models/password.model';
 import { UserInfoResponse } from '../dto/user-account.response.dto';
 
 @Injectable()
-export class UserAccountService {
+export class UserAccountWriteService {
   constructor(
     @InjectRepository(UserAccount)
     private readonly userAccountRepository: Repository<UserAccount>,

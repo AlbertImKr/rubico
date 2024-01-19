@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserAccountService } from './user-account.service';
+import { UserAccountWriteService } from './user-account.write.service';
 import { Repository } from 'typeorm';
 import { UserAccount } from '../entities/user-account.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -13,7 +13,7 @@ import { EditUserInfoData } from '../dto/user-account.data.dto';
 import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
 
 describe('유저 계정 서비스', () => {
-  let userAccountService: UserAccountService;
+  let userAccountService: UserAccountWriteService;
   let userAccountRepository: Repository<UserAccount>;
   const userAccountRepositoryToken = getRepositoryToken(UserAccount);
   let userAccount: UserAccount;
@@ -21,7 +21,7 @@ describe('유저 계정 서비스', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserAccountService,
+        UserAccountWriteService,
         {
           provide: userAccountRepositoryToken,
           useValue: {
@@ -34,7 +34,9 @@ describe('유저 계정 서비스', () => {
         MockDataSourceProvider,
       ],
     }).compile();
-    userAccountService = module.get<UserAccountService>(UserAccountService);
+    userAccountService = module.get<UserAccountWriteService>(
+      UserAccountWriteService,
+    );
     userAccountRepository = module.get<Repository<UserAccount>>(
       userAccountRepositoryToken,
     );

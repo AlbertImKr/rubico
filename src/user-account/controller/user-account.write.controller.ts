@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
-import { UserAccountService } from '../service/user-account.service';
+import { UserAccountWriteService } from '../service/user-account.write.service';
 import {
   EditPasswordRequest,
   EditUserInfoRequest,
@@ -25,8 +25,8 @@ import {
 } from '../decorators/user-account.api.decorator';
 
 @Controller('user-account')
-export class UserAccountController {
-  constructor(private userAccountService: UserAccountService) {}
+export class UserAccountWriteController {
+  constructor(private userAccountService: UserAccountWriteService) {}
 
   @ApiUpdateUserInfo()
   @Put('info')

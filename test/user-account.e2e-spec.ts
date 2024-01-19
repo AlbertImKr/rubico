@@ -41,7 +41,7 @@ describe('UserAccountController', () => {
 
     it('/user-account/info (PUT)', async () => {
       return request(app.getHttpServer())
-        .put('/user/info')
+        .put('/user-account/info')
         .set('Authorization', `Bearer ${userToken}`)
         .send({
           nickname: TestConstants.EDIT_USER_NICKNAME,
@@ -60,7 +60,7 @@ describe('UserAccountController', () => {
 
     it('/user-account/password (PUT)', async () => {
       return request(app.getHttpServer())
-        .put('/user/password')
+        .put('/user-account/password')
         .set('Authorization', `Bearer ${userToken}`)
         .send({
           password: TestConstants.USER_PASSWORD,
@@ -88,11 +88,42 @@ describe('UserAccountController', () => {
       expect(userToken).toBeDefined();
     });
 
-    it('/user (DELETE)', async () => {
+    it('/user-account (DELETE)', async () => {
       return request(app.getHttpServer())
-        .delete('/user')
+        .delete('/user-account')
         .set('Authorization', `Bearer ${userToken}`)
         .expect(204);
+    });
+  });
+
+  describe('회원 정보 조회', () => {
+    let userToken: string;
+
+    beforeEach(async () => {
+      const response = await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send({
+          nickname: TestConstants.USER_NICKNAME,
+          email: TestConstants.USER_EMAIL,
+          address: TestConstants.USER_ADDRESS,
+          phoneNumber: TestConstants.USER_PHONE_NUMBER,
+          password: TestConstants.USER_PASSWORD,
+        });
+
+      userToken = response.body.accessToken;
+      expect(userToken).toBeDefined();
+    });
+
+    it('/user-account (GET)', async () => {
+      return request(app.getHttpServer())
+        .get('/user-account')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.nickname).toBe(TestConstants.USER_NICKNAME);
+          expect(res.body.address).toBe(TestConstants.USER_ADDRESS);
+          expect(res.body.introduction).toBe(undefined);
+        });
     });
   });
 });
