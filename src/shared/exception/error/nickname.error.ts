@@ -1,13 +1,14 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { EXCEPTION_MESSAGES } from '../exception-messages.constants';
 
-export class NicknameIsTooLongError extends Error {
+export class NicknameIsTooLongError extends HttpException {
   constructor() {
-    super(EXCEPTION_MESSAGES.NICKNAME_TOO_LONG);
+    super(EXCEPTION_MESSAGES.NICKNAME_TOO_LONG, HttpStatus.BAD_REQUEST);
   }
 }
 
-export class NicknameIsTooShortError extends Error {
+export class NicknameIsTooShortError extends HttpException {
   constructor() {
-    super(EXCEPTION_MESSAGES.NICKNAME_TOO_SHORT);
+    super(EXCEPTION_MESSAGES.NICKNAME_TOO_SHORT, HttpStatus.BAD_REQUEST);
   }
 }

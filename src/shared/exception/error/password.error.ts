@@ -1,19 +1,20 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { EXCEPTION_MESSAGES } from '../exception-messages.constants';
 
-export class PasswordIsTooShortError extends Error {
+export class PasswordIsTooShortError extends HttpException {
   constructor() {
-    super(EXCEPTION_MESSAGES.USER_PASSWORD_TOO_SHORT);
+    super(EXCEPTION_MESSAGES.USER_PASSWORD_TOO_SHORT, HttpStatus.BAD_REQUEST);
   }
 }
 
-export class PasswordIsTooLongError extends Error {
+export class PasswordIsTooLongError extends HttpException {
   constructor() {
-    super(EXCEPTION_MESSAGES.USER_PASSWORD_TOO_LONG);
+    super(EXCEPTION_MESSAGES.USER_PASSWORD_TOO_LONG, HttpStatus.BAD_REQUEST);
   }
 }
 
-export class PasswordIsNotMatchedError extends Error {
+export class PasswordIsNotMatchedError extends HttpException {
   constructor() {
-    super(EXCEPTION_MESSAGES.USER_PASSWORD_NOT_MATCHES);
+    super(EXCEPTION_MESSAGES.USER_PASSWORD_NOT_MATCHES, HttpStatus.BAD_REQUEST);
   }
 }
