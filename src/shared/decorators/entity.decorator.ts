@@ -10,6 +10,7 @@ import { Introduction } from '../models/introduction.model';
 import { ObjectId } from 'mongodb';
 import { BriefIntroduction } from '../models/brief-Introduction.model';
 import { ResumeName } from '../models/resume-name.model';
+import { ResumeOccupation } from '../models/resume-occupation.model';
 
 export function EntityPrimaryId() {
   return applyDecorators(
@@ -129,6 +130,18 @@ export function EntityResumeName() {
       transformer: {
         to: (value: ResumeName) => value.value,
         from: (value: string) => new ResumeName(value),
+      },
+    }),
+  );
+}
+
+export function EntityResumeOccupation() {
+  return applyDecorators(
+    Column({
+      type: COLUMN_TYPE.VARCHAR,
+      transformer: {
+        to: (value: ResumeOccupation) => value.value,
+        from: (value: string) => new ResumeOccupation(value),
       },
     }),
   );
