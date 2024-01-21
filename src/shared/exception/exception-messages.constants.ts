@@ -30,4 +30,5 @@ export const EXCEPTION_MESSAGES = {
   PHONE_NUMBER_NOT_MATCHES: '전화번호 형식이 올바르지 않습니다.',
   INTRODUCTION_TOO_LONG: `자기소개는 ${INTRODUCTION_MAX_LENGTH}글자 이하이어야 합니다.`,
   INTRODUCTION_TOO_SHORT: `자기소개는 ${INTRODUCTION_MIN_LENGTH}글자 이상이어야 합니다.`,
+  BRIEF_INTRODUCTION_TOO_LONG: `한줄 소개는 ${INTRODUCTION_MAX_LENGTH}글자 이하이어야 합니다.`,
 };

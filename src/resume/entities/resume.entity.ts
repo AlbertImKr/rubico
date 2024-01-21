@@ -6,11 +6,13 @@ import { Email } from '../../shared/models/email.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import {
   EntityAddress,
+  EntityBriefIntroduction,
   EntityEmail,
   EntityPhoneNumber,
   EntityPrimaryId,
   EntityRelationId,
 } from '../../shared/decorators/entity.decorator';
+import { BriefIntroduction } from '../../shared/models/brief-Introduction.model';
 
 @Entity({ name: 'resume' })
 export class Resume {
@@ -23,7 +25,8 @@ export class Resume {
   @EntityAddress()
   address: Address;
 
-  brief_introduction: string;
+  @EntityBriefIntroduction()
+  briefIntroduction: BriefIntroduction;
 
   @EntityEmail()
   email: Email;

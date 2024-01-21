@@ -8,6 +8,7 @@ import { PhoneNumber } from '../models/phone-number.model';
 import { Address } from '../models/address.model';
 import { Introduction } from '../models/introduction.model';
 import { ObjectId } from 'mongodb';
+import { BriefIntroduction } from '../models/brief-Introduction.model';
 
 export function EntityPrimaryId() {
   return applyDecorators(
@@ -103,6 +104,18 @@ export function EntityIntroduction() {
       transformer: {
         to: (value: Introduction) => value?.value ?? '',
         from: (value: string) => (value ? new Introduction(value) : null),
+      },
+    }),
+  );
+}
+
+export function EntityBriefIntroduction() {
+  return applyDecorators(
+    Column({
+      type: COLUMN_TYPE.VARCHAR,
+      transformer: {
+        to: (value: BriefIntroduction) => value?.value ?? '',
+        from: (value: string) => (value ? new BriefIntroduction(value) : null),
       },
     }),
   );
