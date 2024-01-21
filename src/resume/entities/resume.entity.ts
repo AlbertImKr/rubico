@@ -11,8 +11,10 @@ import {
   EntityPhoneNumber,
   EntityPrimaryId,
   EntityRelationId,
+  EntityResumeName,
 } from '../../shared/decorators/entity.decorator';
 import { BriefIntroduction } from '../../shared/models/brief-Introduction.model';
+import { ResumeName } from '../../shared/models/resume-name.model';
 
 @Entity({ name: 'resume' })
 export class Resume {
@@ -31,7 +33,8 @@ export class Resume {
   @EntityEmail()
   email: Email;
 
-  name: string;
+  @EntityResumeName()
+  name: ResumeName;
 
   occupation: string;
 
