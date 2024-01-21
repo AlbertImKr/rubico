@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Column, Entity, Index } from 'typeorm';
-import { COLUMN_NAME } from '../../shared/constants/database.constants';
+import { Entity } from 'typeorm';
 import { Email } from '../../shared/models/email.model';
 import { Nickname } from '../../shared/models/nickname.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
@@ -9,12 +8,17 @@ import { Introduction } from '../../shared/models/introduction.model';
 import { HashedPassword } from '../../shared/models/hash-password.model';
 import {
   EntityAddress,
+  EntityCreatedAt,
+  EntityDeleted,
   EntityEmail,
   EntityHashedPassword,
   EntityIntroduction,
+  EntityIsActive,
   EntityNickname,
   EntityPhoneNumber,
   EntityPrimaryId,
+  EntityUpdatedAt,
+  UniqueUserAccountEmailIndex,
 } from '../../shared/decorators/entity.decorator';
 
 @Entity({ name: 'user_account' })
@@ -22,7 +26,7 @@ export class UserAccount {
   @EntityPrimaryId()
   id: ObjectId;
 
-  @Index('user_account_email_unique', { unique: true })
+  @UniqueUserAccountEmailIndex()
   @EntityEmail()
   email: Email;
 
@@ -41,15 +45,15 @@ export class UserAccount {
   @EntityIntroduction()
   introduction: Introduction;
 
-  @Column({ default: false })
+  @EntityDeleted()
   deleted: boolean;
 
-  @Column({ name: COLUMN_NAME.IS_ACTIVE, default: false })
+  @EntityIsActive()
   isActive: boolean;
 
-  @Column({ name: COLUMN_NAME.CREATED_AT })
+  @EntityCreatedAt()
   createdAt: Date;
 
-  @Column({ name: COLUMN_NAME.UPDATED_AT })
+  @EntityUpdatedAt()
   updatedAt: Date;
 }

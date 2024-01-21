@@ -1,18 +1,19 @@
 import { ObjectId } from 'mongodb';
-import { Column, Entity } from 'typeorm';
-import { COLUMN_NAME } from '../../shared/constants/database.constants';
+import { Entity } from 'typeorm';
 import { Address } from '../../shared/models/address.model';
 import { Email } from '../../shared/models/email.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 import {
   EntityAddress,
   EntityBriefIntroduction,
+  EntityCreatedAt,
   EntityEmail,
   EntityPhoneNumber,
   EntityPrimaryId,
   EntityRelationId,
   EntityResumeName,
   EntityResumeOccupation,
+  EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
 import { BriefIntroduction } from '../../shared/models/brief-Introduction.model';
 import { ResumeName } from '../../shared/models/resume-name.model';
@@ -47,9 +48,9 @@ export class Resume {
   @EntityRelationId()
   profileImageId: ObjectId;
 
-  @Column({ name: COLUMN_NAME.CREATED_AT })
+  @EntityCreatedAt()
   createdAt: Date;
 
-  @Column({ name: COLUMN_NAME.UPDATED_AT })
+  @EntityUpdatedAt()
   updatedAt: Date;
 }

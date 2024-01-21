@@ -12,3 +12,7 @@ export const COLUMN_NAME = {
   UPDATED_AT: 'updated_at',
   CREATED_AT: 'created_at',
 };
+
+export const INDEX_NAME = {
+  UNIQUE_USER_ACCOUNT_USER_EMAIL: 'user_account_email_unique',
+};

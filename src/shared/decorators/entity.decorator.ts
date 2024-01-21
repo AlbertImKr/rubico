@@ -1,6 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
-import { Column, PrimaryColumn } from 'typeorm';
-import { COLUMN_TYPE, ID_LENGTH } from '../constants/database.constants';
+import { Column, Index, PrimaryColumn } from 'typeorm';
+import {
+  COLUMN_NAME,
+  COLUMN_TYPE,
+  ID_LENGTH,
+  INDEX_NAME,
+} from '../constants/database.constants';
 import { Email } from '../models/email.model';
 import { HashedPassword } from '../models/hash-password.model';
 import { Nickname } from '../models/nickname.model';
@@ -144,5 +149,29 @@ export function EntityResumeOccupation() {
         from: (value: string) => new ResumeOccupation(value),
       },
     }),
+  );
+}
+
+export function EntityCreatedAt() {
+  return applyDecorators(Column({ name: COLUMN_NAME.CREATED_AT }));
+}
+
+export function EntityUpdatedAt() {
+  return applyDecorators(Column({ name: COLUMN_NAME.UPDATED_AT }));
+}
+
+export function EntityDeleted() {
+  return applyDecorators(Column({ default: false }));
+}
+
+export function EntityIsActive() {
+  return applyDecorators(
+    Column({ name: COLUMN_NAME.IS_ACTIVE, default: false }),
+  );
+}
+
+export function UniqueUserAccountEmailIndex() {
+  return applyDecorators(
+    Index(INDEX_NAME.UNIQUE_USER_ACCOUNT_USER_EMAIL, { unique: true }),
   );
 }
