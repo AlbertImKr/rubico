@@ -1,4 +1,4 @@
-import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
+import { EmailIsNotMatchedError } from '../exception/error/email.error';
 import { Email } from './email.model';
 
 describe('Email', () => {
@@ -24,6 +24,6 @@ describe('Email', () => {
     const actual = () => new Email(email);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.EMAIL_NOT_MATCHES);
+    expect(actual).toThrow(EmailIsNotMatchedError);
   });
 });

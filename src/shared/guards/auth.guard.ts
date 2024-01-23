@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException(EXCEPTION_MESSAGES.NEED_LOGIN);
+      throw new UnauthorizedException(EXCEPTION_MESSAGES.NEED_IS_LOGIN);
     }
     try {
       const { sub, nickname }: { sub: string; nickname: string } =
@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
       };
       request[USER_DATA_KEY] = userData;
     } catch {
-      throw new UnauthorizedException(EXCEPTION_MESSAGES.NEED_LOGIN);
+      throw new UnauthorizedException(EXCEPTION_MESSAGES.NEED_IS_LOGIN);
     }
     return true;
   }

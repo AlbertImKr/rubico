@@ -5,6 +5,7 @@ import ConfigModule from '../shared/config/config.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { DATABASE } from '../shared/constants/config.constants';
+import { ResumeModule } from '../resume/resume.module';
 
 @Module({
   imports: [
@@ -21,12 +22,12 @@ import { DATABASE } from '../shared/constants/config.constants';
         database: configService.get<string>(DATABASE.NAME),
         entities: [__dirname + configService.get<string>(DATABASE.ENTITY_PATH)],
         synchronize: configService.get<boolean>(DATABASE.SYNC),
-        logging: true,
       }),
       inject: [ConfigService],
     }),
     UserAccountModule,
     AuthModule,
+    ResumeModule,
   ],
 })
 export class AppModule {}

@@ -2,17 +2,21 @@ import {
   USER_ADDRESS_MAX_LENGTH,
   USER_ADDRESS_MIN_LENGTH,
 } from '../constants/validator.constants';
-import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
+import {
+  AddressIsTooLongError,
+  AddressIsTooShortError,
+} from '../exception/error/address.error';
 import { Address } from './address.model';
 
 describe('Address', () => {
-  const RIGHT_ADDRESS = 'a'.repeat(USER_ADDRESS_MIN_LENGTH);
+  const MIN_LENGTH_ADDRESS = 'a'.repeat(USER_ADDRESS_MIN_LENGTH);
+  const MAX_LENGTH_ADDRESS = 'a'.repeat(USER_ADDRESS_MAX_LENGTH);
   const TOO_SHORT_ADDRESS = 'a'.repeat(USER_ADDRESS_MIN_LENGTH - 1);
   const TOO_LONG_ADDRESS = 'a'.repeat(USER_ADDRESS_MAX_LENGTH + 1);
 
-  it('생성자에 정확한 주소를 전달하면 value 프로퍼티에 할당된다', () => {
+  it('주소는 최소 제한 길이까지만 입력할 수 있다.', () => {
     // given
-    const address = RIGHT_ADDRESS;
+    const address = MIN_LENGTH_ADDRESS;
 
     // when
     const addressObject = new Address(address);
@@ -21,7 +25,18 @@ describe('Address', () => {
     expect(addressObject.value).toBe(address);
   });
 
-  it('생성자에 최소 길이보다 작은 주소를 전달하면 에러가 발생한다', () => {
+  it('주소는 최대 제한 길이까지만 입력할 수 있다.', () => {
+    // given
+    const address = MAX_LENGTH_ADDRESS;
+
+    // when
+    const addressObject = new Address(address);
+
+    // then
+    expect(addressObject.value).toBe(address);
+  });
+
+  it('주소는 최소 길이보다 작은 주소를 전달하면 에러가 발생한다', () => {
     // given
     const address = TOO_SHORT_ADDRESS;
 
@@ -29,10 +44,10 @@ describe('Address', () => {
     const addressObject = () => new Address(address);
 
     // then
-    expect(addressObject).toThrow(EXCEPTION_MESSAGES.ADDRESS_TOO_SHORT);
+    expect(addressObject).toThrow(AddressIsTooShortError);
   });
 
-  it('생성자에 최대 길이보다 큰 주소를 전달하면 에러가 발생한다', () => {
+  it('주소는 최대 길이보다 큰 주소를 전달하면 에러가 발생한다', () => {
     // given
     const address = TOO_LONG_ADDRESS;
 
@@ -40,6 +55,6 @@ describe('Address', () => {
     const addressObject = () => new Address(address);
 
     // then
-    expect(addressObject).toThrow(EXCEPTION_MESSAGES.ADDRESS_TOO_LONG);
+    expect(addressObject).toThrow(AddressIsTooLongError);
   });
 });

@@ -2,38 +2,51 @@ import {
   USER_NICKNAME_MAX_LENGTH,
   USER_NICKNAME_MIN_LENGTH,
 } from '../constants/validator.constants';
-import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
+import {
+  NicknameIsTooLongError,
+  NicknameIsTooShortError,
+} from '../exception/error/nickname.error';
 import { Nickname } from './nickname.model';
 
 describe('Nickname', () => {
-  const RIGHT_NICKNAME = 'a'.repeat(USER_NICKNAME_MIN_LENGTH);
+  const MIN_LENGTH_NICKNAME = 'a'.repeat(USER_NICKNAME_MIN_LENGTH);
+  const MAX_LENGTH_NICKNAME = 'a'.repeat(USER_NICKNAME_MAX_LENGTH);
   const TOO_SHORT_NICKNAME = 'a'.repeat(USER_NICKNAME_MIN_LENGTH - 1);
   const TOO_LONG_NICKNAME = 'a'.repeat(USER_NICKNAME_MAX_LENGTH + 1);
 
-  it('생성자에 정확한 닉네임을 전달하면 value 프로퍼티에 할당된다', () => {
+  it('닉네임은 최소 제한 길이까지만 입력할 수 있다.', () => {
     // given
-    const nickname = RIGHT_NICKNAME;
+    const nickname = MIN_LENGTH_NICKNAME;
     // when
     const actual = new Nickname(nickname);
     // then
     expect(actual.value).toBe(nickname);
   });
 
-  it('생성자에 최소 길이보다 작은 닉네임을 전달하면 에러가 발생한다', () => {
+  it('닉네임은 최대 제한 길이까지만 입력할 수 있다.', () => {
+    // given
+    const nickname = MAX_LENGTH_NICKNAME;
+    // when
+    const actual = new Nickname(nickname);
+    // then
+    expect(actual.value).toBe(nickname);
+  });
+
+  it('닉네임은 최소 길이보다 작은 닉네임을 전달하면 에러가 발생한다', () => {
     // given
     const nickname = TOO_SHORT_NICKNAME;
     // when
     const actual = () => new Nickname(nickname);
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.NICKNAME_TOO_SHORT);
+    expect(actual).toThrow(NicknameIsTooShortError);
   });
 
-  it('생성자에 최대 길이보다 큰 닉네임을 전달하면 에러가 발생한다', () => {
+  it('닉네임은 최대 길이보다 큰 닉네임을 전달하면 에러가 발생한다', () => {
     // given
     const nickname = TOO_LONG_NICKNAME;
     // when
     const actual = () => new Nickname(nickname);
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.NICKNAME_TOO_LONG);
+    expect(actual).toThrow(NicknameIsTooLongError);
   });
 });

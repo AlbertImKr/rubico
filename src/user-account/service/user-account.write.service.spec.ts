@@ -86,7 +86,7 @@ describe('유저 계정 서비스', () => {
 
       // then
       await expect(result).rejects.toThrow(
-        EXCEPTION_MESSAGES.EMAIL_ALREADY_EXISTS,
+        EXCEPTION_MESSAGES.EMAIL_IS_ALREADY_EXISTS,
       );
     });
   });
@@ -117,7 +117,9 @@ describe('유저 계정 서비스', () => {
       const result = userAccountService.findByEmail(userAccount.email);
 
       // then
-      await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
+      await expect(result).rejects.toThrow(
+        EXCEPTION_MESSAGES.USER_IS_NOT_FOUND,
+      );
     });
   });
 
@@ -270,7 +272,7 @@ describe('유저 계정 서비스', () => {
 
       // then
       await expect(result).rejects.toThrow(
-        EXCEPTION_MESSAGES.PASSWORD_NOT_MATCH,
+        EXCEPTION_MESSAGES.PASSWORD_IS_NOT_MATCH,
       );
     });
   });
@@ -325,7 +327,9 @@ describe('유저 계정 서비스', () => {
       );
 
       // then
-      await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
+      await expect(result).rejects.toThrow(
+        EXCEPTION_MESSAGES.USER_IS_NOT_FOUND,
+      );
     });
   });
 
