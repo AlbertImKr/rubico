@@ -4,7 +4,7 @@ NestJS를 활용한 랠릿 Copy 토이프로젝트
 
 ## ERD
 
-![렐릿 pgerd version2](https://github.com/AlbertImKr/rubicon/assets/99056666/d5e43ade-4dc2-4788-ba07-56251528f223)
+![렐릿 pgerd version2](https://github.com/AlbertImKr/rubicon/assets/99056666/6e5b6b41-5782-4b4f-8601-a2f12ce42555)
 
 ## Installation
 
