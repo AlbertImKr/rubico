@@ -1,10 +1,14 @@
+import {
+  USER_ADDRESS_MAX_LENGTH,
+  USER_ADDRESS_MIN_LENGTH,
+} from '../constants/validator.constants';
 import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { Address } from './address.model';
 
 describe('Address', () => {
-  const RIGHT_ADDRESS = '인천광역시 연수구';
-  const TOO_SHORT_ADDRESS = '인천시청';
-  const TOO_LONG_ADDRESS = '인'.repeat(101);
+  const RIGHT_ADDRESS = 'a'.repeat(USER_ADDRESS_MIN_LENGTH);
+  const TOO_SHORT_ADDRESS = 'a'.repeat(USER_ADDRESS_MIN_LENGTH - 1);
+  const TOO_LONG_ADDRESS = 'a'.repeat(USER_ADDRESS_MAX_LENGTH + 1);
 
   it('생성자에 정확한 주소를 전달하면 value 프로퍼티에 할당된다', () => {
     // given

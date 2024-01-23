@@ -1,10 +1,14 @@
+import {
+  INTRODUCTION_MAX_LENGTH,
+  INTRODUCTION_MIN_LENGTH,
+} from '../constants/validator.constants';
 import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { Introduction } from './introduction.model';
 
 describe('Introduction', () => {
-  const RIGHT_INTRODUCTION = '안녕하세요';
-  const TOO_SHORT_INTRODUCTION = '';
-  const TOO_LONG_INTRODUCTION = '안'.repeat(201);
+  const RIGHT_INTRODUCTION = 'a'.repeat(INTRODUCTION_MIN_LENGTH);
+  const TOO_SHORT_INTRODUCTION = 'a'.repeat(INTRODUCTION_MIN_LENGTH - 1);
+  const TOO_LONG_INTRODUCTION = 'a'.repeat(INTRODUCTION_MAX_LENGTH + 1);
 
   it('생성자에 정확한 소개를 전달하면 value 프로퍼티에 할당된다', () => {
     // given

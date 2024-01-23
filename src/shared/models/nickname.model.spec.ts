@@ -1,14 +1,18 @@
+import {
+  USER_NICKNAME_MAX_LENGTH,
+  USER_NICKNAME_MIN_LENGTH,
+} from '../constants/validator.constants';
 import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
-import { TestConstants } from '../test-utils/test.constants';
 import { Nickname } from './nickname.model';
 
 describe('Nickname', () => {
-  const TOO_SHORT_NICKNAME = 'tes';
-  const TOO_LONG_NICKNAME = 'a'.repeat(21);
+  const RIGHT_NICKNAME = 'a'.repeat(USER_NICKNAME_MIN_LENGTH);
+  const TOO_SHORT_NICKNAME = 'a'.repeat(USER_NICKNAME_MIN_LENGTH - 1);
+  const TOO_LONG_NICKNAME = 'a'.repeat(USER_NICKNAME_MAX_LENGTH + 1);
 
   it('생성자에 정확한 닉네임을 전달하면 value 프로퍼티에 할당된다', () => {
     // given
-    const nickname = TestConstants.USER_NICKNAME;
+    const nickname = RIGHT_NICKNAME;
     // when
     const actual = new Nickname(nickname);
     // then

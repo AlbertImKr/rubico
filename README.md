@@ -1,10 +1,10 @@
 ## Description
 
-Nest를 활용한 랠릿 Copy 토이프로젝트
+NestJS를 활용한 랠릿 Copy 토이프로젝트
 
 ## ERD
 
-![image](https://github.com/foody-moody/foodymoody/assets/99056666/a7d545b3-0c21-4800-8153-4869b4e27036)
+![렐릿 pgerd version2](https://github.com/AlbertImKr/rubicon/assets/99056666/d5e43ade-4dc2-4788-ba07-56251528f223)
 
 ## Installation
 

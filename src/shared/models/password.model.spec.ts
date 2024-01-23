@@ -1,3 +1,7 @@
+import {
+  USER_PASSWORD_MAX_LENGTH,
+  USER_PASSWORD_MIN_LENGTH,
+} from '../constants/validator.constants';
 import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
 import { Password } from './password.model';
 
@@ -5,9 +9,11 @@ describe('Password', () => {
   const RIGHT_PASSWORD = 'Password123!';
   const DIFFERENT_PASSWORD = 'Password1234!';
   // 7글자(최소 8글자)
-  const TOO_SHORT_PASSWORD = 'Pa1!' + '1'.repeat(3);
+  const TOO_SHORT_PASSWORD =
+    'Pa1!' + '1'.repeat(USER_PASSWORD_MIN_LENGTH - 4 - 1);
   // 21글자(최대 20글자)
-  const TOO_LONG_PASSWORD = 'Pa1!' + '1'.repeat(17);
+  const TOO_LONG_PASSWORD =
+    'Pa1!' + '1'.repeat(USER_PASSWORD_MAX_LENGTH - 4 + 1);
   const NOT_HAVE_UPPERCASE_PASSWORD = 'password123!';
   const NOT_HAVE_LOWERCASE_PASSWORD = 'PASSWORD123!';
   const NOT_HAVE_NUMBER_PASSWORD = 'Password!';
