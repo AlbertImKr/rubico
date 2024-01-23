@@ -11,6 +11,7 @@ export const COLUMN_NAME = {
   IS_ACTIVE: 'is_active',
   UPDATED_AT: 'updated_at',
   CREATED_AT: 'created_at',
+  PHONE_NUMBER: 'phone_number',
 };
 
 export const INDEX_NAME = {

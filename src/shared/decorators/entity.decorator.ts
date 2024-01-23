@@ -88,6 +88,7 @@ export function EntityPhoneNumber() {
         to: (value: PhoneNumber) => value.value,
         from: (value: string) => new PhoneNumber(value),
       },
+      name: COLUMN_NAME.PHONE_NUMBER,
     }),
   );
 }
