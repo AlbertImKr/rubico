@@ -6,11 +6,11 @@ export class ResumeRegisterRequestDto {
   readonly occupation: string;
   readonly briefIntroduction: string;
   readonly profileImageId: string;
-  readonly portfolio_files: string[];
-  readonly portfolio_links: string[];
-  readonly technicalSkillIds: string[];
-  readonly projectExperiences: ProjectExperienceRequestDto[];
-  readonly workExperiences: WorkExperienceRequestDto[];
+  readonly portfolioFileIds?: string[];
+  readonly portfolioLinks?: string[];
+  readonly technicalSkillIds?: string[];
+  readonly projectExperiences?: ProjectExperienceRequestDto[];
+  readonly workExperiences?: WorkExperienceRequestDto[];
   readonly fieldOfInterestIds: string[];
 }
 

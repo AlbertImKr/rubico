@@ -16,7 +16,7 @@ import { WorkExperienceDescription } from '../../shared/models/work-experience-d
 import { EmploymentType } from '../enums/employment-type.enum';
 import { WorkPosition } from '../../shared/models/work-position.model';
 
-export class ResumeRegisterDataDto {
+export class ResumeRegisterData {
   readonly name: ResumeName;
   readonly email: Email;
   readonly phoneNumber: PhoneNumber;
@@ -24,15 +24,15 @@ export class ResumeRegisterDataDto {
   readonly occupation: ResumeOccupation;
   readonly briefIntroduction: BriefIntroduction;
   readonly profileImageId: ObjectId;
-  readonly portfolio_files: ObjectId[];
-  readonly portfolio_links: Link[];
+  readonly portfolioFileIds: ObjectId[];
+  readonly portfolioLinks: Link[];
   readonly technicalSkillIds: ObjectId[];
-  readonly projectExperiences: ProjectExperienceDataDto[];
-  readonly workExperiences: WorkExperienceDataDto[];
+  readonly projectExperiences: ProjectExperienceData[];
+  readonly workExperiences: WorkExperienceData[];
   readonly fieldOfInterestIds: ObjectId[];
 }
 
-export class ProjectExperienceDataDto {
+export class ProjectExperienceData {
   readonly projectName: ProjectName;
   readonly organizationName: OrganizationName;
   readonly processStatus: ProcessStatus;
@@ -41,7 +41,7 @@ export class ProjectExperienceDataDto {
   readonly endedAt: Date;
 }
 
-export class WorkExperienceDataDto {
+export class WorkExperienceData {
   readonly companyName: CompanyName;
   readonly department: Department;
   readonly description: WorkExperienceDescription;
