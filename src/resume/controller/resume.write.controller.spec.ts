@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ResumeWriteController } from './resume.write.controller';
 
-describe('ResumeController', () => {
+describe('ResumeWriteController', () => {
   let controller: ResumeWriteController;
 
   beforeEach(async () => {

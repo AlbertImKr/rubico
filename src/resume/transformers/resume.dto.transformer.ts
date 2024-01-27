@@ -27,8 +27,12 @@ import { EmploymentType } from '../enums/employment-type.enum';
 import { WorkPosition } from '../../shared/models/work-position.model';
 
 export class ResumeRegisterDataTransformer {
-  static transform(data: ResumeRegisterRequestDto): ResumeRegisterData {
+  static transform(
+    data: ResumeRegisterRequestDto,
+    userAccountId: ObjectId,
+  ): ResumeRegisterData {
     return {
+      userAccountId: userAccountId,
       name: new ResumeName(data.name),
       email: new Email(data.email),
       phoneNumber: new PhoneNumber(data.phoneNumber),

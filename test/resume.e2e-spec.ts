@@ -3,6 +3,7 @@ import { TestDatabaseService } from './database.e2e.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app/app.module';
 import * as request from 'supertest';
+import { TestConstants } from '../src/shared/test-utils/test.constants';
 
 describe('ResumeController', () => {
   let app: INestApplication;
@@ -21,9 +22,27 @@ describe('ResumeController', () => {
   });
 
   describe('이력서 등록', () => {
+    let userToken: string;
+
+    beforeEach(async () => {
+      const response = await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send({
+          nickname: TestConstants.USER_NICKNAME,
+          email: TestConstants.USER_EMAIL,
+          address: TestConstants.USER_ADDRESS,
+          phoneNumber: TestConstants.USER_PHONE_NUMBER,
+          password: TestConstants.USER_PASSWORD,
+        });
+
+      userToken = response.body.accessToken;
+      expect(userToken).toBeDefined();
+    });
+
     it('/resume (POST)', async () => {
       return request(app.getHttpServer())
         .post('/resume')
+        .set('Authorization', `Bearer ${userToken}`)
         .send({
           name: 'test',
           email: 'test@email.com',
@@ -31,10 +50,9 @@ describe('ResumeController', () => {
           address: '인천시 연수구 송도동',
           occupation: '백엔드 개발자',
           briefIntroduction: '안녕하세요. 저는 백엔드 개발자입니다.',
-          profileImageId: '112345',
+          profileImageId: '60b0f7b9e6b3f3b3e8b0e0a0',
           portfolio_files: ['https://test.com', 'https://test2.com'],
           portfolio_links: ['https://test3.com', 'https://test4.com'],
-          technicalSkillIds: ['1', '2', '3'],
           projectExperiences: [
             {
               projectName: 'project1',
@@ -73,7 +91,11 @@ describe('ResumeController', () => {
               endedAt: new Date(),
             },
           ],
-          fieldOfInterestIds: ['1', '2', '3'],
+          fieldOfInterestIds: [
+            '60b0f7b9e6b3f3b3e8b0e0a1',
+            '60b0f7b9e6b3f3b3e8b0e0a2',
+            '60b0f7b9e6b3f3b3e8b0e0a3',
+          ],
         })
         .expect(201);
     });

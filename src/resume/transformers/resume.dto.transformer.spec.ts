@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { ResumeRegisterRequestDto } from '../dto/resume.request.dto';
 import {
   ProjectExperienceDataTransformer,
@@ -17,17 +18,20 @@ describe('ResumeRegisterDataTransformer', () => {
       briefIntroduction: '안녕하세요. 홍길동입니다.',
       profileImageId: '60b0f7b9e6b3f3b3e8b0e0a0',
       fieldOfInterestIds: [
-        '60b0f7b9e6b3f3b3e8b0e0a0',
-        '60b0f7b9e6b3f3b3e8b0e0a0',
+        '60b0f7b9e6b3f3b3e8b0e0a1',
+        '60b0f7b9e6b3f3b3e8b0e0a2',
       ],
     };
+    const userAccountId = new ObjectId();
 
     // when
     const resumeRegisterData = ResumeRegisterDataTransformer.transform(
       resumeRegisterRequest,
+      userAccountId,
     );
 
     // then
+    expect(resumeRegisterData.userAccountId).toBe(userAccountId);
     expect(resumeRegisterData.name.value).toStrictEqual('홍길동');
     expect(resumeRegisterData.email.value).toBe(resumeRegisterRequest.email);
     expect(resumeRegisterData.phoneNumber.value).toBe(

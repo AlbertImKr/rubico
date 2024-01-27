@@ -17,6 +17,7 @@ import { EmploymentType } from '../enums/employment-type.enum';
 import { WorkPosition } from '../../shared/models/work-position.model';
 
 export class ResumeRegisterData {
+  readonly userAccountId: ObjectId;
   readonly name: ResumeName;
   readonly email: Email;
   readonly phoneNumber: PhoneNumber;

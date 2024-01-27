@@ -22,7 +22,7 @@ export class ProfileImage {
   name: string;
 
   @Column()
-  type: string;
+  mimeType: string;
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;

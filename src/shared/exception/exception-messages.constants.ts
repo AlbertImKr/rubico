@@ -29,6 +29,10 @@ export const EXCEPTION_MESSAGES = {
   EMAIL_IS_ALREADY_EXISTS: '이미 존재하는 이메일입니다.',
   PASSWORD_IS_NOT_MATCH: '비밀번호가 일치하지 않습니다.',
 
+  // ProfileImage
+  PROFILE_IMAGE_IS_TOO_LARGE: '프로필 이미지는 500KB 이하로 업로드 가능합니다.',
+  PROFILE_IMAGE_IS_NOT_IMAGE: '이미지 파일만 업로드 가능합니다.',
+
   // Model
   EMAIL_IS_NOT_MATCHES: '이메일 형식이 올바르지 않습니다.',
   NICKNAME_IS_TOO_LONG: `닉네임은 ${USER_NICKNAME_MAX_LENGTH}글자 이하이어야 합니다.`,

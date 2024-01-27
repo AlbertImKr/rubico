@@ -6,6 +6,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { DATABASE } from '../shared/constants/config.constants';
 import { ResumeModule } from '../resume/resume.module';
+import { S3Provider } from '../shared/providers/aws-s3.provider';
 
 @Module({
   imports: [
