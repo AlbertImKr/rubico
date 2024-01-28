@@ -37,6 +37,8 @@ export const WORK_POSITION_MAX_LENGTH = 20;
 export const WORK_POSITION_MIN_LENGTH = 1;
 export const PROFILE_IMAGE_MAX_SIZE = 1024 * 500;
 export const PROFILE_IMAGE_TYPE = /image\/(png|jpg|jpeg)/;
+export const PROFILE_IMAGE_NAME_MAX_LENGTH = 20;
+export const PROFILE_IMAGE_NAME_MIN_LENGTH = 1;
 
 export const IS_NICKNAME = {
   MAX_LENGTH: USER_NICKNAME_MAX_LENGTH,

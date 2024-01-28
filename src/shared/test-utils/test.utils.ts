@@ -65,11 +65,28 @@ export class TestUtils {
       phoneNumber: TestUtils.phoneNumber,
     };
   }
+
+  static readonly mockProfileImageFile: Express.Multer.File = {
+    fieldname: 'image',
+    originalname: TestConstants.PROFILE_IMAGE_NAME,
+    encoding: '7bit',
+    mimetype: 'image/jpeg',
+    size: 100,
+    stream: null,
+    destination: '',
+    filename: '',
+    path: '',
+    buffer: Buffer.from(''),
+  };
 }
 
 export const mockEntityManager: EntityManager = jest
   .fn()
-  .mockImplementation(() => ({ save: jest.fn(), findOneBy: jest.fn() }))();
+  .mockImplementation(() => ({
+    save: jest.fn(),
+    findOneBy: jest.fn(),
+    create: jest.fn(),
+  }))();
 
 export const mockQueryRunner = jest.fn().mockImplementation(() => ({
   connect: jest.fn(),

@@ -12,6 +12,7 @@ export const COLUMN_NAME = {
   UPDATED_AT: 'updated_at',
   CREATED_AT: 'created_at',
   PHONE_NUMBER: 'phone_number',
+  DELETED_AT: 'deleted_at',
 };
 
 export const INDEX_NAME = {

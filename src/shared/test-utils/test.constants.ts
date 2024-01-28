@@ -13,4 +13,7 @@ export class TestConstants {
   static readonly USER_EMAIL = 'test@emial.com';
   static readonly ACCESS_TOKEN = 'access-token';
   static readonly REFRESH_TOKEN = 'refresh-token';
+  static readonly PROFILE_IMAGE_NAME = 'test.jpg';
+  static readonly PROFILE_IMAGE_URL =
+    'https://test-bucket.s3.ap-northeast-2.amazonaws.com/test.jpg';
 }

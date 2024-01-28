@@ -8,7 +8,7 @@ import { ProfileImage } from './entities/profile_image.entity';
 import { FileUploadWriteController } from './controller/file-upload.write.controller';
 import { FileUploadWriteService } from './service/file-upload.write.service';
 import { ProfileImageWriteService } from './service/profile-image.write.service';
-import { S3Provider } from '../shared/providers/aws-s3.provider';
+import { S3Provider } from '../shared/providers/aws-s3/aws-s3.provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Resume, ProfileImage])],

@@ -7,6 +7,8 @@ import {
   INTRODUCTION_MIN_LENGTH,
   ORGANIZATION_NAME_MAX_LENGTH,
   ORGANIZATION_NAME_MIN_LENGTH,
+  PROFILE_IMAGE_NAME_MAX_LENGTH,
+  PROFILE_IMAGE_NAME_MIN_LENGTH,
   PROJECT_DESCRIPTION_MAX_LENGTH,
   PROJECT_DESCRIPTION_MIN_LENGTH,
   PROJECT_NAME_MAX_LENGTH,
@@ -33,35 +35,69 @@ export const EXCEPTION_MESSAGES = {
   PROFILE_IMAGE_IS_TOO_LARGE: '프로필 이미지는 500KB 이하로 업로드 가능합니다.',
   PROFILE_IMAGE_IS_NOT_IMAGE: '이미지 파일만 업로드 가능합니다.',
 
-  // Model
+  // ProfileImageName
+  PROFILE_IMAGE_NAME_IS_TOO_LONG: `프로필 이미지 이름은 ${PROFILE_IMAGE_NAME_MAX_LENGTH}글자 이하이어야 합니다.`,
+  PROFILE_IMAGE_NAME_IS_TOO_SHORT: `프로필 이미지 이름은 ${PROFILE_IMAGE_NAME_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // Email
   EMAIL_IS_NOT_MATCHES: '이메일 형식이 올바르지 않습니다.',
+
+  // Nickname
   NICKNAME_IS_TOO_LONG: `닉네임은 ${USER_NICKNAME_MAX_LENGTH}글자 이하이어야 합니다.`,
   NICKNAME_IS_TOO_SHORT: `닉네임은 ${USER_NICKNAME_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // Address
   ADDRESS_IS_TOO_LONG: `주소는 ${USER_ADDRESS_MAX_LENGTH}글자 이하이어야 합니다.`,
   ADDRESS_IS_TOO_SHORT: `주소는 ${USER_ADDRESS_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // Password
   USER_PASSWORD_IS_TOO_LONG: `비밀번호는 ${USER_PASSWORD_MAX_LENGTH}글자 이하이어야 합니다.`,
   USER_PASSWORD_IS_TOO_SHORT: `비밀번호는 ${USER_PASSWORD_MIN_LENGTH}글자 이상이어야 합니다.`,
   USER_PASSWORD_IS_NOT_MATCHES:
     '비밀번호는 영문 대문자, 영문 소문자, 숫자, 특수문자를 모두 포함해야 합니다.',
+
+  // PhoneNumber
   PHONE_NUMBER_IS_NOT_MATCHES: '전화번호 형식이 올바르지 않습니다.',
+
+  // Introduction
   INTRODUCTION_IS_TOO_LONG: `자기소개는 ${INTRODUCTION_MAX_LENGTH}글자 이하이어야 합니다.`,
   INTRODUCTION_IS_TOO_SHORT: `자기소개는 ${INTRODUCTION_MIN_LENGTH}글자 이상이어야 합니다.`,
   BRIEF_INTRODUCTION_IS_TOO_LONG: `한줄 소개는 ${INTRODUCTION_MAX_LENGTH}글자 이하이어야 합니다.`,
+
+  // ResumeName
   RESUME_NAME_IS_TOO_LONG: `이력서 이름은 ${USER_NICKNAME_MAX_LENGTH}글자 이하이어야 합니다.`,
+
+  // ResumeOccupation
   RESUME_OCCUPATION_IS_TOO_LONG: `이력서 직업은 ${USER_NICKNAME_MAX_LENGTH}글자 이하이어야 합니다.`,
+
+  // Link
   LINK_IS_NOT_MATCHES: '링크 형식이 올바르지 않습니다.',
+
+  // ProjectName
   PROJECT_NAME_IS_TOO_LONG: `프로젝트 이름은 ${PROJECT_NAME_MAX_LENGTH}글자 이하이어야 합니다.`,
   PROJECT_NAME_IS_TOO_SHORT: `프로젝트 이름은 ${PROJECT_NAME_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // OrganizationName
   ORGANIZATION_NAME_IS_TOO_LONG: `조직 이름은 ${ORGANIZATION_NAME_MAX_LENGTH}글자 이하이어야 합니다.`,
   ORGANIZATION_NAME_IS_TOO_SHORT: `조직 이름은 ${ORGANIZATION_NAME_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // ProjectDescription
   PROJECT_DESCRIPTION_IS_TOO_LONG: `프로젝트 설명은 ${PROJECT_DESCRIPTION_MAX_LENGTH}글자 이하이어야 합니다.`,
   PROJECT_DESCRIPTION_IS_TOO_SHORT: `프로젝트 설명은 ${PROJECT_DESCRIPTION_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // CompanyName
   COMPANY_NAME_IS_TOO_LONG: `회사 이름은 ${COMPANY_NAME_MAX_LENGTH}글자 이하이어야 합니다.`,
   COMPANY_NAME_IS_TOO_SHORT: `회사 이름은 ${COMPANY_NAME_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // Department
   DEPARTMENT_IS_TOO_LONG: `부서 이름은 ${DEPARTMENT_MAX_LENGTH}글자 이하이어야 합니다.`,
   DEPARTMENT_IS_TOO_SHORT: `부서 이름은 ${DEPARTMENT_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // WorkExperienceDescription
   WORK_EXPERIENCE_DESCRIPTION_IS_TOO_LONG: `근무 설명은 ${WORK_EXPERIENCE_DESCRIPTION_MAX_LENGTH}글자 이하이어야 합니다.`,
   WORK_EXPERIENCE_DESCRIPTION_IS_TOO_SHORT: `근무 설명은 ${WORK_EXPERIENCE_DESCRIPTION_MIN_LENGTH}글자 이상이어야 합니다.`,
+
+  // WorkPosition
   WORK_POSITION_IS_TOO_LONG: `직무는 ${WORK_EXPERIENCE_DESCRIPTION_MAX_LENGTH}글자 이하이어야 합니다.`,
   WORK_POSITION_IS_TOO_SHORT: `직무는 ${WORK_EXPERIENCE_DESCRIPTION_MIN_LENGTH}글자 이상이어야 합니다.`,
 };

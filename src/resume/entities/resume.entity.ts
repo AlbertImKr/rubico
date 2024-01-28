@@ -60,7 +60,7 @@ export class Resume {
   @EntityPhoneNumber()
   phoneNumber: PhoneNumber;
 
-  @OneToOne(() => ProfileImage, (profileImage) => profileImage.resume, {
+  @OneToOne(() => ProfileImage, {
     cascade: ['insert', 'update', 'soft-remove'],
   })
   @JoinColumn({ name: 'profile_image_id', referencedColumnName: 'id' })

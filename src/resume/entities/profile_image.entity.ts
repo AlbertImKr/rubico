@@ -1,30 +1,33 @@
-import { Column, DeleteDateColumn, Entity, OneToOne } from 'typeorm';
+import { Entity } from 'typeorm';
 import {
   EntityCreatedAt,
+  EntityDeletedAt,
+  EntityLink,
+  EntityMimeType,
   EntityPrimaryId,
+  EntityProfileImageName,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
 import { ObjectId } from 'mongodb';
-import { Resume } from './resume.entity';
+import { Link } from '../../shared/models/link.model';
+import { CustomMimeType } from '../types/mine-type.types';
+import { ProfileImageName } from '../../shared/models/profile-image-name.model';
 
 @Entity({ name: 'profile_image' })
 export class ProfileImage {
   @EntityPrimaryId()
   id: ObjectId;
 
-  @OneToOne(() => Resume, (resume) => resume.profileImage)
-  resume: Resume;
+  @EntityLink()
+  link: Link;
 
-  @Column()
-  link: string;
+  @EntityProfileImageName()
+  name: ProfileImageName;
 
-  @Column()
-  name: string;
+  @EntityMimeType()
+  mimeType: CustomMimeType;
 
-  @Column()
-  mimeType: string;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

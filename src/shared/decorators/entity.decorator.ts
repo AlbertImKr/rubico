@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { Column, Index, PrimaryColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Index, PrimaryColumn } from 'typeorm';
 import {
   COLUMN_NAME,
   COLUMN_TYPE,
@@ -16,6 +16,8 @@ import { ObjectId } from 'mongodb';
 import { BriefIntroduction } from '../models/brief-Introduction.model';
 import { ResumeName } from '../models/resume-name.model';
 import { ResumeOccupation } from '../models/resume-occupation.model';
+import { Link } from '../models/link.model';
+import { ProfileImageName } from '../models/profile-image-name.model';
 
 export function EntityPrimaryId() {
   return applyDecorators(
@@ -161,6 +163,10 @@ export function EntityUpdatedAt() {
   return applyDecorators(Column({ name: COLUMN_NAME.UPDATED_AT }));
 }
 
+export function EntityDeletedAt() {
+  return applyDecorators(DeleteDateColumn({ name: 'deleted_at' }));
+}
+
 export function EntityDeleted() {
   return applyDecorators(Column({ default: false }));
 }
@@ -169,6 +175,34 @@ export function EntityIsActive() {
   return applyDecorators(
     Column({ name: COLUMN_NAME.IS_ACTIVE, default: false }),
   );
+}
+
+export function EntityLink() {
+  return applyDecorators(
+    Column({
+      type: COLUMN_TYPE.VARCHAR,
+      transformer: {
+        to: (value: Link) => value.value,
+        from: (value: string) => new Link(value),
+      },
+    }),
+  );
+}
+
+export function EntityProfileImageName() {
+  return applyDecorators(
+    Column({
+      type: COLUMN_TYPE.VARCHAR,
+      transformer: {
+        to: (value: ProfileImageName) => value.value,
+        from: (value: string) => new ProfileImageName(value),
+      },
+    }),
+  );
+}
+
+export function EntityMimeType() {
+  return applyDecorators(Column({ type: COLUMN_TYPE.VARCHAR }));
 }
 
 export function UniqueUserAccountEmailIndex() {
