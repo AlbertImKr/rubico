@@ -8,6 +8,7 @@ import { ProfileImageName } from '../../shared/models/profile-image-name.model';
 import { CustomMimeType } from '../types/mine-type.types';
 import { Link } from '../../shared/models/link.model';
 import { createS3UploadParams } from '../../shared/providers/aws-s3/s3-upload.utils';
+import { IdResponse } from '../../shared/utils/response.dto';
 
 @Injectable()
 export class FileUploadWriteService {
@@ -21,33 +22,39 @@ export class FileUploadWriteService {
     this.bucketName = this.configService.get<string>('AWS_S3_BUCKET_NAME');
   }
 
-  async writeFileUpload(
+  async uploadProfileImage(
     file: Express.Multer.File,
     userId: ObjectId,
-  ): Promise<void> {
+  ): Promise<IdResponse> {
     const params: AWS.S3.PutObjectRequest = createS3UploadParams(
       userId,
       file,
       this.bucketName,
     );
-    const response = await this.fileUploadSolution.upload(params).promise();
+    const response: AWS.S3.ManagedUpload.SendData =
+      await this.fileUploadSolution.upload(params).promise();
     if (!response) {
       throw new Error('File upload failed');
     }
-    this.saveProfileImage(file, response, userId);
+    const profileImageId: ObjectId = await this.saveProfileImage(
+      file,
+      response,
+      userId,
+    );
+    return { id: profileImageId.toString() };
   }
 
   private async saveProfileImage(
     file: Express.Multer.File,
     response: AWS.S3.ManagedUpload.SendData,
     userId: ObjectId,
-  ): Promise<void> {
+  ): Promise<ObjectId> {
     const profileImageRegisterData: ProfileImageRegisterData = {
       name: new ProfileImageName(file.originalname),
       mimeType: file.mimetype as CustomMimeType,
       link: new Link(response.Location),
       userId,
     };
-    await this.profileImageWriteService.register(profileImageRegisterData);
+    return this.profileImageWriteService.register(profileImageRegisterData);
   }
 }

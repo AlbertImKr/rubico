@@ -10,7 +10,10 @@ export class ProfileImageWriteService {
   constructor(private readonly dataSource: DataSource) {}
 
   @Transactional()
-  async register(data: ProfileImageRegisterData, queryRunner?: QueryRunner) {
+  async register(
+    data: ProfileImageRegisterData,
+    queryRunner?: QueryRunner,
+  ): Promise<ObjectId> {
     const createdAt = new Date();
     const newProfileImage: ProfileImage = queryRunner.manager.create(
       ProfileImage,
@@ -21,7 +24,8 @@ export class ProfileImageWriteService {
         updatedAt: createdAt,
       },
     );
-    return queryRunner.manager.save(newProfileImage);
+    const profileImage = await queryRunner.manager.save(newProfileImage);
+    return profileImage.id;
   }
 
   @Transactional()

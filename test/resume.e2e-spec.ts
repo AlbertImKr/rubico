@@ -23,6 +23,7 @@ describe('ResumeController', () => {
 
   describe('이력서 등록', () => {
     let userToken: string;
+    let profileImageId: string;
 
     beforeEach(async () => {
       const response = await request(app.getHttpServer())
@@ -34,9 +35,14 @@ describe('ResumeController', () => {
           phoneNumber: TestConstants.USER_PHONE_NUMBER,
           password: TestConstants.USER_PASSWORD,
         });
-
       userToken = response.body.accessToken;
       expect(userToken).toBeDefined();
+
+      const profileImageResponse = await request(app.getHttpServer())
+        .post('/files/profile-image')
+        .set('Authorization', `Bearer ${userToken}`)
+        .attach('image', TestConstants.PROFILE_IMAGE_FILE_PATH);
+      profileImageId = profileImageResponse.body.id;
     });
 
     it('/resume (POST)', async () => {
@@ -50,7 +56,7 @@ describe('ResumeController', () => {
           address: '인천시 연수구 송도동',
           occupation: '백엔드 개발자',
           briefIntroduction: '안녕하세요. 저는 백엔드 개발자입니다.',
-          profileImageId: '60b0f7b9e6b3f3b3e8b0e0a0',
+          profileImageId: profileImageId,
           portfolio_files: ['https://test.com', 'https://test2.com'],
           portfolio_links: ['https://test3.com', 'https://test4.com'],
           projectExperiences: [
@@ -99,5 +105,9 @@ describe('ResumeController', () => {
         })
         .expect(201);
     });
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 });

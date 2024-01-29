@@ -10,11 +10,11 @@ export class ResumeWriteController {
   constructor(private readonly resumeWriteService: ResumeWriteService) {}
 
   @Post()
-  async create(
+  async register(
     @Body() request: ResumeRegisterRequestDto,
     @UserData() userData: LoginUserData,
   ) {
     const data = ResumeRegisterDataTransformer.transform(request, userData.id);
-    return this.resumeWriteService.create(data);
+    return this.resumeWriteService.register(data);
   }
 }

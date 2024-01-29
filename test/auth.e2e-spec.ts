@@ -58,6 +58,7 @@ describe('AuthController', () => {
   });
 
   afterEach(async () => {
+    await testDatabaseService.clearAll();
     await app.close();
   });
 });

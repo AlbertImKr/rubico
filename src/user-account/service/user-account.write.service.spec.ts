@@ -58,7 +58,7 @@ describe('유저 계정 서비스', () => {
       jest.spyOn(userAccountRepository, 'existsBy').mockResolvedValue(false);
       jest.spyOn(userAccountRepository, 'save').mockResolvedValue(userAccount);
       jest.spyOn(userAccountRepository, 'create').mockReturnValue(userAccount);
-      const data = TestUtils.generateUserAccountData();
+      const data = TestUtils.generateUserAccountData;
 
       // when
       const result = await userAccountService.generate(data);

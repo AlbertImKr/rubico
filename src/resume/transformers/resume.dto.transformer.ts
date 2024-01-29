@@ -28,28 +28,35 @@ import { WorkPosition } from '../../shared/models/work-position.model';
 
 export class ResumeRegisterDataTransformer {
   static transform(
-    data: ResumeRegisterRequestDto,
+    request: ResumeRegisterRequestDto,
     userAccountId: ObjectId,
   ): ResumeRegisterData {
     return {
       userAccountId: userAccountId,
-      name: new ResumeName(data.name),
-      email: new Email(data.email),
-      phoneNumber: new PhoneNumber(data.phoneNumber),
-      address: new Address(data.address),
-      occupation: new ResumeOccupation(data.occupation),
-      briefIntroduction: new BriefIntroduction(data.briefIntroduction),
-      profileImageId: new ObjectId(data.profileImageId),
-      portfolioFileIds: data.portfolioFileIds?.map((id) => new ObjectId(id)),
-      portfolioLinks: data.portfolioLinks?.map((link) => new Link(link)),
-      technicalSkillIds: data.technicalSkillIds?.map((id) => new ObjectId(id)),
-      projectExperiences: data.projectExperiences?.map((projectExperience) => {
-        return ProjectExperienceDataTransformer.transform(projectExperience);
-      }, []),
-      workExperiences: data.workExperiences?.map((workExperience) => {
+      name: new ResumeName(request.name),
+      email: new Email(request.email),
+      phoneNumber: new PhoneNumber(request.phoneNumber),
+      address: new Address(request.address),
+      occupation: new ResumeOccupation(request.occupation),
+      briefIntroduction: new BriefIntroduction(request.briefIntroduction),
+      profileImageId: new ObjectId(request.profileImageId),
+      portfolioFileIds: request.portfolioFileIds?.map((id) => new ObjectId(id)),
+      portfolioLinks: request.portfolioLinks?.map((link) => new Link(link)),
+      technicalSkillIds: request.technicalSkillIds?.map(
+        (id) => new ObjectId(id),
+      ),
+      projectExperiences: request.projectExperiences?.map(
+        (projectExperience) => {
+          return ProjectExperienceDataTransformer.transform(projectExperience);
+        },
+        [],
+      ),
+      workExperiences: request.workExperiences?.map((workExperience) => {
         return WorkExperienceDataTransformer.transform(workExperience);
       }, []),
-      fieldOfInterestIds: data.fieldOfInterestIds.map((id) => new ObjectId(id)),
+      fieldOfInterestIds: request.fieldOfInterestIds.map(
+        (id) => new ObjectId(id),
+      ),
     };
   }
 }

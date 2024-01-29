@@ -10,6 +10,9 @@ import { DataSource, EntityManager } from 'typeorm';
 import { Introduction } from '../models/introduction.model';
 import { HashedPassword } from '../models/hash-password.model';
 import { GenerateUserAccountData } from '../../user-account/dto/user-account.data.dto';
+import { ResumeRegisterRequestDto } from '../../resume/dto/resume.request.dto';
+import { LoginUserData } from '../../auth/dto/auth.data.dto';
+import { ResumeRegisterDataTransformer } from '../../resume/transformers/resume.dto.transformer';
 
 export class TestUtils {
   static readonly nickname: Nickname = new Nickname(
@@ -30,7 +33,11 @@ export class TestUtils {
     TestConstants.HASHED_PASSWORD,
   );
   static readonly id: ObjectId = new ObjectId();
-  static readonly createdAt: Date = new Date(2021, 1, 1);
+  static readonly createdAt: Date = new Date(
+    TestConstants.CREATED_AT_YEAR,
+    TestConstants.CREATED_AT_MONTH,
+    TestConstants.CREATED_AT_DATE,
+  );
 
   static readonly editUserNickname: Nickname = new Nickname(
     TestConstants.EDIT_USER_NICKNAME,
@@ -56,28 +63,47 @@ export class TestUtils {
   }
   static readonly userAccount: UserAccount = this.createTestUserAccount();
 
-  static generateUserAccountData(): GenerateUserAccountData {
-    return {
-      email: TestUtils.email,
-      nickname: TestUtils.nickname,
-      hashedPassword: TestUtils.hashedPassword,
-      address: TestUtils.address,
-      phoneNumber: TestUtils.phoneNumber,
-    };
-  }
-
-  static readonly mockProfileImageFile: Express.Multer.File = {
-    fieldname: 'image',
-    originalname: TestConstants.PROFILE_IMAGE_NAME,
-    encoding: '7bit',
-    mimetype: 'image/jpeg',
-    size: 100,
-    stream: null,
-    destination: '',
-    filename: '',
-    path: '',
-    buffer: Buffer.from(''),
+  static readonly generateUserAccountData: GenerateUserAccountData = {
+    email: TestUtils.email,
+    nickname: TestUtils.nickname,
+    hashedPassword: TestUtils.hashedPassword,
+    address: TestUtils.address,
+    phoneNumber: TestUtils.phoneNumber,
   };
+
+  static readonly profileImageFile: Express.Multer.File = {
+    fieldname: TestConstants.PROFILE_IMAGE_FILE_FIELD_NAME,
+    originalname: TestConstants.PROFILE_IMAGE_NAME,
+    encoding: TestConstants.PROFILE_IMAGE_FILE_ENCODING,
+    mimetype: TestConstants.PROFILE_IMAGE_FILE_MIME_TYPE,
+    size: TestConstants.PROFILE_IMAGE_FILE_SIZE,
+    stream: null,
+    destination: TestConstants.PROFILE_IMAGE_FILE_DESTINATION,
+    filename: TestConstants.PROFILE_IMAGE_FILE_FILENAME,
+    path: TestConstants.PROFILE_IMAGE_FILE_PATH,
+    buffer: TestConstants.PROFILE_IMAGE_FILE_BUFFER,
+  };
+
+  static readonly resumeRegisterRequest: ResumeRegisterRequestDto = {
+    name: TestConstants.RESUME_NAME,
+    email: TestConstants.RESUME_EMAIL,
+    phoneNumber: TestConstants.RESUME_PHONE_NUMBER,
+    address: TestConstants.RESUME_ADDRESS,
+    occupation: TestConstants.RESUME_OCCUPATION,
+    briefIntroduction: TestConstants.RESUME_BRIEF_INTRODUCTION,
+    profileImageId: TestConstants.PROFILE_IMAGE_ID,
+    fieldOfInterestIds: TestConstants.FIELD_OF_INTEREST_IDS,
+  };
+
+  static readonly loginUserData: LoginUserData = {
+    id: this.id,
+    nickname: this.nickname,
+  };
+
+  static readonly resumeRegisterData = ResumeRegisterDataTransformer.transform(
+    this.resumeRegisterRequest,
+    this.loginUserData.id,
+  );
 }
 
 export const mockEntityManager: EntityManager = jest

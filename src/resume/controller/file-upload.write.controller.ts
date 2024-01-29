@@ -12,6 +12,7 @@ import {
 } from '../../shared/pipes/profile-image-validation.pipe';
 import { UserData } from '../../shared/decorators/auth.decorator';
 import { LoginUserData } from '../../auth/dto/auth.data.dto';
+import { IdResponse } from '../../shared/utils/response.dto';
 
 @Controller('files')
 export class FileUploadWriteController {
@@ -28,7 +29,7 @@ export class FileUploadWriteController {
     )
     image: Express.Multer.File,
     @UserData() userData: LoginUserData,
-  ) {
-    this.fileUploadWriteService.writeFileUpload(image, userData.id);
+  ): Promise<IdResponse> {
+    return this.fileUploadWriteService.uploadProfileImage(image, userData.id);
   }
 }

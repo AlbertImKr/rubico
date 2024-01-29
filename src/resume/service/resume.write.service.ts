@@ -14,12 +14,17 @@ export class ResumeWriteService {
   ) {}
 
   @Transactional()
-  async create(data: ResumeRegisterData, queryRunner?: QueryRunner) {
+  async register(
+    data: ResumeRegisterData,
+    queryRunner?: QueryRunner,
+  ): Promise<Resume> {
     const profileImage = await this.profileImageWriteService.findById(
       data.profileImageId,
     );
+
     const id = new ObjectId();
     const createdAt = new Date();
+
     const resume = queryRunner.manager.create(Resume, {
       ...data,
       id,

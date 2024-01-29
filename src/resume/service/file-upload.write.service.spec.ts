@@ -53,14 +53,14 @@ describe('파일 업로드 write 서비스', () => {
     it('파일 업로드 성공', async () => {
       // given
       const userId = new ObjectId();
-      const file: Express.Multer.File = TestUtils.mockProfileImageFile;
+      const file: Express.Multer.File = TestUtils.profileImageFile;
       jest.spyOn(configService, 'get').mockReturnValue('test-bucket');
       jest
         .spyOn(profileImageWriteService, 'register')
         .mockResolvedValue(undefined);
 
       // when
-      await service.writeFileUpload(file, userId);
+      await service.uploadProfileImage(file, userId);
 
       // then
       expect(profileImageWriteService.register).toHaveBeenCalled();
