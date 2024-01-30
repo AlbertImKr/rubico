@@ -12,7 +12,7 @@ export class TestConstants {
   static readonly HASHED_PASSWORD =
     '$2b$10$Y8qTPhw/Rsp9hsTagMdcueAsxk0CvpKNtB2wK7cRmyv9OlSUC7wCG';
   static readonly USER_PHONE_NUMBER = '010-1234-5678';
-  static readonly USER_EMAIL = 'test@emial.com';
+  static readonly USER_EMAIL = 'test@email.com';
   static readonly ACCESS_TOKEN = 'access-token';
   static readonly REFRESH_TOKEN = 'refresh-token';
   static readonly CREATED_AT_YEAR = 2021;
@@ -32,6 +32,10 @@ export class TestConstants {
   static readonly PROFILE_IMAGE_FILE_FILENAME = '';
   static readonly PROFILE_IMAGE_FILE_PATH =
     __dirname + '/../../../test/assets/test-image.png';
+  static readonly PROFILE_IMAGE_FILE_PATH_NOT_IMAGE =
+    __dirname + '/../../../test/assets/test.txt';
+  static readonly PROFILE_IMAGE_FILE_PATH_TOO_LARGE =
+    __dirname + '/../../../test/assets/test-large-image.png';
   static readonly PROFILE_IMAGE_ID = '60b9b0b9c9b7d1b4e8b0b0b0';
 
   // Resume
@@ -48,4 +52,12 @@ export class TestConstants {
     '60b9b0b9c9b7d1b4e8b0b0b1',
     '60b9b0b9c9b7d1b4e8b0b0b2',
   ];
+
+  static readonly SIGN_UP_REQUEST_BODY = {
+    nickname: TestConstants.USER_NICKNAME,
+    email: TestConstants.USER_EMAIL,
+    address: TestConstants.USER_ADDRESS,
+    phoneNumber: TestConstants.USER_PHONE_NUMBER,
+    password: TestConstants.USER_PASSWORD,
+  };
 }

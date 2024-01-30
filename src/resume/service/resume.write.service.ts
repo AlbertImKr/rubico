@@ -18,9 +18,8 @@ export class ResumeWriteService {
     data: ResumeRegisterData,
     queryRunner?: QueryRunner,
   ): Promise<Resume> {
-    const profileImage = await this.profileImageWriteService.findById(
-      data.profileImageId,
-    );
+    const profileImageId = data.profileImageId;
+    await this.profileImageWriteService.validateExists(profileImageId);
 
     const id = new ObjectId();
     const createdAt = new Date();
@@ -30,7 +29,7 @@ export class ResumeWriteService {
       id,
       createdAt,
       updatedAt: createdAt,
-      profileImage,
+      profileImageId,
       portfolioLinks: [],
       workExperiences: [],
       projectExperiences: [],

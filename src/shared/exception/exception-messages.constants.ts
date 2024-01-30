@@ -34,6 +34,10 @@ export const EXCEPTION_MESSAGES = {
   // ProfileImage
   PROFILE_IMAGE_IS_TOO_LARGE: '프로필 이미지는 500KB 이하로 업로드 가능합니다.',
   PROFILE_IMAGE_IS_NOT_IMAGE: '이미지 파일만 업로드 가능합니다.',
+  PROFILE_IMAGE_IS_NOT_FOUND: '존재하지 않는 프로필 이미지입니다.',
+
+  // File
+  FILE_UPLOAD_FAILED: '파일을 업로드에 실패했습니다.',
 
   // ProfileImageName
   PROFILE_IMAGE_NAME_IS_TOO_LONG: `프로필 이미지 이름은 ${PROFILE_IMAGE_NAME_MAX_LENGTH}글자 이하이어야 합니다.`,

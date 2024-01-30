@@ -4,6 +4,7 @@ import { DataSource, QueryRunner } from 'typeorm';
 import { Transactional } from '../../shared/decorators/transactional.decorator';
 import { ProfileImageRegisterData } from '../dto/profile-image.data.dto';
 import { ProfileImage } from '../entities/profile_image.entity';
+import { ProfileImageIsNotFoundError } from '../../shared/exception/error/profile-image.error';
 
 @Injectable()
 export class ProfileImageWriteService {
@@ -39,9 +40,24 @@ export class ProfileImageWriteService {
         id: id,
       },
     );
-    if (!profileImage) {
-      throw new Error('ProfileImage not found');
+    if (profileImage) {
+      return profileImage;
     }
-    return profileImage;
+    throw new ProfileImageIsNotFoundError();
+  }
+
+  @Transactional()
+  async validateExists(id: ObjectId, queryRunner?: QueryRunner): Promise<void> {
+    if (this.existsById(id, queryRunner)) {
+      return;
+    }
+    throw new ProfileImageIsNotFoundError();
+  }
+
+  @Transactional()
+  async existsById(id: ObjectId, queryRunner?: QueryRunner): Promise<boolean> {
+    return queryRunner.manager.existsBy(ProfileImage, {
+      id: id,
+    });
   }
 }

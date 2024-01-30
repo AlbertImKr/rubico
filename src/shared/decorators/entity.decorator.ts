@@ -31,9 +31,10 @@ export function EntityPrimaryId() {
   );
 }
 
-export function EntityRelationId() {
+export function EntityRelationId(name?: string) {
   return applyDecorators(
     Column({
+      name,
       type: COLUMN_TYPE.VARCHAR,
       transformer: {
         to: (value: ObjectId) => value.toHexString(),

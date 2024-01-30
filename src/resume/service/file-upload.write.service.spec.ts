@@ -57,7 +57,7 @@ describe('파일 업로드 write 서비스', () => {
       jest.spyOn(configService, 'get').mockReturnValue('test-bucket');
       jest
         .spyOn(profileImageWriteService, 'register')
-        .mockResolvedValue(undefined);
+        .mockResolvedValue(new ObjectId());
 
       // when
       await service.uploadProfileImage(file, userId);

@@ -44,10 +44,12 @@ describe('ProfileImageWriteService', () => {
       deletedAt: null,
     };
     jest.spyOn(mockEntityManager, 'create').mockReturnValue([profileImage]);
-    jest.spyOn(mockEntityManager, 'save').mockResolvedValueOnce(undefined);
+    jest.spyOn(mockEntityManager, 'save').mockResolvedValueOnce(profileImage);
 
     // when
-    await profileImageWriteService.register(profileImageRegisterData);
+    const response = await profileImageWriteService.register(
+      profileImageRegisterData,
+    );
 
     // then
     expect(mockEntityManager.create).toHaveBeenCalledWith(ProfileImage, {
@@ -59,5 +61,6 @@ describe('ProfileImageWriteService', () => {
     expect(mockEntityManager.save).toHaveBeenCalledWith(
       expect.arrayContaining([profileImage]),
     );
+    expect(response).toEqual(profileImage.id);
   });
 });

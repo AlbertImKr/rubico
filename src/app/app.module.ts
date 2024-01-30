@@ -22,7 +22,7 @@ import { ResumeModule } from '../resume/resume.module';
         database: configService.get<string>(DATABASE.NAME),
         entities: [__dirname + configService.get<string>(DATABASE.ENTITY_PATH)],
         synchronize: configService.get<boolean>(DATABASE.SYNC),
-        logging: true,
+        // logging: true,
       }),
       inject: [ConfigService],
     }),

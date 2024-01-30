@@ -9,6 +9,7 @@ import { CustomMimeType } from '../types/mine-type.types';
 import { Link } from '../../shared/models/link.model';
 import { createS3UploadParams } from '../../shared/providers/aws-s3/s3-upload.utils';
 import { IdResponse } from '../../shared/utils/response.dto';
+import { ProfileImageUploadFailedError as FileUploadFailedError } from '../../shared/exception/error/profile-image.error';
 
 @Injectable()
 export class FileUploadWriteService {
@@ -32,16 +33,22 @@ export class FileUploadWriteService {
       this.bucketName,
     );
     const response: AWS.S3.ManagedUpload.SendData =
-      await this.fileUploadSolution.upload(params).promise();
-    if (!response) {
-      throw new Error('File upload failed');
-    }
+      await this.uploadFile(params);
     const profileImageId: ObjectId = await this.saveProfileImage(
       file,
       response,
       userId,
     );
     return { id: profileImageId.toString() };
+  }
+
+  private async uploadFile(params: AWS.S3.PutObjectRequest) {
+    const response: AWS.S3.ManagedUpload.SendData =
+      await this.fileUploadSolution.upload(params).promise();
+    if (!response) {
+      throw new FileUploadFailedError();
+    }
+    return response;
   }
 
   private async saveProfileImage(
