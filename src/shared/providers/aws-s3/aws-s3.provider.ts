@@ -9,11 +9,17 @@ export const S3Provider = {
       'AWS_S3_SECRET_ACCESS_KEY',
     );
     const region = configService.get<string>('AWS_S3_REGION');
+    const endpoint = configService.get<string>('AWS_S3_ENDPOINT');
+    const s3ForcePathStyle = configService.get<boolean>(
+      'AWS_S3_FORCE_PATH_STYLE',
+    );
 
     return new AWS.S3({
+      endpoint,
       accessKeyId,
       secretAccessKey,
       region,
+      s3ForcePathStyle,
     });
   },
   inject: [ConfigService],

@@ -1,22 +1,18 @@
 import { INestApplication } from '@nestjs/common';
 import { TestDatabaseService } from './database.e2e.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app/app.module';
+import { TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { EXCEPTION_MESSAGES } from '../src/shared/exception/exception-messages.constants';
 import { TestConstants } from '../src/shared/test-utils/test.constants';
+import { createE2eTestModule } from './e2e-test.utils';
 
-describe('이미지 E2E 테스트', () => {
+describe('파일 E2E 테스트', () => {
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
   let userToken: string;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-      providers: [TestDatabaseService],
-    }).compile();
-
+    const module: TestingModule = await createE2eTestModule();
     app = module.createNestApplication();
     await app.init();
     testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);

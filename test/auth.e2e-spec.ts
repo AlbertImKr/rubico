@@ -1,19 +1,16 @@
 import * as request from 'supertest';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../src/app/app.module';
 import { TestDatabaseService } from './database.e2e.service';
 import { TestConstants } from '../src/shared/test-utils/test.constants';
+import { createE2eTestModule } from './e2e-test.utils';
 
 describe('AuthController', () => {
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-      providers: [TestDatabaseService],
-    }).compile();
+    const module: TestingModule = await createE2eTestModule();
 
     app = module.createNestApplication();
     await app.init();

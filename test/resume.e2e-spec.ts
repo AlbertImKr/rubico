@@ -1,9 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import { TestDatabaseService } from './database.e2e.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app/app.module';
+import { TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { TestConstants } from '../src/shared/test-utils/test.constants';
+import { createE2eTestModule } from './e2e-test.utils';
 
 describe('ResumeController', () => {
   let app: INestApplication;
@@ -11,10 +11,7 @@ describe('ResumeController', () => {
   let userToken: string;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-      providers: [TestDatabaseService],
-    }).compile();
+    const module: TestingModule = await createE2eTestModule();
 
     app = module.createNestApplication();
     await app.init();
