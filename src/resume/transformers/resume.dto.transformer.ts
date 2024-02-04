@@ -27,7 +27,7 @@ import { EmploymentType } from '../enums/employment-type.enum';
 import { WorkPosition } from '../../shared/models/work-position.model';
 
 export class ResumeRegisterDataTransformer {
-  static transform(
+  static from(
     request: ResumeRegisterRequestDto,
     userAccountId: ObjectId,
   ): ResumeRegisterData {
@@ -47,12 +47,12 @@ export class ResumeRegisterDataTransformer {
       ),
       projectExperiences: request.projectExperiences?.map(
         (projectExperience) => {
-          return ProjectExperienceDataTransformer.transform(projectExperience);
+          return ProjectExperienceDataTransformer.from(projectExperience);
         },
         [],
       ),
       workExperiences: request.workExperiences?.map((workExperience) => {
-        return WorkExperienceDataTransformer.transform(workExperience);
+        return WorkExperienceDataTransformer.from(workExperience);
       }, []),
       fieldOfInterestIds: request.fieldOfInterestIds.map(
         (id) => new ObjectId(id),
@@ -62,7 +62,7 @@ export class ResumeRegisterDataTransformer {
 }
 
 export class ProjectExperienceDataTransformer {
-  static transform(data: ProjectExperienceRequestDto): ProjectExperienceData {
+  static from(data: ProjectExperienceRequestDto): ProjectExperienceData {
     return {
       projectName: new ProjectName(data.projectName),
       organizationName: new OrganizationName(data.organizationName),
@@ -75,7 +75,7 @@ export class ProjectExperienceDataTransformer {
 }
 
 export class WorkExperienceDataTransformer {
-  static transform(data: WorkExperienceRequestDto): WorkExperienceData {
+  static from(data: WorkExperienceRequestDto): WorkExperienceData {
     return {
       companyName: new CompanyName(data.companyName),
       department: new Department(data.department),

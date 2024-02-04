@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { ResumeRegisterData } from '../dto/resume.data.dto';
 import { DataSource, QueryRunner } from 'typeorm';
 import { Transactional } from '../../shared/decorators/transactional.decorator';
-import { ObjectId } from 'mongodb';
 import { ProfileImageWriteService } from './profile-image.write.service';
-import { ResumeEntityEntity } from '../entities/resume.entity';
+import { ResumeEntity } from '../entities/resume.entity';
 import { Resume } from '../domain/resume.domain';
 import { ProfileImage } from '../domain/profile_image.domain';
+import { ResumeDomainFactory } from '../utils/resume.domain.factory';
+import { ResumeTransformer } from '../transformers/resume.domain.transformer';
 
 @Injectable()
 export class ResumeWriteService {
@@ -19,35 +20,20 @@ export class ResumeWriteService {
   async register(
     data: ResumeRegisterData,
     queryRunner?: QueryRunner,
-  ): Promise<ResumeEntityEntity> {
+  ): Promise<Resume> {
     const profileImageId = data.profileImageId;
-
-    await this.profileImageService.validateExists(profileImageId);
     const profileImage: ProfileImage =
       await this.profileImageService.findById(profileImageId);
-    const resumeId = new ObjectId();
-    const createdAt = new Date();
+    const resume: Resume = ResumeDomainFactory.createResume(data, profileImage);
+    return await this.save(resume, queryRunner);
+  }
 
-    const resume: Resume = {
-      id: resumeId,
-      createdAt,
-      updatedAt: createdAt,
-      userAccountId: data.userAccountId,
-      address: data.address,
-      briefIntroduction: data.briefIntroduction,
-      email: data.email,
-      name: data.name,
-      occupation: data.occupation,
-      phoneNumber: data.phoneNumber,
-      profileImage: profileImage,
-      portfolioFiles: [],
-      portfolioLinks: [],
-      projectExperiences: [],
-      interestsFields: [],
-      technicalSkills: [],
-      workExperiences: [],
-      deletedAt: null,
-    };
-    return queryRunner.manager.save(ResumeEntityEntity.from(resume));
+  @Transactional()
+  public async save(resume: Resume, queryRunner?: QueryRunner) {
+    const resumeEntity: ResumeEntity = await queryRunner.manager.save(
+      ResumeEntity,
+      ResumeTransformer.toEntity(resume),
+    );
+    return ResumeTransformer.fromEntity(resumeEntity);
   }
 }

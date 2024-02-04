@@ -6,7 +6,7 @@ export class TechnicalSkill {
 
   name: TechnicalSkillName;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

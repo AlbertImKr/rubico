@@ -25,7 +25,7 @@ describe('ResumeRegisterDataTransformer', () => {
     const userAccountId = new ObjectId();
 
     // when
-    const resumeRegisterData = ResumeRegisterDataTransformer.transform(
+    const resumeRegisterData = ResumeRegisterDataTransformer.from(
       resumeRegisterRequest,
       userAccountId,
     );
@@ -71,7 +71,7 @@ describe('ProjectExperienceDataTransformer', () => {
     };
 
     // when
-    const projectExperienceData = ProjectExperienceDataTransformer.transform(
+    const projectExperienceData = ProjectExperienceDataTransformer.from(
       projectExperienceRequest,
     );
 
@@ -111,7 +111,7 @@ describe('WorkExperienceDataTransformer', () => {
     };
 
     // when
-    const workExperienceData = WorkExperienceDataTransformer.transform(
+    const workExperienceData = WorkExperienceDataTransformer.from(
       workExperienceRequest,
     );
 

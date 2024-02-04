@@ -46,15 +46,13 @@ describe('ResumeWriteController', () => {
       const userData: LoginUserData = TestUtils.loginUserData;
       const data = TestUtils.resumeRegisterData;
       jest.spyOn(service, 'register').mockResolvedValue(undefined);
-      jest
-        .spyOn(ResumeRegisterDataTransformer, 'transform')
-        .mockReturnValue(data);
+      jest.spyOn(ResumeRegisterDataTransformer, 'from').mockReturnValue(data);
 
       // when
       await controller.register(resumeRegisterRequest, userData);
 
       // then
-      expect(ResumeRegisterDataTransformer.transform).toHaveBeenCalledWith(
+      expect(ResumeRegisterDataTransformer.from).toHaveBeenCalledWith(
         resumeRegisterRequest,
         userData.id,
       );

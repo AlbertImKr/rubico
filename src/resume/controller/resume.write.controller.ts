@@ -14,7 +14,7 @@ export class ResumeWriteController {
     @Body() request: ResumeRegisterRequestDto,
     @UserData() userData: LoginUserData,
   ) {
-    const data = ResumeRegisterDataTransformer.transform(request, userData.id);
+    const data = ResumeRegisterDataTransformer.from(request, userData.id);
     return this.resumeWriteService.register(data);
   }
 }

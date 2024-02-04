@@ -6,6 +6,8 @@ import { ProfileImageRegisterData } from '../dto/profile-image.data.dto';
 import { ProfileImageEntity } from '../entities/profile_image.entity';
 import { ProfileImageIsNotFoundError } from '../../shared/exception/error/profile-image.error';
 import { ProfileImage } from '../domain/profile_image.domain';
+import { ProfileImageDomainFactory } from '../utils/profile-image.domain.factory';
+import { ProfileImageTransformer } from '../transformers/resume.domain.transformer';
 
 @Injectable()
 export class ProfileImageWriteService {
@@ -16,19 +18,19 @@ export class ProfileImageWriteService {
     data: ProfileImageRegisterData,
     queryRunner?: QueryRunner,
   ): Promise<ObjectId> {
-    const createdAt = new Date();
-    const newProfileImage: ProfileImage = {
-      id: new ObjectId(),
-      createdAt,
-      updatedAt: createdAt,
-      link: data.link,
-      mimeType: data.mimeType,
-      name: data.name,
-      deletedAt: null,
-    };
+    const profileImage: ProfileImage =
+      ProfileImageDomainFactory.createProfileImage(data);
+    return await this.save(profileImage, queryRunner);
+  }
+
+  @Transactional()
+  private async save(profileImage: ProfileImage, queryRunner?: QueryRunner) {
     const profileImageEntity: ProfileImageEntity =
-      await queryRunner.manager.save(ProfileImageEntity.from(newProfileImage));
-    return ProfileImageEntity.toDomain(profileImageEntity).id;
+      await queryRunner.manager.save(
+        ProfileImageEntity,
+        ProfileImageTransformer.toEntity(profileImage),
+      );
+    return ProfileImageTransformer.fromEntity(profileImageEntity).id;
   }
 
   @Transactional()
@@ -41,7 +43,7 @@ export class ProfileImageWriteService {
         id: id.toHexString(),
       });
     if (profileImage) {
-      return ProfileImageEntity.toDomain(profileImage);
+      return ProfileImageTransformer.fromEntity(profileImage);
     }
     throw new ProfileImageIsNotFoundError();
   }

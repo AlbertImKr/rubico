@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ResumeWriteController } from './controller/resume.write.controller';
 import { ResumeWriteService } from './service/resume.write.service';
-import { ResumeEntityEntity } from './entities/resume.entity';
+import { ResumeEntity } from './entities/resume.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfileImageWriteController } from './controller/profile-image.write.controller';
 import { ProfileImageEntity } from './entities/profile_image.entity';
@@ -11,7 +11,7 @@ import { ProfileImageWriteService } from './service/profile-image.write.service'
 import { S3Provider } from '../shared/providers/aws-s3/aws-s3.provider';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ResumeEntityEntity, ProfileImageEntity])],
+  imports: [TypeOrmModule.forFeature([ResumeEntity, ProfileImageEntity])],
   controllers: [
     ResumeWriteController,
     ProfileImageWriteController,

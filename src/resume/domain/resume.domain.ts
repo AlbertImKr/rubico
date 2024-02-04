@@ -44,7 +44,7 @@ export class Resume {
 
   workExperiences: WorkExperience[];
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

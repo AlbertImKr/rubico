@@ -18,11 +18,11 @@ export class WorkExperience {
 
   position: WorkPosition;
 
-  startDate: Date;
+  startedAt: Date;
 
-  endDate: Date;
+  endedAt: Date;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

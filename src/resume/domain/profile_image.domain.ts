@@ -12,7 +12,7 @@ export class ProfileImage {
 
   mimeType: CustomMimeType;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

@@ -15,11 +15,11 @@ export class ProjectExperience {
 
   projectName: ProjectName;
 
-  projectStartDate: Date;
+  startedAt: Date;
 
-  projectEndDate: Date;
+  endedAt: Date;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

@@ -9,7 +9,7 @@ export class FieldOfWork {
 
   name: FieldOfWorkName;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

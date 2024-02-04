@@ -100,7 +100,7 @@ export class TestUtils {
     nickname: this.nickname,
   };
 
-  static readonly resumeRegisterData = ResumeRegisterDataTransformer.transform(
+  static readonly resumeRegisterData = ResumeRegisterDataTransformer.from(
     this.resumeRegisterRequest,
     this.loginUserData.id,
   );

@@ -9,7 +9,7 @@ export class InterestField {
 
   name: InterestFieldName;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 
