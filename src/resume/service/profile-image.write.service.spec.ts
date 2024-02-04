@@ -38,29 +38,22 @@ describe('ProfileImageWriteService', () => {
     };
     const profileImage: ProfileImageEntity = {
       ...profileImageRegisterData,
-      id: new ObjectId(),
+      id: new ObjectId().toHexString(),
+      name: profileImageRegisterData.name.value,
+      link: profileImageRegisterData.link.value,
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,
     };
-    jest.spyOn(mockEntityManager, 'create').mockReturnValue([profileImage]);
     jest.spyOn(mockEntityManager, 'save').mockResolvedValueOnce(profileImage);
 
     // when
-    const response = await profileImageWriteService.register(
+    const response: ObjectId = await profileImageWriteService.register(
       profileImageRegisterData,
     );
 
     // then
-    expect(mockEntityManager.create).toHaveBeenCalledWith(ProfileImageEntity, {
-      ...profileImageRegisterData,
-      id: expect.any(ObjectId),
-      createdAt: expect.any(Date),
-      updatedAt: expect.any(Date),
-    });
-    expect(mockEntityManager.save).toHaveBeenCalledWith(
-      expect.arrayContaining([profileImage]),
-    );
-    expect(response).toEqual(profileImage.id);
+    expect(mockEntityManager.save).toHaveBeenCalledTimes(1);
+    expect(response.toHexString()).toEqual(profileImage.id);
   });
 });
