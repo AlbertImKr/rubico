@@ -9,7 +9,7 @@ import { ProfileImageName } from '../../shared/models/profile-image-name.model';
 import { CustomMimeType } from '../types/mine-type.types';
 import { Link } from '../../shared/models/link.model';
 import { ObjectId } from 'mongodb';
-import { ProfileImage } from '../entities/profile_image.entity';
+import { ProfileImageEntity } from '../entities/profile_image.entity';
 
 describe('ProfileImageWriteService', () => {
   let profileImageWriteService: ProfileImageWriteService;
@@ -36,7 +36,7 @@ describe('ProfileImageWriteService', () => {
       link: new Link('https://test.com'),
       userId: new ObjectId(),
     };
-    const profileImage: ProfileImage = {
+    const profileImage: ProfileImageEntity = {
       ...profileImageRegisterData,
       id: new ObjectId(),
       createdAt: new Date(),
@@ -52,7 +52,7 @@ describe('ProfileImageWriteService', () => {
     );
 
     // then
-    expect(mockEntityManager.create).toHaveBeenCalledWith(ProfileImage, {
+    expect(mockEntityManager.create).toHaveBeenCalledWith(ProfileImageEntity, {
       ...profileImageRegisterData,
       id: expect.any(ObjectId),
       createdAt: expect.any(Date),

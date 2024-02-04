@@ -42,7 +42,9 @@ export class FileUploadWriteService {
     return { id: profileImageId.toString() };
   }
 
-  private async uploadFile(params: AWS.S3.PutObjectRequest) {
+  private async uploadFile(
+    params: AWS.S3.PutObjectRequest,
+  ): Promise<AWS.S3.ManagedUpload.SendData> {
     const response: AWS.S3.ManagedUpload.SendData =
       await this.fileUploadSolution.upload(params).promise();
     if (!response) {

@@ -1,28 +1,31 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  ObjectId,
+  PrimaryColumn,
+} from 'typeorm';
+import { ResumeEntityEntity } from './resume.entity';
 import {
   EntityCreatedAt,
   EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { ProfileImage } from '../domain/profile_image.domain';
+import { PortfolioLink } from '../domain/portfolio_link.domain';
 import { Link } from '../../shared/models/link.model';
-import { ProfileImageName } from '../../shared/models/profile-image-name.model';
-import { CustomMimeType } from '../types/mine-type.types';
-import { ObjectId } from 'mongodb';
 
-@Entity({ name: 'profile_image' })
-export class ProfileImageEntity {
+@Entity({ name: 'portfolio_link' })
+export class PortfolioLinkEntity {
   @PrimaryColumn()
   id: string;
 
   @Column()
   link: string;
 
-  @Column()
-  name: string;
-
-  @Column()
-  mimeType: string;
+  @ManyToOne(() => ResumeEntityEntity, (resume) => resume.portfolioLinks)
+  @JoinColumn({ name: 'resume_id', referencedColumnName: 'id' })
+  resume: ResumeEntityEntity;
 
   @EntityDeletedAt()
   deletedAt: Date;
@@ -33,24 +36,20 @@ export class ProfileImageEntity {
   @EntityUpdatedAt()
   updatedAt: Date;
 
-  static from(domain: ProfileImage): ProfileImageEntity {
-    const entity = new ProfileImageEntity();
+  static from(domain: PortfolioLink): PortfolioLinkEntity {
+    const entity = new PortfolioLinkEntity();
     entity.id = domain.id.toHexString();
     entity.link = domain.link.value;
-    entity.name = domain.name.value;
-    entity.mimeType = domain.mimeType;
     entity.deletedAt = domain.deletedAt;
     entity.createdAt = domain.createdAt;
     entity.updatedAt = domain.updatedAt;
     return entity;
   }
 
-  static toDomain(entity: ProfileImageEntity): ProfileImage {
+  static toDomain(entity: PortfolioLinkEntity): PortfolioLink {
     return {
       id: new ObjectId(entity.id),
       link: new Link(entity.link),
-      name: new ProfileImageName(entity.name),
-      mimeType: entity.mimeType as CustomMimeType,
       deletedAt: entity.deletedAt,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,

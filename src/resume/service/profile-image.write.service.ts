@@ -3,8 +3,9 @@ import { ObjectId } from 'mongodb';
 import { DataSource, QueryRunner } from 'typeorm';
 import { Transactional } from '../../shared/decorators/transactional.decorator';
 import { ProfileImageRegisterData } from '../dto/profile-image.data.dto';
-import { ProfileImage } from '../entities/profile_image.entity';
+import { ProfileImageEntity } from '../entities/profile_image.entity';
 import { ProfileImageIsNotFoundError } from '../../shared/exception/error/profile-image.error';
+import { ProfileImage } from '../domain/profile_image.domain';
 
 @Injectable()
 export class ProfileImageWriteService {
@@ -16,17 +17,18 @@ export class ProfileImageWriteService {
     queryRunner?: QueryRunner,
   ): Promise<ObjectId> {
     const createdAt = new Date();
-    const newProfileImage: ProfileImage = queryRunner.manager.create(
-      ProfileImage,
-      {
-        ...data,
-        id: new ObjectId(),
-        createdAt: createdAt,
-        updatedAt: createdAt,
-      },
-    );
-    const profileImage = await queryRunner.manager.save(newProfileImage);
-    return profileImage.id;
+    const newProfileImage: ProfileImage = {
+      id: new ObjectId(),
+      createdAt,
+      updatedAt: createdAt,
+      link: data.link,
+      mimeType: data.mimeType,
+      name: data.name,
+      deletedAt: null,
+    };
+    const profileImageEntity: ProfileImageEntity =
+      await queryRunner.manager.save(ProfileImageEntity.from(newProfileImage));
+    return ProfileImageEntity.toDomain(profileImageEntity).id;
   }
 
   @Transactional()
@@ -34,14 +36,12 @@ export class ProfileImageWriteService {
     id: ObjectId,
     queryRunner?: QueryRunner,
   ): Promise<ProfileImage> {
-    const profileImage: ProfileImage = await queryRunner.manager.findOneBy(
-      ProfileImage,
-      {
-        id: id,
-      },
-    );
+    const profileImage: ProfileImageEntity =
+      await queryRunner.manager.findOneBy(ProfileImageEntity, {
+        id: id.toHexString(),
+      });
     if (profileImage) {
-      return profileImage;
+      return ProfileImageEntity.toDomain(profileImage);
     }
     throw new ProfileImageIsNotFoundError();
   }
@@ -56,8 +56,8 @@ export class ProfileImageWriteService {
 
   @Transactional()
   async existsById(id: ObjectId, queryRunner?: QueryRunner): Promise<boolean> {
-    return queryRunner.manager.existsBy(ProfileImage, {
-      id: id,
+    return queryRunner.manager.existsBy(ProfileImageEntity, {
+      id: id.toHexString(),
     });
   }
 }

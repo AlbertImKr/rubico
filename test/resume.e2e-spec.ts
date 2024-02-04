@@ -4,6 +4,7 @@ import { TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { TestConstants } from '../src/shared/test-utils/test.constants';
 import { createE2eTestModule } from './e2e-test.utils';
+import { ResumeRegisterRequestDto } from '../src/resume/dto/resume.request.dto';
 
 describe('ResumeController', () => {
   let app: INestApplication;
@@ -16,7 +17,10 @@ describe('ResumeController', () => {
     app = module.createNestApplication();
     await app.init();
     testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);
+  });
 
+  beforeEach(async () => {
+    await testDatabaseService.clearAll();
     const response = await request(app.getHttpServer())
       .post('/auth/signup')
       .send(TestConstants.SIGN_UP_REQUEST_BODY);
@@ -24,13 +28,9 @@ describe('ResumeController', () => {
     expect(userToken).toBeDefined();
   });
 
-  beforeEach(async () => {
-    await testDatabaseService.clearAll();
-  });
-
-  afterEach(async () => {
-    await testDatabaseService.clearAll();
-  });
+  // afterEach(async () => {
+  //   await testDatabaseService.clearAll();
+  // });
 
   afterAll(async () => {
     await app.close();
@@ -57,7 +57,9 @@ describe('ResumeController', () => {
   });
 });
 
-function profileRegisterRequest(profileImageId: string): string | object {
+function profileRegisterRequest(
+  profileImageId: string,
+): ResumeRegisterRequestDto {
   return {
     name: 'test',
     email: 'test@email.com',
@@ -66,8 +68,8 @@ function profileRegisterRequest(profileImageId: string): string | object {
     occupation: '백엔드 개발자',
     briefIntroduction: '안녕하세요. 저는 백엔드 개발자입니다.',
     profileImageId: profileImageId,
-    portfolio_files: ['https://test.com', 'https://test2.com'],
-    portfolio_links: ['https://test3.com', 'https://test4.com'],
+    portfolioFileIds: ['60b0f7b9e6b3f3b3e8b0e0a1', '60b0f7b9e6b3f3b3e8b0e0a2'],
+    portfolioLinks: ['https://test3.com', 'https://test4.com'],
     projectExperiences: [
       {
         projectName: 'project1',

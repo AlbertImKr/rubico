@@ -1,31 +1,30 @@
-import {
-  Column,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
+import { FieldOfWorkEntity } from './field_of_work.entity';
+import { InterestField } from '../domain/field_of_interest.domain';
 import { ObjectId } from 'mongodb';
-import { FieldOfWork } from './field_of_work.entity';
+import { InterestFieldName } from '../model/Interest-field-name.model';
 
 @Entity({ name: 'field_of_interest' })
-export class InterestField {
-  @EntityPrimaryId()
-  id: ObjectId;
+export class InterestFieldEntity {
+  @PrimaryColumn()
+  id: string;
 
-  @ManyToOne(() => FieldOfWork, (fieldOfWork) => fieldOfWork.interestFields)
+  @ManyToOne(
+    () => FieldOfWorkEntity,
+    (fieldOfWork) => fieldOfWork.interestFields,
+  )
   @JoinColumn({ name: 'field_of_work_id' })
-  fieldOfWork: FieldOfWork;
+  fieldOfWork: FieldOfWorkEntity;
 
   @Column()
   name: string;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()
@@ -33,4 +32,25 @@ export class InterestField {
 
   @EntityUpdatedAt()
   updatedAt: Date;
+
+  static from(domain: InterestField): InterestFieldEntity {
+    const entity = new InterestFieldEntity();
+    entity.id = domain.id.toHexString();
+    entity.name = domain.name.value;
+    entity.deletedAt = domain.deletedAt;
+    entity.createdAt = domain.createdAt;
+    entity.updatedAt = domain.updatedAt;
+    return entity;
+  }
+
+  static toDomain(entity: InterestFieldEntity): InterestField {
+    return {
+      id: new ObjectId(entity.id),
+      name: new InterestFieldName(entity.name),
+      fieldOfWork: FieldOfWorkEntity.toDomain(entity.fieldOfWork),
+      deletedAt: entity.deletedAt,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    };
+  }
 }

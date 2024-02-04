@@ -4,36 +4,50 @@ import { DataSource, QueryRunner } from 'typeorm';
 import { Transactional } from '../../shared/decorators/transactional.decorator';
 import { ObjectId } from 'mongodb';
 import { ProfileImageWriteService } from './profile-image.write.service';
-import { Resume } from '../entities/resume.entity';
+import { ResumeEntityEntity } from '../entities/resume.entity';
+import { Resume } from '../domain/resume.domain';
+import { ProfileImage } from '../domain/profile_image.domain';
 
 @Injectable()
 export class ResumeWriteService {
   constructor(
     private readonly dataSource: DataSource,
-    private readonly profileImageWriteService: ProfileImageWriteService,
+    private readonly profileImageService: ProfileImageWriteService,
   ) {}
 
   @Transactional()
   async register(
     data: ResumeRegisterData,
     queryRunner?: QueryRunner,
-  ): Promise<Resume> {
+  ): Promise<ResumeEntityEntity> {
     const profileImageId = data.profileImageId;
-    await this.profileImageWriteService.validateExists(profileImageId);
 
-    const id = new ObjectId();
+    await this.profileImageService.validateExists(profileImageId);
+    const profileImage: ProfileImage =
+      await this.profileImageService.findById(profileImageId);
+    const resumeId = new ObjectId();
     const createdAt = new Date();
 
-    const resume = queryRunner.manager.create(Resume, {
-      ...data,
-      id,
+    const resume: Resume = {
+      id: resumeId,
       createdAt,
       updatedAt: createdAt,
-      profileImageId,
+      userAccountId: data.userAccountId,
+      address: data.address,
+      briefIntroduction: data.briefIntroduction,
+      email: data.email,
+      name: data.name,
+      occupation: data.occupation,
+      phoneNumber: data.phoneNumber,
+      profileImage: profileImage,
+      portfolioFiles: [],
       portfolioLinks: [],
-      workExperiences: [],
       projectExperiences: [],
-    });
-    return queryRunner.manager.save(resume);
+      interestsFields: [],
+      technicalSkills: [],
+      workExperiences: [],
+      deletedAt: null,
+    };
+    return queryRunner.manager.save(ResumeEntityEntity.from(resume));
   }
 }
