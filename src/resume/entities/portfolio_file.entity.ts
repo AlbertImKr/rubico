@@ -1,15 +1,14 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
   EntityDeletedAt,
-  EntityPrimaryId,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
 import { ResumeEntity } from './resume.entity';
 
 @Entity({ name: 'portfolio_file' })
 export class PortfolioFileEntity {
-  @EntityPrimaryId()
+  @PrimaryColumn()
   id: string;
 
   @ManyToOne(() => ResumeEntity, (resume) => resume.portfolioFiles)

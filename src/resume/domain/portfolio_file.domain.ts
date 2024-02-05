@@ -6,7 +6,7 @@ export class PortfolioFile {
 
   link: Link;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 
   createdAt: Date;
 

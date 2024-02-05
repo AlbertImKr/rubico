@@ -70,4 +70,39 @@ describe('파일 E2E 테스트', () => {
       );
     });
   });
+
+  describe('/portfolio-file (POST) 포트폴리오 파일 업로드', () => {
+    it('성공', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/files/portfolio-file')
+        .set('Authorization', `Bearer ${userToken}`)
+        .attach('portfolioFile', TestConstants.PORTFOLIO_FILE_PATH);
+
+      expect(response.status).toBe(201);
+    });
+
+    it('실패 - PDF 파일이 아님', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/files/portfolio-file')
+        .set('Authorization', `Bearer ${userToken}`)
+        .attach('portfolioFile', TestConstants.PORTFOLIO_FILE_PATH_NOT_PDF);
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe(
+        EXCEPTION_MESSAGES.PORTFOLIO_FILE_IS_NOT_PDF,
+      );
+    });
+
+    it('실패 - 파일이 너무 큼', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/files/portfolio-file')
+        .set('Authorization', `Bearer ${userToken}`)
+        .attach('portfolioFile', TestConstants.PORTFOLIO_FILE_PATH_TOO_LARGE);
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe(
+        EXCEPTION_MESSAGES.PORTFOLIO_FILE_IS_TOO_LARGE,
+      );
+    });
+  });
 });

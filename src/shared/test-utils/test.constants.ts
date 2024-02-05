@@ -38,6 +38,22 @@ export class TestConstants {
     __dirname + '/../../../test/assets/test-large-image.png';
   static readonly PROFILE_IMAGE_ID = '60b9b0b9c9b7d1b4e8b0b0b0';
 
+  // Portfolio File
+  static readonly PORTFOLIO_FILE_PATH =
+    __dirname + '/../../../test/assets/test.pdf';
+  static readonly PORTFOLIO_FILE_PATH_NOT_PDF =
+    __dirname + '/../../../test/assets/test.txt';
+  static readonly PORTFOLIO_FILE_PATH_TOO_LARGE =
+    __dirname + '/../../../test/assets/test-large.pdf';
+  static readonly PORTFOLIO_FILE_FIELD_NAME = 'file';
+  static readonly PORTFOLIO_FILE_NAME = 'test.pdf';
+  static readonly PORTFOLIO_FILE_ENCODING = '7bit';
+  static readonly PORTFOLIO_FILE_MIME_TYPE = 'application/pdf';
+  static readonly PORTFOLIO_FILE_SIZE = 100;
+  static readonly PORTFOLIO_FILE_BUFFER = Buffer.from('');
+  static readonly PORTFOLIO_FILE_DESTINATION = '';
+  static readonly PORTFOLIO_FILE_FILENAME = '';
+
   // Resume
   static readonly RESUME_NAME = '이력서';
   static readonly RESUME_EMAIL = 'test@email.com';

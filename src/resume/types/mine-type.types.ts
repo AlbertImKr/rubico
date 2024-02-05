@@ -1,1 +1,1 @@
-export type CustomMimeType = 'image/jpeg' | 'image/png';
+export type CustomMimeType = 'image/jpeg' | 'image/png' | 'application/pdf';

@@ -13,6 +13,10 @@ import {
 import { UserData } from '../../shared/decorators/auth.decorator';
 import { LoginUserData } from '../../auth/dto/auth.data.dto';
 import { IdResponse } from '../../shared/utils/response.dto';
+import {
+  PortfolioFileSizeValidatorPipe,
+  PortfolioFileTypeValidatorPipe,
+} from '../../shared/pipes/portfolio-file-validation.pipe';
 
 @Controller('files')
 export class FileUploadWriteController {
@@ -31,5 +35,21 @@ export class FileUploadWriteController {
     @UserData() userData: LoginUserData,
   ): Promise<IdResponse> {
     return this.fileUploadWriteService.uploadProfileImage(image, userData.id);
+  }
+
+  @Post('portfolio-file')
+  @UseInterceptors(FileInterceptor('portfolioFile'))
+  async uploadFiles(
+    @UploadedFile(
+      new PortfolioFileTypeValidatorPipe(),
+      new PortfolioFileSizeValidatorPipe(),
+    )
+    portfolioFile: Express.Multer.File,
+    @UserData() userData: LoginUserData,
+  ): Promise<IdResponse> {
+    return this.fileUploadWriteService.uploadPortfolioFile(
+      portfolioFile,
+      userData.id,
+    );
   }
 }

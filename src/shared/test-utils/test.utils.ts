@@ -13,6 +13,8 @@ import { GenerateUserAccountData } from '../../user-account/dto/user-account.dat
 import { ResumeRegisterRequestDto } from '../../resume/dto/resume.request.dto';
 import { LoginUserData } from '../../auth/dto/auth.data.dto';
 import { ResumeRegisterDataTransformer } from '../../resume/transformers/resume.dto.transformer';
+import { ResumeRegisterData } from '../../resume/dto/resume.data.dto';
+import { IdResponse } from '../utils/response.dto';
 
 export class TestUtils {
   static readonly nickname: Nickname = new Nickname(
@@ -100,10 +102,39 @@ export class TestUtils {
     nickname: this.nickname,
   };
 
-  static readonly resumeRegisterData = ResumeRegisterDataTransformer.from(
-    this.resumeRegisterRequest,
-    this.loginUserData.id,
-  );
+  static readonly resumeRegisterData: ResumeRegisterData =
+    ResumeRegisterDataTransformer.from(
+      this.resumeRegisterRequest,
+      this.loginUserData.id,
+    );
+
+  static readonly idResponse: IdResponse = { id: TestUtils.id.toHexString() };
+
+  static readonly profileImage: Express.Multer.File = {
+    fieldname: TestConstants.PROFILE_IMAGE_FILE_FIELD_NAME,
+    originalname: TestConstants.PROFILE_IMAGE_NAME,
+    encoding: TestConstants.PROFILE_IMAGE_FILE_ENCODING,
+    mimetype: TestConstants.PROFILE_IMAGE_FILE_MIME_TYPE,
+    size: TestConstants.PROFILE_IMAGE_FILE_SIZE,
+    stream: null,
+    destination: TestConstants.PROFILE_IMAGE_FILE_DESTINATION,
+    filename: TestConstants.PROFILE_IMAGE_FILE_FILENAME,
+    path: TestConstants.PROFILE_IMAGE_FILE_PATH,
+    buffer: TestConstants.PROFILE_IMAGE_FILE_BUFFER,
+  };
+
+  static readonly portfolioFile: Express.Multer.File = {
+    fieldname: TestConstants.PORTFOLIO_FILE_FIELD_NAME,
+    originalname: TestConstants.PORTFOLIO_FILE_NAME,
+    encoding: TestConstants.PORTFOLIO_FILE_ENCODING,
+    mimetype: TestConstants.PORTFOLIO_FILE_MIME_TYPE,
+    size: TestConstants.PORTFOLIO_FILE_SIZE,
+    stream: null,
+    destination: TestConstants.PORTFOLIO_FILE_DESTINATION,
+    filename: TestConstants.PORTFOLIO_FILE_FILENAME,
+    path: TestConstants.PORTFOLIO_FILE_PATH,
+    buffer: TestConstants.PORTFOLIO_FILE_BUFFER,
+  };
 }
 
 export const mockEntityManager: EntityManager = jest
