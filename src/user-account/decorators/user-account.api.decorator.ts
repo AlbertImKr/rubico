@@ -7,6 +7,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  API_GET_USER_INFO,
   API_SOFT_DELETE_USER,
   API_TAG,
   API_UPDATE_USER_INFO,
@@ -65,6 +66,23 @@ export function ApiSoftDeleteUser() {
       description: API_SOFT_DELETE_USER.BAD_REQUEST_DESCRIPTION,
     }),
     ApiOperation({ summary: API_SOFT_DELETE_USER.SUMMARY }),
+    ApiBearerAuth(),
+  );
+}
+
+export function ApiGetUserInfo() {
+  return applyDecorators(
+    ApiTags(API_TAG.userAccount),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: API_GET_USER_INFO.OK_DESCRIPTION,
+      type: UserInfoResponse,
+    }),
+    ApiResponse({
+      status: HttpStatus.BAD_REQUEST,
+      description: API_GET_USER_INFO.BAD_REQUEST_DESCRIPTION,
+    }),
+    ApiOperation({ summary: API_GET_USER_INFO.SUMMARY }),
     ApiBearerAuth(),
   );
 }

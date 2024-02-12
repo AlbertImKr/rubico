@@ -17,6 +17,10 @@ import {
   PortfolioFileSizeValidatorPipe,
   PortfolioFileTypeValidatorPipe,
 } from '../../shared/pipes/portfolio-file-validation.pipe';
+import {
+  ApiUploadPortfolioFile,
+  ApiUploadProfileImage,
+} from '../decorators/file-upload.api.decorator';
 
 @Controller('files')
 export class FileUploadWriteController {
@@ -24,9 +28,10 @@ export class FileUploadWriteController {
     private readonly fileUploadWriteService: FileUploadWriteService,
   ) {}
 
+  @ApiUploadProfileImage()
   @Post('profile-image')
   @UseInterceptors(FileInterceptor('image'))
-  async upload(
+  async uploadProfileImage(
     @UploadedFile(
       new ProfileImageTypeValidatorPipe(),
       new ProfileImageSizeValidatorPipe(),
@@ -37,9 +42,10 @@ export class FileUploadWriteController {
     return this.fileUploadWriteService.uploadProfileImage(image, userData.id);
   }
 
+  @ApiUploadPortfolioFile()
   @Post('portfolio-file')
   @UseInterceptors(FileInterceptor('portfolioFile'))
-  async uploadFiles(
+  async uploadPortfolioFile(
     @UploadedFile(
       new PortfolioFileTypeValidatorPipe(),
       new PortfolioFileSizeValidatorPipe(),

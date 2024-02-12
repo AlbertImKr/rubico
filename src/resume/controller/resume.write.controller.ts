@@ -4,11 +4,13 @@ import { UserData } from '../../shared/decorators/auth.decorator';
 import { ResumeRegisterDataTransformer } from '../transformers/resume.dto.transformer';
 import { ResumeWriteService } from '../service/resume.write.service';
 import { LoginUserData } from '../../auth/dto/auth.data.dto';
+import { ApiRegisterResume } from '../decorators/resume.api.decorator';
 
 @Controller('resume')
 export class ResumeWriteController {
   constructor(private readonly resumeWriteService: ResumeWriteService) {}
 
+  @ApiRegisterResume()
   @Post()
   async register(
     @Body() request: ResumeRegisterRequestDto,

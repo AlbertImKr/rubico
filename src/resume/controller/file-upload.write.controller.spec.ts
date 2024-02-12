@@ -42,7 +42,7 @@ describe('FileUploadWriteController', () => {
       jest.spyOn(service, 'uploadProfileImage').mockResolvedValue(idResponse);
 
       // when
-      await controller.upload(image, userData);
+      await controller.uploadProfileImage(image, userData);
 
       // then
       expect(service.uploadProfileImage).toHaveBeenCalledWith(
@@ -61,7 +61,7 @@ describe('FileUploadWriteController', () => {
       jest.spyOn(service, 'uploadPortfolioFile').mockResolvedValue(idResponse);
 
       // when
-      await controller.uploadFiles(portfolioFile, userData);
+      await controller.uploadPortfolioFile(portfolioFile, userData);
 
       // then
       expect(service.uploadPortfolioFile).toHaveBeenCalledWith(
