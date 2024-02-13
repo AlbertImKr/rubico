@@ -257,22 +257,22 @@ export class ResumeTransformer {
       occupation: domain.occupation.value,
       phoneNumber: domain.phoneNumber.value,
       profileImage: ProfileImageTransformer.toEntity(domain.profileImage),
-      portfolioFiles: domain.portfolioFiles.map((file) =>
+      portfolioFiles: domain.portfolioFiles?.map((file) =>
         PortfolioFileTransformer.toEntity(file),
       ),
-      portfolioLinks: domain.portfolioLinks.map((link) =>
+      portfolioLinks: domain.portfolioLinks?.map((link) =>
         PortfolioLinkTransformer.toEntity(link),
       ),
-      projectExperiences: domain.projectExperiences.map((experience) =>
+      projectExperiences: domain.projectExperiences?.map((experience) =>
         ProjectExperienceTransformer.toEntity(experience),
       ),
-      interestsFields: domain.interestsFields.map((field) =>
+      interestsFields: domain.interestsFields?.map((field) =>
         FieldOfInterestTransformer.toEntity(field),
       ),
-      technicalSkills: domain.technicalSkills.map((skill) =>
+      technicalSkills: domain.technicalSkills?.map((skill) =>
         TechnicalSkillTransformer.toEntity(skill),
       ),
-      workExperiences: domain.workExperiences.map((experience) =>
+      workExperiences: domain.workExperiences?.map((experience) =>
         WorkExperienceTransformer.toEntity(experience),
       ),
       deletedAt: domain.deletedAt,
@@ -292,22 +292,22 @@ export class ResumeTransformer {
       occupation: new ResumeOccupation(entity.occupation),
       phoneNumber: new PhoneNumber(entity.phoneNumber),
       profileImage: ProfileImageTransformer.fromEntity(entity.profileImage),
-      portfolioFiles: entity.portfolioFiles.map((file) =>
+      portfolioFiles: entity.portfolioFiles?.map((file) =>
         PortfolioFileTransformer.fromEntity(file),
       ),
-      portfolioLinks: entity.portfolioLinks.map((link) =>
+      portfolioLinks: entity.portfolioLinks?.map((link) =>
         PortfolioLinkTransformer.fromEntity(link),
       ),
-      projectExperiences: entity.projectExperiences.map((experience) =>
+      projectExperiences: entity.projectExperiences?.map((experience) =>
         ProjectExperienceTransformer.fromEntity(experience),
       ),
-      interestsFields: entity.interestsFields.map((field) =>
+      interestsFields: entity.interestsFields?.map((field) =>
         FieldOfInterestTransformer.fromEntity(field),
       ),
-      technicalSkills: entity.technicalSkills.map((skill) =>
+      technicalSkills: entity.technicalSkills?.map((skill) =>
         TechnicalSkillTransformer.fromEntity(skill),
       ),
-      workExperiences: entity.workExperiences.map((experience) =>
+      workExperiences: entity.workExperiences?.map((experience) =>
         WorkExperienceTransformer.fromEntity(experience),
       ),
       deletedAt: entity.deletedAt,

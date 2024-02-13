@@ -36,7 +36,7 @@ describe('FileUploadWriteController', () => {
   describe('프로필 이미지 업로드', () => {
     it('프로필 이미지 업로드 성공', async () => {
       // given
-      const image = TestUtils.profileImage;
+      const image = TestUtils.fileOfProfileImage;
       const userData: LoginUserData = TestUtils.loginUserData;
       const idResponse = TestUtils.idResponse;
       jest.spyOn(service, 'uploadProfileImage').mockResolvedValue(idResponse);
@@ -55,7 +55,7 @@ describe('FileUploadWriteController', () => {
   describe('포트폴리오 파일 업로드', () => {
     it('포트폴리오 파일 업로드 성공', async () => {
       // given
-      const portfolioFile = TestUtils.portfolioFile;
+      const portfolioFile = TestUtils.fileOfPortfolioFile;
       const userData: LoginUserData = TestUtils.loginUserData;
       const idResponse = TestUtils.idResponse;
       jest.spyOn(service, 'uploadPortfolioFile').mockResolvedValue(idResponse);

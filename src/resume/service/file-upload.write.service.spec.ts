@@ -85,7 +85,7 @@ describe('파일 업로드 write 서비스', () => {
     it('포트폴리오 파일 업로드 성공', async () => {
       // given
       const userId = new ObjectId();
-      const file: Express.Multer.File = TestUtils.portfolioFile;
+      const file: Express.Multer.File = TestUtils.fileOfPortfolioFile;
       jest.spyOn(configService, 'get').mockReturnValue('test-bucket');
       jest
         .spyOn(profileFileWriteService, 'register')

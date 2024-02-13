@@ -54,7 +54,7 @@ export class PortfolioLinkDomainFactory {
   }
 
   static createPortfolioLinks(links: Link[], createdAt: Date): PortfolioLink[] {
-    return links.map((link) => this.createPortfolioLink(link, createdAt));
+    return links?.map((link) => this.createPortfolioLink(link, createdAt));
   }
 }
 
@@ -75,7 +75,7 @@ export class ProjectExperienceDomainFactory {
     data: ProjectExperienceData[],
     createdAt: Date,
   ): ProjectExperience[] {
-    return data.map((project) =>
+    return data?.map((project) =>
       this.createProjectExperience(project, createdAt),
     );
   }
@@ -98,6 +98,8 @@ export class WorkExperienceDomainFactory {
     data: WorkExperienceData[],
     createdAt: Date,
   ): WorkExperience[] {
-    return data.map((project) => this.createWorkExperience(project, createdAt));
+    return data?.map((project) =>
+      this.createWorkExperience(project, createdAt),
+    );
   }
 }

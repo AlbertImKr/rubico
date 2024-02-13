@@ -15,6 +15,13 @@ import { LoginUserData } from '../../auth/dto/auth.data.dto';
 import { ResumeRegisterDataTransformer } from '../../resume/transformers/resume.dto.transformer';
 import { ResumeRegisterData } from '../../resume/dto/resume.data.dto';
 import { IdResponse } from '../utils/response.dto';
+import { ProfileImage } from '../../resume/domain/profile_image.domain';
+import { Link } from '../models/link.model';
+import { ProfileImageName } from '../models/profile-image-name.model';
+import { Resume } from '../../resume/domain/resume.domain';
+import { ResumeDomainFactory } from '../../resume/utils/resume.domain.factory';
+import { ResumeEntity } from '../../resume/entities/resume.entity';
+import { ResumeTransformer } from '../../resume/transformers/resume.domain.transformer';
 
 export class TestUtils {
   static readonly nickname: Nickname = new Nickname(
@@ -49,6 +56,12 @@ export class TestUtils {
   );
   static readonly editUserIntroduction: Introduction = new Introduction(
     TestConstants.EDIT_USER_INTRODUCTION,
+  );
+  static readonly profileImageLink: Link = new Link(
+    TestConstants.PROFILE_IMAGE_URL,
+  );
+  static readonly profileImageName: ProfileImageName = new ProfileImageName(
+    TestConstants.PROFILE_IMAGE_NAME,
   );
 
   static createTestUserAccount(): UserAccount {
@@ -110,7 +123,7 @@ export class TestUtils {
 
   static readonly idResponse: IdResponse = { id: TestUtils.id.toHexString() };
 
-  static readonly profileImage: Express.Multer.File = {
+  static readonly fileOfProfileImage: Express.Multer.File = {
     fieldname: TestConstants.PROFILE_IMAGE_FILE_FIELD_NAME,
     originalname: TestConstants.PROFILE_IMAGE_NAME,
     encoding: TestConstants.PROFILE_IMAGE_FILE_ENCODING,
@@ -123,7 +136,7 @@ export class TestUtils {
     buffer: TestConstants.PROFILE_IMAGE_FILE_BUFFER,
   };
 
-  static readonly portfolioFile: Express.Multer.File = {
+  static readonly fileOfPortfolioFile: Express.Multer.File = {
     fieldname: TestConstants.PORTFOLIO_FILE_FIELD_NAME,
     originalname: TestConstants.PORTFOLIO_FILE_NAME,
     encoding: TestConstants.PORTFOLIO_FILE_ENCODING,
@@ -135,6 +148,24 @@ export class TestUtils {
     path: TestConstants.PORTFOLIO_FILE_PATH,
     buffer: TestConstants.PORTFOLIO_FILE_BUFFER,
   };
+
+  static readonly profileImage: ProfileImage = {
+    id: TestUtils.id,
+    link: TestUtils.profileImageLink,
+    name: TestUtils.profileImageName,
+    mimeType: TestConstants.PROFILE_IMAGE_FILE_MIME_TYPE,
+    createdAt: TestUtils.createdAt,
+    updatedAt: TestUtils.createdAt,
+  };
+
+  static readonly resume: Resume = ResumeDomainFactory.createResume(
+    TestUtils.resumeRegisterData,
+    TestUtils.profileImage,
+  );
+
+  static readonly resumeEntity: ResumeEntity = ResumeTransformer.toEntity(
+    this.resume,
+  );
 }
 
 export const mockEntityManager: EntityManager = jest
