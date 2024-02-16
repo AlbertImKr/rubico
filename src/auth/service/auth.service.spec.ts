@@ -104,11 +104,9 @@ describe('auth 서비스', () => {
       jest.spyOn(PasswordHasher, 'compare').mockResolvedValue(false);
 
       // when
-      authService.signIn(data).catch((e) => {
-        // then
-        expect(e).toBeInstanceOf(UnauthorizedException);
-        expect(e.message).toBe(EXCEPTION_MESSAGES.PASSWORD_IS_MISMATCH);
-      });
+      await expect(authService.signIn(data)).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 

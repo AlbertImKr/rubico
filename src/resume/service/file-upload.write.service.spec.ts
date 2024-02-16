@@ -14,8 +14,11 @@ describe('파일 업로드 write 서비스', () => {
   let profileFileWriteService: PortfolioFileWriteService;
   let configService: ConfigService;
   let fileUploadSolution: AWS.S3;
+  let mockUpload: jest.Mock;
 
   beforeEach(async () => {
+    mockUpload = jest.fn();
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         FileUploadWriteService,
@@ -40,12 +43,8 @@ describe('파일 업로드 write 서비스', () => {
         {
           provide: 'AWS_S3',
           useValue: {
-            upload: jest.fn().mockImplementation(() => ({
-              promise: jest.fn().mockResolvedValue({
-                Location: TestConstants.PROFILE_IMAGE_URL,
-              }),
-            })),
-          },
+            upload: mockUpload,
+          } as any,
         },
       ],
     }).compile();
@@ -70,6 +69,14 @@ describe('파일 업로드 write 서비스', () => {
       jest
         .spyOn(profileImageWriteService, 'register')
         .mockResolvedValue(new ObjectId());
+      mockUpload.mockImplementation((_, callback) => {
+        callback(null, { Location: TestConstants.PROFILE_IMAGE_URL });
+        return {
+          promise: () => {
+            return { Location: TestConstants.PROFILE_IMAGE_URL };
+          },
+        };
+      });
 
       // when
       await service.uploadProfileImage(file, userId);
@@ -90,6 +97,14 @@ describe('파일 업로드 write 서비스', () => {
       jest
         .spyOn(profileFileWriteService, 'register')
         .mockResolvedValue(new ObjectId());
+      mockUpload.mockImplementation((_, callback) => {
+        callback(null, { Location: TestConstants.PROFILE_IMAGE_URL });
+        return {
+          promise: () => {
+            return { Location: TestConstants.PROFILE_IMAGE_URL };
+          },
+        };
+      });
 
       // when
       await service.uploadPortfolioFile(file, userId);
@@ -106,8 +121,9 @@ describe('파일 업로드 write 서비스', () => {
     const file: Express.Multer.File = TestUtils.profileImageFile;
     const userId = new ObjectId();
     jest.spyOn(configService, 'get').mockReturnValue('test-bucket');
-    jest.spyOn(fileUploadSolution, 'upload').mockImplementation(() => {
-      throw new ProfileImageUploadFailedError();
+    mockUpload.mockImplementation((_, callback) => {
+      callback(new Error());
+      return { promise: jest.fn() };
     });
 
     // when, then

@@ -63,11 +63,17 @@ export class TestConstants {
   static readonly RESUME_BRIEF_INTRODUCTION = '안녕하세요';
 
   // Field Of Interest
+  static readonly FIELD_OF_INTEREST_ID = '60b9b0b9c9b7d1b4e8b0b0b0';
   static readonly FIELD_OF_INTEREST_IDS = [
-    '60b9b0b9c9b7d1b4e8b0b0b0',
+    this.FIELD_OF_INTEREST_ID,
     '60b9b0b9c9b7d1b4e8b0b0b1',
     '60b9b0b9c9b7d1b4e8b0b0b2',
   ];
+  static readonly FIELD_OF_INTEREST_NAME = '개발자';
+
+  // Field Of Work
+  static readonly FIELD_OF_WORK_ID = '60b9b0b9c9b7d1b4e8b0b0f0';
+  static readonly FIELD_OF_WORK_NAME = '백엔드 개발';
 
   static readonly SIGN_UP_REQUEST_BODY = {
     nickname: TestConstants.USER_NICKNAME,

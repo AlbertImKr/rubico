@@ -22,6 +22,10 @@ import { Resume } from '../../resume/domain/resume.domain';
 import { ResumeDomainFactory } from '../../resume/utils/resume.domain.factory';
 import { ResumeEntity } from '../../resume/entities/resume.entity';
 import { ResumeTransformer } from '../../resume/transformers/resume.domain.transformer';
+import { InterestField } from '../../resume/domain/field_of_interest.domain';
+import { FieldOfWorkName } from '../../resume/model/field-of-work-name.model';
+import { InterestFieldName } from '../../resume/model/Interest-field-name.model';
+import { FieldOfWork } from '../../resume/domain/field_of_work.domain';
 
 export class TestUtils {
   static readonly nickname: Nickname = new Nickname(
@@ -174,6 +178,7 @@ export const mockEntityManager: EntityManager = jest
     save: jest.fn(),
     findOneBy: jest.fn(),
     create: jest.fn(),
+    existsBy: jest.fn(),
   }))();
 
 export const mockQueryRunner = jest.fn().mockImplementation(() => ({

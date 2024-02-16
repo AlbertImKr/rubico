@@ -39,7 +39,7 @@ import { ResumeName } from '../../shared/models/resume-name.model';
 import { ResumeOccupation } from '../../shared/models/resume-occupation.model';
 import { PhoneNumber } from '../../shared/models/phone-number.model';
 
-export class FieldOfInterestTransformer {
+export class InterestOfFieldTransformer {
   static toEntity(domain: InterestField): InterestFieldEntity {
     const entity = new InterestFieldEntity();
     entity.id = domain.id.toHexString();
@@ -47,6 +47,7 @@ export class FieldOfInterestTransformer {
     entity.deletedAt = domain.deletedAt;
     entity.createdAt = domain.createdAt;
     entity.updatedAt = domain.updatedAt;
+    entity.fieldOfWork = FieldOfWorkTransformer.toEntity(domain.fieldOfWork);
     return entity;
   }
 
@@ -78,7 +79,7 @@ export class FieldOfWorkTransformer {
       id: new ObjectId(entity.id),
       name: new FieldOfWorkName(entity.name),
       interestFields: entity.interestFields.map((interestField) =>
-        FieldOfInterestTransformer.fromEntity(interestField),
+        InterestOfFieldTransformer.fromEntity(interestField),
       ),
       deletedAt: entity.deletedAt,
       createdAt: entity.createdAt,
@@ -256,7 +257,9 @@ export class ResumeTransformer {
       name: domain.name.value,
       occupation: domain.occupation.value,
       phoneNumber: domain.phoneNumber.value,
-      profileImage: ProfileImageTransformer.toEntity(domain.profileImage),
+      profileImage: domain.profileImage
+        ? ProfileImageTransformer.toEntity(domain.profileImage)
+        : undefined,
       portfolioFiles: domain.portfolioFiles?.map((file) =>
         PortfolioFileTransformer.toEntity(file),
       ),
@@ -267,7 +270,7 @@ export class ResumeTransformer {
         ProjectExperienceTransformer.toEntity(experience),
       ),
       interestsFields: domain.interestsFields?.map((field) =>
-        FieldOfInterestTransformer.toEntity(field),
+        InterestOfFieldTransformer.toEntity(field),
       ),
       technicalSkills: domain.technicalSkills?.map((skill) =>
         TechnicalSkillTransformer.toEntity(skill),
@@ -291,7 +294,9 @@ export class ResumeTransformer {
       name: new ResumeName(entity.name),
       occupation: new ResumeOccupation(entity.occupation),
       phoneNumber: new PhoneNumber(entity.phoneNumber),
-      profileImage: ProfileImageTransformer.fromEntity(entity.profileImage),
+      profileImage: entity.profileImage
+        ? ProfileImageTransformer.fromEntity(entity.profileImage)
+        : undefined,
       portfolioFiles: entity.portfolioFiles?.map((file) =>
         PortfolioFileTransformer.fromEntity(file),
       ),
@@ -302,7 +307,7 @@ export class ResumeTransformer {
         ProjectExperienceTransformer.fromEntity(experience),
       ),
       interestsFields: entity.interestsFields?.map((field) =>
-        FieldOfInterestTransformer.fromEntity(field),
+        InterestOfFieldTransformer.fromEntity(field),
       ),
       technicalSkills: entity.technicalSkills?.map((skill) =>
         TechnicalSkillTransformer.fromEntity(skill),

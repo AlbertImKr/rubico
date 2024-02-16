@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
-import { FieldOfWork } from './field_of_work.domain';
 import { InterestFieldName } from '../model/Interest-field-name.model';
+import { FieldOfWork } from './field_of_work.domain';
 
 export class InterestField {
   id: ObjectId;

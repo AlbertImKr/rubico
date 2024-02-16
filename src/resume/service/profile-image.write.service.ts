@@ -50,7 +50,7 @@ export class ProfileImageWriteService {
 
   @Transactional()
   async validateExists(id: ObjectId, queryRunner?: QueryRunner): Promise<void> {
-    if (this.existsById(id, queryRunner)) {
+    if (await this.existsById(id, queryRunner)) {
       return;
     }
     throw new ProfileImageIsNotFoundError();
