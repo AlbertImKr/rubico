@@ -10,6 +10,22 @@ import { DataSource, EntityManager } from 'typeorm';
 import { Introduction } from '../models/introduction.model';
 import { HashedPassword } from '../models/hash-password.model';
 import { GenerateUserAccountData } from '../../user-account/dto/user-account.data.dto';
+import { ResumeRegisterRequestDto } from '../../resume/dto/resume.request.dto';
+import { LoginUserData } from '../../auth/dto/auth.data.dto';
+import { ResumeRegisterDataTransformer } from '../../resume/transformers/resume.dto.transformer';
+import { ResumeRegisterData } from '../../resume/dto/resume.data.dto';
+import { IdResponse } from '../utils/response.dto';
+import { ProfileImage } from '../../resume/domain/profile_image.domain';
+import { Link } from '../models/link.model';
+import { ProfileImageName } from '../models/profile-image-name.model';
+import { Resume } from '../../resume/domain/resume.domain';
+import { ResumeDomainFactory } from '../../resume/utils/resume.domain.factory';
+import { ResumeEntity } from '../../resume/entities/resume.entity';
+import { ResumeTransformer } from '../../resume/transformers/resume.domain.transformer';
+import { InterestField } from '../../resume/domain/field_of_interest.domain';
+import { FieldOfWorkName } from '../../resume/model/field-of-work-name.model';
+import { InterestFieldName } from '../../resume/model/Interest-field-name.model';
+import { FieldOfWork } from '../../resume/domain/field_of_work.domain';
 
 export class TestUtils {
   static readonly nickname: Nickname = new Nickname(
@@ -30,7 +46,11 @@ export class TestUtils {
     TestConstants.HASHED_PASSWORD,
   );
   static readonly id: ObjectId = new ObjectId();
-  static readonly createdAt: Date = new Date(2021, 1, 1);
+  static readonly createdAt: Date = new Date(
+    TestConstants.CREATED_AT_YEAR,
+    TestConstants.CREATED_AT_MONTH,
+    TestConstants.CREATED_AT_DATE,
+  );
 
   static readonly editUserNickname: Nickname = new Nickname(
     TestConstants.EDIT_USER_NICKNAME,
@@ -40,6 +60,12 @@ export class TestUtils {
   );
   static readonly editUserIntroduction: Introduction = new Introduction(
     TestConstants.EDIT_USER_INTRODUCTION,
+  );
+  static readonly profileImageLink: Link = new Link(
+    TestConstants.PROFILE_IMAGE_URL,
+  );
+  static readonly profileImageName: ProfileImageName = new ProfileImageName(
+    TestConstants.PROFILE_IMAGE_NAME,
   );
 
   static createTestUserAccount(): UserAccount {
@@ -56,20 +82,104 @@ export class TestUtils {
   }
   static readonly userAccount: UserAccount = this.createTestUserAccount();
 
-  static generateUserAccountData(): GenerateUserAccountData {
-    return {
-      email: TestUtils.email,
-      nickname: TestUtils.nickname,
-      hashedPassword: TestUtils.hashedPassword,
-      address: TestUtils.address,
-      phoneNumber: TestUtils.phoneNumber,
-    };
-  }
+  static readonly generateUserAccountData: GenerateUserAccountData = {
+    email: TestUtils.email,
+    nickname: TestUtils.nickname,
+    hashedPassword: TestUtils.hashedPassword,
+    address: TestUtils.address,
+    phoneNumber: TestUtils.phoneNumber,
+  };
+
+  static readonly profileImageFile: Express.Multer.File = {
+    fieldname: TestConstants.PROFILE_IMAGE_FILE_FIELD_NAME,
+    originalname: TestConstants.PROFILE_IMAGE_NAME,
+    encoding: TestConstants.PROFILE_IMAGE_FILE_ENCODING,
+    mimetype: TestConstants.PROFILE_IMAGE_FILE_MIME_TYPE,
+    size: TestConstants.PROFILE_IMAGE_FILE_SIZE,
+    stream: null,
+    destination: TestConstants.PROFILE_IMAGE_FILE_DESTINATION,
+    filename: TestConstants.PROFILE_IMAGE_FILE_FILENAME,
+    path: TestConstants.PROFILE_IMAGE_FILE_PATH,
+    buffer: TestConstants.PROFILE_IMAGE_FILE_BUFFER,
+  };
+
+  static readonly resumeRegisterRequest: ResumeRegisterRequestDto = {
+    name: TestConstants.RESUME_NAME,
+    email: TestConstants.RESUME_EMAIL,
+    phoneNumber: TestConstants.RESUME_PHONE_NUMBER,
+    address: TestConstants.RESUME_ADDRESS,
+    occupation: TestConstants.RESUME_OCCUPATION,
+    briefIntroduction: TestConstants.RESUME_BRIEF_INTRODUCTION,
+    profileImageId: TestConstants.PROFILE_IMAGE_ID,
+    fieldOfInterestIds: TestConstants.FIELD_OF_INTEREST_IDS,
+  };
+
+  static readonly loginUserData: LoginUserData = {
+    id: this.id,
+    nickname: this.nickname,
+  };
+
+  static readonly resumeRegisterData: ResumeRegisterData =
+    ResumeRegisterDataTransformer.from(
+      this.resumeRegisterRequest,
+      this.loginUserData.id,
+    );
+
+  static readonly idResponse: IdResponse = { id: TestUtils.id.toHexString() };
+
+  static readonly fileOfProfileImage: Express.Multer.File = {
+    fieldname: TestConstants.PROFILE_IMAGE_FILE_FIELD_NAME,
+    originalname: TestConstants.PROFILE_IMAGE_NAME,
+    encoding: TestConstants.PROFILE_IMAGE_FILE_ENCODING,
+    mimetype: TestConstants.PROFILE_IMAGE_FILE_MIME_TYPE,
+    size: TestConstants.PROFILE_IMAGE_FILE_SIZE,
+    stream: null,
+    destination: TestConstants.PROFILE_IMAGE_FILE_DESTINATION,
+    filename: TestConstants.PROFILE_IMAGE_FILE_FILENAME,
+    path: TestConstants.PROFILE_IMAGE_FILE_PATH,
+    buffer: TestConstants.PROFILE_IMAGE_FILE_BUFFER,
+  };
+
+  static readonly fileOfPortfolioFile: Express.Multer.File = {
+    fieldname: TestConstants.PORTFOLIO_FILE_FIELD_NAME,
+    originalname: TestConstants.PORTFOLIO_FILE_NAME,
+    encoding: TestConstants.PORTFOLIO_FILE_ENCODING,
+    mimetype: TestConstants.PORTFOLIO_FILE_MIME_TYPE,
+    size: TestConstants.PORTFOLIO_FILE_SIZE,
+    stream: null,
+    destination: TestConstants.PORTFOLIO_FILE_DESTINATION,
+    filename: TestConstants.PORTFOLIO_FILE_FILENAME,
+    path: TestConstants.PORTFOLIO_FILE_PATH,
+    buffer: TestConstants.PORTFOLIO_FILE_BUFFER,
+  };
+
+  static readonly profileImage: ProfileImage = {
+    id: TestUtils.id,
+    link: TestUtils.profileImageLink,
+    name: TestUtils.profileImageName,
+    mimeType: TestConstants.PROFILE_IMAGE_FILE_MIME_TYPE,
+    createdAt: TestUtils.createdAt,
+    updatedAt: TestUtils.createdAt,
+  };
+
+  static readonly resume: Resume = ResumeDomainFactory.createResume(
+    TestUtils.resumeRegisterData,
+    TestUtils.profileImage,
+  );
+
+  static readonly resumeEntity: ResumeEntity = ResumeTransformer.toEntity(
+    this.resume,
+  );
 }
 
 export const mockEntityManager: EntityManager = jest
   .fn()
-  .mockImplementation(() => ({ save: jest.fn(), findOneBy: jest.fn() }))();
+  .mockImplementation(() => ({
+    save: jest.fn(),
+    findOneBy: jest.fn(),
+    create: jest.fn(),
+    existsBy: jest.fn(),
+  }))();
 
 export const mockQueryRunner = jest.fn().mockImplementation(() => ({
   connect: jest.fn(),

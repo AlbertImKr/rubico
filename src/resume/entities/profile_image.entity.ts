@@ -1,19 +1,14 @@
-import { Column, DeleteDateColumn, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { ObjectId } from 'mongodb';
-import { Resume } from './resume.entity';
 
 @Entity({ name: 'profile_image' })
-export class ProfileImage {
-  @EntityPrimaryId()
-  id: ObjectId;
-
-  @OneToOne(() => Resume, (resume) => resume.profileImage)
-  resume: Resume;
+export class ProfileImageEntity {
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   link: string;
@@ -22,9 +17,9 @@ export class ProfileImage {
   name: string;
 
   @Column()
-  type: string;
+  mimeType: string;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

@@ -18,6 +18,13 @@ $ yarn install
 $ docker compose up -d
 ```
 
+## Init database
+
+```bash
+$ yarn migration:generate
+$ yarn migration:run
+```
+
 ## Running the app
 
 ```bash

@@ -1,20 +1,19 @@
-import { Column, DeleteDateColumn, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { ObjectId } from 'mongodb';
 
 @Entity({ name: 'technical_skill' })
-export class TechnicalSkill {
-  @EntityPrimaryId()
-  id: ObjectId;
+export class TechnicalSkillEntity {
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   name: string;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

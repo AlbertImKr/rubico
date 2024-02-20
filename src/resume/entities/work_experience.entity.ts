@@ -1,15 +1,14 @@
-import { ObjectId } from 'mongodb';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { Column, DeleteDateColumn, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'work_experience' })
-export class WorkExperience {
-  @EntityPrimaryId()
-  id: ObjectId;
+export class WorkExperienceEntity {
+  @PrimaryColumn()
+  id: string;
 
   @Column({ name: 'company_name' })
   companyName: string;
@@ -27,12 +26,12 @@ export class WorkExperience {
   position: string;
 
   @Column({ name: 'start_date' })
-  startDate: Date;
+  startedAt: Date;
 
   @Column({ name: 'end_date' })
-  endDate: Date;
+  endedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

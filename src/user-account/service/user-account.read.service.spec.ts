@@ -78,7 +78,9 @@ describe('user-account read 서비스', () => {
       const result = userAccountService.findById(id);
 
       // then
-      await expect(result).rejects.toThrow(EXCEPTION_MESSAGES.USER_NOT_FOUND);
+      await expect(result).rejects.toThrow(
+        EXCEPTION_MESSAGES.USER_IS_NOT_FOUND,
+      );
     });
   });
 });

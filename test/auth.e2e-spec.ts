@@ -1,63 +1,62 @@
 import * as request from 'supertest';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { config } from 'dotenv';
-import { AppModule } from '../src/app/app.module';
 import { TestDatabaseService } from './database.e2e.service';
-
-config({ path: '.env.test' });
+import { TestConstants } from '../src/shared/test-utils/test.constants';
+import { createE2eTestModule } from './e2e-test.utils';
 
 describe('AuthController', () => {
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-      providers: [TestDatabaseService],
-    }).compile();
+  beforeAll(async () => {
+    const module: TestingModule = await createE2eTestModule();
 
     app = module.createNestApplication();
-    testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);
     await app.init();
+    testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);
+  });
+
+  beforeEach(async () => {
     await testDatabaseService.clearAll();
+  });
+
+  afterEach(async () => {
+    await testDatabaseService.clearAll();
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   describe('회원가입', () => {
     it('/auth/signup (POST)', async () => {
-      return request(app.getHttpServer()).post('/auth/signup').send({
-        nickname: 'test',
-        email: 'john@example.co',
-        address: 'test address',
-        phoneNumber: '010-1234-5678',
-        password: 'Password1!',
-      });
+      const response = await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send(TestConstants.SIGN_UP_REQUEST_BODY);
+
+      expect(response.body).toHaveProperty('accessToken');
+      expect(response.body).toHaveProperty('refreshToken');
     });
   });
 
   describe('로그인', () => {
     beforeEach(async () => {
-      return request(app.getHttpServer()).post('/auth/signup').send({
-        nickname: 'test11',
-        email: 'john@example.com',
-        address: 'test address',
-        phoneNumber: '010-1234-5678',
-        password: 'Password1!',
-      });
+      await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send(TestConstants.SIGN_UP_REQUEST_BODY);
     });
 
     it('/auth/login (POST)', async () => {
-      return request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/auth/login')
         .send({
-          email: 'john@example.com',
-          password: 'Password1!',
-        })
-        .expect(200);
-    });
-  });
+          email: TestConstants.USER_EMAIL,
+          password: TestConstants.USER_PASSWORD,
+        });
 
-  afterEach(async () => {
-    await app.close();
+      expect(response.body).toHaveProperty('accessToken');
+      expect(response.body).toHaveProperty('refreshToken');
+    });
   });
 });

@@ -1,46 +1,45 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { TestDatabaseService } from './database.e2e.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app/app.module';
+import { TestingModule } from '@nestjs/testing';
 import { TestConstants } from '../src/shared/test-utils/test.constants';
+import { createE2eTestModule } from './e2e-test.utils';
 
 describe('UserAccountController', () => {
   let app: INestApplication;
   let testDatabaseService: TestDatabaseService;
+  let userToken: string;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-      providers: [TestDatabaseService],
-    }).compile();
+  beforeAll(async () => {
+    const module: TestingModule = await createE2eTestModule();
 
     app = module.createNestApplication();
-    testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);
     await app.init();
+    testDatabaseService = module.get<TestDatabaseService>(TestDatabaseService);
+  });
+
+  beforeEach(async () => {
+    await testDatabaseService.clearAll();
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/signup')
+      .send(TestConstants.SIGN_UP_REQUEST_BODY);
+
+    userToken = response.body.accessToken;
+    expect(userToken).toBeDefined();
+  });
+
+  afterEach(async () => {
     await testDatabaseService.clearAll();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   describe('회원 정보 수정', () => {
-    let userToken: string;
-
-    beforeEach(async () => {
-      const response = await request(app.getHttpServer())
-        .post('/auth/signup')
-        .send({
-          nickname: TestConstants.USER_NICKNAME,
-          email: TestConstants.USER_EMAIL,
-          address: TestConstants.USER_ADDRESS,
-          phoneNumber: TestConstants.USER_PHONE_NUMBER,
-          password: TestConstants.USER_PASSWORD,
-        });
-
-      userToken = response.body.accessToken;
-      expect(userToken).toBeDefined();
-    });
-
     it('/user-account/info (PUT)', async () => {
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .put('/user-account/info')
         .set('Authorization', `Bearer ${userToken}`)
         .send({
@@ -57,9 +56,11 @@ describe('UserAccountController', () => {
           );
         });
     });
+  });
 
+  describe('비밀번호 변경', () => {
     it('/user-account/password (PUT)', async () => {
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .put('/user-account/password')
         .set('Authorization', `Bearer ${userToken}`)
         .send({
@@ -71,25 +72,8 @@ describe('UserAccountController', () => {
   });
 
   describe('회원 탈퇴', () => {
-    let userToken: string;
-
-    beforeEach(async () => {
-      const response = await request(app.getHttpServer())
-        .post('/auth/signup')
-        .send({
-          nickname: TestConstants.USER_NICKNAME,
-          email: TestConstants.USER_EMAIL,
-          address: TestConstants.USER_ADDRESS,
-          phoneNumber: TestConstants.USER_PHONE_NUMBER,
-          password: TestConstants.USER_PASSWORD,
-        });
-
-      userToken = response.body.accessToken;
-      expect(userToken).toBeDefined();
-    });
-
     it('/user-account (DELETE)', async () => {
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .delete('/user-account')
         .set('Authorization', `Bearer ${userToken}`)
         .expect(204);
@@ -97,25 +81,8 @@ describe('UserAccountController', () => {
   });
 
   describe('회원 정보 조회', () => {
-    let userToken: string;
-
-    beforeEach(async () => {
-      const response = await request(app.getHttpServer())
-        .post('/auth/signup')
-        .send({
-          nickname: TestConstants.USER_NICKNAME,
-          email: TestConstants.USER_EMAIL,
-          address: TestConstants.USER_ADDRESS,
-          phoneNumber: TestConstants.USER_PHONE_NUMBER,
-          password: TestConstants.USER_PASSWORD,
-        });
-
-      userToken = response.body.accessToken;
-      expect(userToken).toBeDefined();
-    });
-
     it('/user-account (GET)', async () => {
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/user-account')
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200)

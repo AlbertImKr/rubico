@@ -1,4 +1,4 @@
-import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
+import { PhoneNumberIsNotMatchedError } from '../exception/error/phone.error';
 import { PhoneNumber } from './phone-number.model';
 
 describe('PhoneNumber', () => {
@@ -20,6 +20,6 @@ describe('PhoneNumber', () => {
     // when
     const actual = () => new PhoneNumber(wrongPhoneNumber);
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.PHONE_NUMBER_NOT_MATCHES);
+    expect(actual).toThrow(PhoneNumberIsNotMatchedError);
   });
 });

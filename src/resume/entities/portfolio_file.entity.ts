@@ -1,24 +1,23 @@
-import { Column, DeleteDateColumn, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { ObjectId } from 'mongodb';
-import { Resume } from './resume.entity';
+import { ResumeEntity } from './resume.entity';
 
 @Entity({ name: 'portfolio_file' })
-export class PortfolioFile {
-  @EntityPrimaryId()
-  id: ObjectId;
+export class PortfolioFileEntity {
+  @PrimaryColumn()
+  id: string;
 
-  @ManyToOne(() => Resume, (resume) => resume.portfolioFiles)
-  resume: Resume;
+  @ManyToOne(() => ResumeEntity, (resume) => resume.portfolioFiles)
+  resume: ResumeEntity;
 
   @Column()
   link: string;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

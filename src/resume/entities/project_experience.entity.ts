@@ -1,16 +1,15 @@
-import { Column, DeleteDateColumn, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { ObjectId } from 'mongodb';
-import { Resume } from './resume.entity';
+import { ResumeEntity } from './resume.entity';
 
 @Entity({ name: 'project_experience' })
-export class ProjectExperience {
-  @EntityPrimaryId()
-  id: ObjectId;
+export class ProjectExperienceEntity {
+  @PrimaryColumn()
+  id: string;
 
   @Column({ name: 'organization_name' })
   organizationName: string;
@@ -25,15 +24,15 @@ export class ProjectExperience {
   projectName: string;
 
   @Column({ name: 'project_start_date' })
-  projectStartDate: Date;
+  startedAt: Date;
 
   @Column({ name: 'project_end_date' })
-  projectEndDate: Date;
+  endedAt: Date;
 
-  @ManyToOne(() => Resume, (resume) => resume.projectExperiences)
-  resume: Resume;
+  @ManyToOne(() => ResumeEntity, (resume) => resume.projectExperiences)
+  resume: ResumeEntity;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

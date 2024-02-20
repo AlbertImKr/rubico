@@ -8,6 +8,8 @@ import { SignInData, SignUpData } from '../dto/auth.data.dto';
 import { TestConstants } from '../../shared/test-utils/test.constants';
 import { TestUtils } from '../../shared/test-utils/test.utils';
 import { PasswordHasher } from '../../shared/utils/password-hasher';
+import { EXCEPTION_MESSAGES } from '../../shared/exception/exception-messages.constants';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('auth 서비스', () => {
   let authService: AuthService;
@@ -91,6 +93,20 @@ describe('auth 서비스', () => {
       // then
       expect(userAccountService.findByEmail).toHaveBeenCalledWith(data.email);
       expect(tokenService.generateTokens).toHaveBeenCalledWith(userAccount);
+    });
+
+    it('로그인 실패: 비밀번호 불일치', async () => {
+      // given
+      const data = createTestSignInDto();
+      jest
+        .spyOn(userAccountService, 'findByEmail')
+        .mockResolvedValue(userAccount);
+      jest.spyOn(PasswordHasher, 'compare').mockResolvedValue(false);
+
+      // when
+      await expect(authService.signIn(data)).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 

@@ -2,7 +2,11 @@ import {
   USER_PASSWORD_MAX_LENGTH,
   USER_PASSWORD_MIN_LENGTH,
 } from '../constants/validator.constants';
-import { EXCEPTION_MESSAGES } from '../exception/exception-messages.constants';
+import {
+  PasswordIsNotMatchedError,
+  PasswordIsTooLongError,
+  PasswordIsTooShortError,
+} from '../exception/error/password.error';
 import { Password } from './password.model';
 
 describe('Password', () => {
@@ -11,6 +15,8 @@ describe('Password', () => {
   // 7글자(최소 8글자)
   const TOO_SHORT_PASSWORD =
     'Pa1!' + '1'.repeat(USER_PASSWORD_MIN_LENGTH - 4 - 1);
+  const MIN_LENGTH_PASSWORD = 'Pa1!' + '1'.repeat(USER_PASSWORD_MIN_LENGTH - 4);
+  const MAX_LENGTH_PASSWORD = 'Pa1!' + '1'.repeat(USER_PASSWORD_MAX_LENGTH - 4);
   // 21글자(최대 20글자)
   const TOO_LONG_PASSWORD =
     'Pa1!' + '1'.repeat(USER_PASSWORD_MAX_LENGTH - 4 + 1);
@@ -18,6 +24,28 @@ describe('Password', () => {
   const NOT_HAVE_LOWERCASE_PASSWORD = 'PASSWORD123!';
   const NOT_HAVE_NUMBER_PASSWORD = 'Password!';
   const NOT_HAVE_SPECIAL_CHARACTER_PASSWORD = 'Password123';
+
+  it('생성자에 최소 제한 길이까지만 입력할 수 있다.', () => {
+    // given
+    const password = MIN_LENGTH_PASSWORD;
+
+    // when
+    const actual = new Password(password);
+
+    // then
+    expect(actual.value).toBe(password);
+  });
+
+  it('생성자에 최대 제한 길이까지만 입력할 수 있다.', () => {
+    // given
+    const password = MAX_LENGTH_PASSWORD;
+
+    // when
+    const actual = new Password(password);
+
+    // then
+    expect(actual.value).toBe(password);
+  });
 
   it('생성자에 정확한 비밀번호를 전달하면 value 프로퍼티에 할당된다', () => {
     // given
@@ -38,7 +66,7 @@ describe('Password', () => {
     const actual = () => new Password(password);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.USER_PASSWORD_TOO_SHORT);
+    expect(actual).toThrow(PasswordIsTooShortError);
   });
 
   it('생성자에 최대 길이보다 큰 비밀번호를 전달하면 에러가 발생한다', () => {
@@ -49,7 +77,7 @@ describe('Password', () => {
     const actual = () => new Password(password);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.USER_PASSWORD_TOO_LONG);
+    expect(actual).toThrow(PasswordIsTooLongError);
   });
 
   it('생성자에 영문 대문자가 없는 비밀번호를 전달하면 에러가 발생한다', async () => {
@@ -60,7 +88,7 @@ describe('Password', () => {
     const actual = () => new Password(password);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.USER_PASSWORD_NOT_MATCHES);
+    expect(actual).toThrow(PasswordIsNotMatchedError);
   });
 
   it('생성자에 영문 소문자가 없는 비밀번호를 전달하면 에러가 발생한다', () => {
@@ -71,7 +99,7 @@ describe('Password', () => {
     const actual = () => new Password(password);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.USER_PASSWORD_NOT_MATCHES);
+    expect(actual).toThrow(PasswordIsNotMatchedError);
   });
 
   it('생성자에 숫자가 없는 비밀번호를 전달하면 에러가 발생한다', () => {
@@ -82,7 +110,7 @@ describe('Password', () => {
     const actual = () => new Password(password);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.USER_PASSWORD_NOT_MATCHES);
+    expect(actual).toThrow(PasswordIsNotMatchedError);
   });
 
   it('생성자에 특수문자가 없는 비밀번호를 전달하면 에러가 발생한다', () => {
@@ -93,7 +121,7 @@ describe('Password', () => {
     const actual = () => new Password(password);
 
     // then
-    expect(actual).toThrow(EXCEPTION_MESSAGES.USER_PASSWORD_NOT_MATCHES);
+    expect(actual).toThrow(PasswordIsNotMatchedError);
   });
 
   it('isSame 메서드에 같은 비밀번호를 전달하면 true를 반환한다', () => {

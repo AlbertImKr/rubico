@@ -1,31 +1,27 @@
-import {
-  Column,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import {
   EntityCreatedAt,
-  EntityPrimaryId,
+  EntityDeletedAt,
   EntityUpdatedAt,
 } from '../../shared/decorators/entity.decorator';
-import { ObjectId } from 'mongodb';
-import { FieldOfWork } from './field_of_work.entity';
+import { FieldOfWorkEntity } from './field_of_work.entity';
 
 @Entity({ name: 'field_of_interest' })
-export class InterestField {
-  @EntityPrimaryId()
-  id: ObjectId;
+export class InterestFieldEntity {
+  @PrimaryColumn()
+  id: string;
 
-  @ManyToOne(() => FieldOfWork, (fieldOfWork) => fieldOfWork.interestFields)
+  @ManyToOne(
+    () => FieldOfWorkEntity,
+    (fieldOfWork) => fieldOfWork.interestFields,
+  )
   @JoinColumn({ name: 'field_of_work_id' })
-  fieldOfWork: FieldOfWork;
+  fieldOfWork: FieldOfWorkEntity;
 
   @Column()
   name: string;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
+  @EntityDeletedAt()
   deletedAt: Date;
 
   @EntityCreatedAt()

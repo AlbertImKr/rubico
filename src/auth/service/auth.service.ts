@@ -15,8 +15,12 @@ export class AuthService {
 
   async signIn(data: SignInData): Promise<Tokens> {
     const userAccount = await this.userAccountService.findByEmail(data.email);
-    if (!PasswordHasher.compare(userAccount.hashedPassword, data.password)) {
-      throw new UnauthorizedException(EXCEPTION_MESSAGES.PASSWORD_MISMATCH);
+    const isPermission = await PasswordHasher.compare(
+      userAccount.hashedPassword,
+      data.password,
+    );
+    if (!isPermission) {
+      throw new UnauthorizedException(EXCEPTION_MESSAGES.PASSWORD_IS_MISMATCH);
     }
     return this.tokenService.generateTokens(userAccount);
   }
